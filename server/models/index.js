@@ -1,104 +1,83 @@
 var mongoose = require('mongoose'),
     User = require('./user'),
-    Patient = require('./patient'),
-    Doctor = require('./doctor'),
-    config = require('../config');
+    Meeting = require('./meeting');
+    config = require('../config'),
+    passwordHash = require('password-hash');
 
 module.exports = function () {
     'use strict';
 
     mongoose.connect(config.db);
 
-    User.findById(1).exec(function(err, u){
-        if(!u){
+    User.find().exec(function(err, users){
+        if(users.length === 0){
+            var patientId, doctorId;
             var userPatient = new User({
-                _id: 1,
                 username: 'patient',
-                password: 'patient',
+                password: passwordHash.generate('patient', {algorithm: config.hashAlgorithm}),
                 name: {
                     first: 'patient',
                     last: 'patient',
                     patronymic: 'patient'
                 },
                 dateOfBirth: new Date(),
-                roles: [{
-                    name: 'patient',
-                    description: 'patient'
-                }]
-            });
-            userPatient.save(function(err){
-                if(err){
-                    console.log(err);
+                patientData: {
+                    contacts: {
+                        email: 'user@mail.com',
+                        phoneNumber: '000000000'
+                    },
+                    address: {
+                        street: 'street',
+                        building: '1',
+                        appartment: '1'
+                    }
                 }
             });
-        } 
-    });
 
-    User.findById(2).exec(function(err, u){
-        if(!u){
             var userDoctor = new User({
-                _id: 2,
                 username: 'doctor',
-                password: 'doctor',
+                password: passwordHash.generate('doctor', {algorithm: config.hashAlgorithm}),
                 name: {
                     first: 'doctor',
                     last: 'doctor',
                     patronymic: 'doctor'
                 },
                 dateOfBirth: new Date(),
-                roles: [{
-                    name: 'doctor',
-                    description: 'doctor'
-                }]
-            });
-            userDoctor.save(function(err){
-                if(err){
-                    console.log(err);
+                doctorData: {
+                    doctorType: [{
+                        name: 'Therapist',
+                        description: ''
+                    }]
                 }
             });
-        }
-    });
 
-    Doctor.findById(1).exec(function(err, u){
-        if(!u){
-            var doctor = new Doctor({
-                _id: 1,
-                user: 2,
-                doctorType: [{
-                    name: 'Therapist',
-                    description: ''
-                }]
-            });
-            doctor.save(function(err){
+            userPatient.save(function(err, user){
                 if(err){
                     console.log(err);
+                } else {
+                    patientId = user._id;;
+                    userDoctor.save(function(err, user){
+                        if(err){
+                            console.log(err);
+                        } else {
+                            doctorId = user._id;
+                            var meeting = new Meeting({
+                                doctor: doctorId,
+                                patient: patientId,
+                                time: {
+                                    start: new Date(),
+                                    end: new Date()
+                                }
+                            });
+                            meeting.save(function(err, m){
+                                if(err){
+                                    console.log(err);
+                                }
+                            });
+                        }
+                    });
                 }
-            });
-        }
-    });
-
-    Doctor.findById(1).exec(function(err, u){
-        if(!u){
-            var patient = new Patient({
-                _id: 1,
-                user: 1,
-                contacts: {
-                    email: 'user@mail.com',
-                    phoneNumber: '000000000'
-                },
-                address: {
-                    street: 'street',
-                    building: '1',
-                    appartment: '1'
-                }
-            });
-            patient.save(function(err){
-                if(err){
-                    console.log(err);
-                }
-            });
-        }
-        
-    });
-    
+            });     
+        } 
+    });  
 };

@@ -3,12 +3,12 @@ var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
  
 var MeetingSchema = new Schema({
-    patient: {type: Number, ref: 'patient'},
-    doctor: {type: Number, ref: 'doctor'},
+    patient: {type: ObjectId, ref: 'user'},
+    doctor: {type: ObjectId, ref: 'user'},
     time: {
         start: Date,
         end: Date
     }
 });
 
-module.exports = mongoose.model('Patient', MeetingSchema);
+module.exports = mongoose.model('meeting', MeetingSchema);

@@ -4,8 +4,9 @@ var User = require('../models/user');
 
 module.exports = function(router){
     router.get('/', function (req, res) {
-        User.find({doctorData: { $ne: null }},function(err, doctor){
+        User.find({patientData: { $ne: null }},function(err, doctor){
             res.send(doctor);
         });
     });
 }
+
