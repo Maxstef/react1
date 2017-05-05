@@ -1,7 +1,8 @@
 var mongoose = require('mongoose'),
     User = require('./user'),
     Meeting = require('./meeting');
-    config = require('../config');
+    config = require('../config'),
+    passwordHash = require('password-hash');
 
 module.exports = function () {
     'use strict';
@@ -13,7 +14,7 @@ module.exports = function () {
             var patientId, doctorId;
             var userPatient = new User({
                 username: 'patient',
-                password: 'patient',
+                password: passwordHash.generate('patient', {algorithm: config.hashAlgorithm}),
                 name: {
                     first: 'patient',
                     last: 'patient',
@@ -35,7 +36,7 @@ module.exports = function () {
 
             var userDoctor = new User({
                 username: 'doctor',
-                password: 'doctor',
+                password: passwordHash.generate('doctor', {algorithm: config.hashAlgorithm}),
                 name: {
                     first: 'doctor',
                     last: 'doctor',

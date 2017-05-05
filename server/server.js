@@ -1,10 +1,14 @@
 var express = require('express');
     app = express(),
     mongoose = require('mongoose'),
-    Config = require('./config');
+    Config = require('./config'),
+    bodyParser = require("body-parser");
 
 // init mongo models
 require('./models')();
+
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
   res.send('Express server works!');

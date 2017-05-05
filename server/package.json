@@ -4,10 +4,10 @@
   "description": "ExpressJs server app",
   "author": "Max Stefanko",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "change-case": "^3.0.1",
     "express": "^4.15.2",
     "mongoose": "^4.9.7",
-    "path": "^0.12.7",
     "require-dir": "^0.3.1"
   }
 }
