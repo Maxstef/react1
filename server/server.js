@@ -4,16 +4,14 @@ var express = require('express');
     Config = require('./config');
 
 // init mongo models
-console.log(Config);
 require('./models')();
 
 app.get('/', function (req, res) {
-  res.send('Express server');
+  res.send('Express server works!');
 });
 
-var users = require('./controllers/users');
-
-app.use('/users', users);
+// init controllers
+require('./controllers/index')(app);
 
 app.listen(3000, function () {
   console.log('Server listening on port 3000!');

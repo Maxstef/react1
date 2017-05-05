@@ -1,17 +1,17 @@
 var express = require('express');
 var router = express.Router();
-var Doctor = require('../models/doctor');
+var Patient = require('../models/patient');
 
 module.exports = function(router){
     router.get('/', function (req, res) {
-        Doctor.find(function(err, doctor){
-            res.send(doctor);
+        Patient.find(function(err, patient){
+            res.send(patient);
         });
     });
 
     router.get('/:id', function(req, res) {
-        Doctor.findById(req.params.id, function(err, doctor){
-            res.send(doctor);
+        Patient.findById(req.params.id, function(err, patient){
+            res.send(patient);
         });
     });
 
@@ -19,3 +19,4 @@ module.exports = function(router){
         res.send('Post doctor works');
     });
 }
+
