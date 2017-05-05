@@ -1,7 +1,6 @@
 var changeCase = require('change-case'),
     express = require('express'),
-    routes = require('require-dir')(),
-    boom = require('express-boom');
+    routes = require('require-dir')();
 
 module.exports = function (app) {
     'use strict';

@@ -6,7 +6,6 @@
   "dependencies": {
     "change-case": "^3.0.1",
     "express": "^4.15.2",
-    "express-boom": "^2.0.0",
     "mongoose": "^4.9.7",
     "path": "^0.12.7",
     "require-dir": "^0.3.1"
