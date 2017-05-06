@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
  
 var UserSchema = new Schema({
-    username: String,
+    username: {type: String, unique: true},
     password: String,
     photoUrl: String,
     name: {
@@ -14,8 +14,8 @@ var UserSchema = new Schema({
     patientData: { 
         type: {
             contacts: {
-                email: String,
-                phoneNumber: String
+                email: {type: String, unique: true},
+                phoneNumber: {type: String, unique: true}
             },
             address: {
                 street: String,
