@@ -1,11 +1,16 @@
 import React from 'react';
+import {Container} from 'reactstrap';
+import {Link} from "react-router";
 
 class Home extends React.Component {
   render() {
     return (
-        <div className="homepage">
-          <h1>This is a homepage component</h1>
-        </div>
+        <Container>
+          <div className="homepage">
+            <h3>This is a homepage component</h3>
+            <Link to="doctors-list">Login</Link>
+          </div>
+        </Container>
     );
   }
 }
