@@ -1,17 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import HelloWorld from './components/Hello-world';
-import App2 from './components/app2';
-import {Router, Route, IndexRoute, browserHistory} from "react-router";
+import Home from './components/home';
+import Container from './components/container';
+import Content from './components/content';
+import DoctorsList from './components/doctors-list';
+import {Router, Route, IndexRoute, browserHistory, hashHistory} from "react-router";
 import createBrowserHistory from 'history/createBrowserHistory';
 
 ReactDOM.render((
-        <Router history={createBrowserHistory()}>
-          <div>
-            <Route path="/" component={HelloWorld}/>
-            <Route path="/admin" component={App2}/>
-          </div>
+        <Router history={hashHistory}>
+          <Route path="/" component={Home}/>
+          <Route component={Container}>
+            <Route path="user" component={Content}/>
+            <Route path="list" component={DoctorsList}/>
+          </Route>
         </Router>
-        // <HelloWorld phrase="clinic"/>,
-    ), document.body
+    ), document.getElementById('root')
 );

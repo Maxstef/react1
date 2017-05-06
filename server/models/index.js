@@ -55,7 +55,7 @@ module.exports = function () {
                 if(err){
                     console.log(err);
                 } else {
-                    patientId = user._id;;
+                    patientId = user._id;
                     userDoctor.save(function(err, user){
                         if(err){
                             console.log(err);
