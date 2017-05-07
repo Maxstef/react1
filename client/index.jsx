@@ -4,7 +4,7 @@ import Home from './components/home';
 import Wrapper from './components/wrapper';
 import DoctorInfo from './components/doctor-info';
 import DoctorsList from './components/doctors-list';
-import Reception from './components/reception';
+import Meeting from './components/meeting';
 import NotFound from './components/not-found';
 import {Router, Route, IndexRoute, browserHistory, hashHistory} from "react-router";
 import createBrowserHistory from 'history/createBrowserHistory';
@@ -14,10 +14,9 @@ ReactDOM.render((
           <Route path="/" component={Home}/>
           
           <Route component={Wrapper}>
-            <Route path="doctor/:doctorId" component={DoctorInfo}>
-              <Route path="reception" component={Reception}/>
-            </Route>
+            <Route path="doctor/:doctorId" component={DoctorInfo}/>
             <Route path="doctors-list" component={DoctorsList}/>
+            <Route path="meeting" component={Meeting}/>
           </Route>
           
           <Route path="*" component={NotFound}/>

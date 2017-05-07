@@ -1,36 +1,49 @@
 import React from 'react';
 import {Link} from "react-router";
 import {browserHistory} from "react-router";
-import { Button } from 'reactstrap';
+import {Button, Container, Row, Col} from 'reactstrap';
+
+const id = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+function DoctorsListFunc(props) {
+  const doctorId = props.id;
+  const doctorList = doctorId.map((id) =>
+      <Row className="doctors-list">
+        <Col xs="12">
+          <li>
+            <Link to={"/doctor/" + id} activeClassName="active">
+              <Row>
+                <Col>
+                  Doctor #{id}
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  Description: speciality and other important things
+                </Col>
+              </Row>
+            </Link>
+          </li>
+        </Col>
+      </Row>
+  );
+  return (
+      <div className="doctors-list">
+        <ul>{doctorList}</ul>
+      </div>
+  );
+}
 
 class DoctorsList extends React.Component {
-  render() {
-    return (
-        <div>
-          <ul className="user-list">
-            <li>
-              <Link to="/doctor/1" activeClassName="active">
-                Doctor 1
-              </Link>
-            </li>
-            <li>
-              <Link to="/doctor/2" activeClassName="active">
-                Doctor 2
-              </Link>
-            </li>
-            <li>
-              <Link to="/doctor/3" activeClassName="active">
-                Doctor 3
-              </Link>
-            </li>
-          </ul>
-          <Button color="primary" onClick={this.toHome.bind(this)}>primary</Button>{' '}
-        </div>
-    );
-  };
   
   toHome() {
     return browserHistory.push('/');
+  }
+  
+  render() {
+    return (
+        <DoctorsListFunc id={id}/>
+    )
   }
 }
 

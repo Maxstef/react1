@@ -6,16 +6,19 @@ class Wrapper extends React.Component {
   render() {
     return (
         <div className="wrapper">
-            <Navbar color="faded" toggleable>
+            <Navbar color="faded" className="navbar-inverse" toggleable>
               <NavbarToggler/>
               <NavbarBrand href="/">clinic</NavbarBrand>
               <Collapse isOpen={true} navbar>
                 <Nav className="ml-auto" navbar>
                   <NavItem>
-                    <NavLink><Link to="/">Home</Link></NavLink>
+                    <Link className="nav-link" to="/">Home</Link>
                   </NavItem>
                   <NavItem>
-                    <NavLink><Link to="/doctors-list">List</Link></NavLink>
+                    <Link className="nav-link" to="/doctors-list">List</Link>
+                  </NavItem>
+                  <NavItem>
+                    <Link className="nav-link" to="/doctors-list">List button</Link>
                   </NavItem>
                 </Nav>
               </Collapse>
@@ -28,7 +31,7 @@ class Wrapper extends React.Component {
           </Container>
           <footer className="footer">
             <Container>
-              <span className="text-muted">Place sticky footer content here.</span>
+              <span>Place sticky footer content here.</span>
             </Container>
           </footer>
         </div>
