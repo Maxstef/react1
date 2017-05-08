@@ -57,3 +57,46 @@
 a.navbar-brand {
   font-weight: 900;
 }
+
+/***********************************************
+*****************   LOGIN   ********************
+***********************************************/
+
+.login {
+  max-width: 400px;
+  margin: 100px auto;
+}
+
+.submit-btn {
+  cursor: pointer;
+}
+input:focus ~ .input-icon {
+  opacity: 1;
+}
+
+.input-icon {
+  float: right;
+  margin-right: 10px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
+  color: black;
+  opacity: 0.6;
+}
+
+/***********************************************
+**************  REGISTRATION   *****************
+***********************************************/
+
+.registration {
+  max-width: 700px;
+  margin: 100px auto;
+}
+
+.col-form-legend {
+  font-size: 25px;
+}
+
+.marg-bott {
+  margin-bottom: 5px;
+}

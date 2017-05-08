@@ -12,13 +12,17 @@
     "axios": "^0.16.1",
     "bootstrap": "^4.0.0-alpha.6",
     "express": "^4.15.2",
+    "font-awesome": "^4.7.0",
     "history": "^4.6.1",
+    "moment": "^2.18.1",
     "react": "^15.5.4",
     "react-addons-css-transition-group": "^15.5.2",
     "react-addons-transition-group": "^15.5.2",
+    "react-datepicker": "^0.46.0",
     "react-dom": "^15.5.4",
     "react-http-request": "^1.0.3",
     "react-router": "^2.3.0",
+    "react-validation": "^2.10.9",
     "reactstrap": "^4.5.0"
   },
   "devDependencies": {
