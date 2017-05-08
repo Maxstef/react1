@@ -1,31 +1,48 @@
 import React from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col} from 'reactstrap';
+import axios from 'axios';
+
 
 class DoctorInfo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       modal: false,
-      backdrop: "static"
+      backdrop: "static",
+      info: {},
+      name: {},
+      doctorType: {}
     };
     this.toggle = this.toggle.bind(this);
   };
+  
+  componentDidMount() {
+    axios.get('http://localhost:3000/doctors')
+         .then(res => {
+           let info = res.data[0];
+           let name = res.data[0].name;
+           let doctorType = res.data[0].doctorData.doctorType[0];
+           this.setState({info, name, doctorType});
+         });
+  }
   
   toggle() {
     this.setState({
       modal: !this.state.modal
     });
+    console.log(this.state.info._id, this.state.name, this.state.description);
   }
   
   render() {
     return (
         <div>
           <Col md={{size: 8, offset: 2}} xs={{size: 10, offset: 1}}>
-            <header className="search-header">Doctor info #{this.props.params.doctorId}</header>
+            <header className="search-header">{this.state.info.username}{' '}#{this.props.params.doctorId}{' '}
+            {this.state.name.first}{' '}{this.state.name.last},{' '}{this.state.doctorType.name}
+            </header>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-              ex ea commodo consequat.
+              {this.state.doctorType.description}{"\n"}
+              {this.state.info._id}
             </p>
             <Button color="warning" onClick={this.toggle}>Make meeting</Button>
           </Col>

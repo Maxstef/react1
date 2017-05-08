@@ -9,6 +9,7 @@
   "author": "Vitalii Yaremchuk",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.16.1",
     "bootstrap": "^4.0.0-alpha.6",
     "express": "^4.15.2",
     "history": "^4.6.1",
@@ -16,6 +17,7 @@
     "react-addons-css-transition-group": "^15.5.2",
     "react-addons-transition-group": "^15.5.2",
     "react-dom": "^15.5.4",
+    "react-http-request": "^1.0.3",
     "react-router": "^2.3.0",
     "reactstrap": "^4.5.0"
   },
