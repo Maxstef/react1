@@ -31,7 +31,8 @@ var UserSchema = new Schema({
                 name: String,
                 description: String
             }]
-        }, 
+        },
+        bio: String,
         default: null
     },
     adminData: {
