@@ -1,8 +1,6 @@
 import React from 'react';
 import {Link} from "react-router";
-import {browserHistory} from "react-router";
 import {Button, Container, Row, Col} from 'reactstrap';
-import axios from 'axios';
 
 function renderDoctors(info) {
   if (info.length > 0) {
@@ -55,27 +53,12 @@ const Doctor = ({doctor}) => {
 };
 
 class DoctorsList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      info: []
-    };
-  };
-  
-  componentDidMount() {
-    axios.get('http://localhost:3000/doctors')
-         .then(res => {
-           let info = res.data;
-           this.setState({info});
-           console.log(info[0]);
-         });
-  }
   
   render() {
-    const articles = renderDoctors(this.state.info);
+    const doctors = renderDoctors(this.props.info);
     return (
         <section>
-          {articles}
+          {doctors}
         </section>
     )
   }
