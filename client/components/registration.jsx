@@ -1,9 +1,11 @@
 import React from 'react';
 import {Container, Button, Form, FormGroup, Label, Input, FormText, Col} from 'reactstrap';
+import {Link, browserHistory} from "react-router";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Validation from 'react-validation';
 import validator from 'validator';
+import axios from 'axios';
 
 
 Object.assign(Validation.rules, {
@@ -73,11 +75,21 @@ class Registration extends React.Component {
     super(props)
     this.state = {
       dateOB: moment(),
+      success: false,
+      error: false,
+      errorMessage: '',
+      username: '',
       borderErr: {
         borderColor: '#d9534f',
       }
     };
     this.handleDateChange = this.handleDateChange.bind(this);
+  }
+
+  componentWillMount(){
+    if(localStorage.getItem('username') !== null && localStorage.getItem('id') !== null){
+        browserHistory.push('/home');
+    }
   }
 
   handleDateChange(date) {
@@ -86,12 +98,49 @@ class Registration extends React.Component {
     });
   }
 
+    handleSubmit(e){
+      e.preventDefault();
+        var t = this;
+        axios.post('http://localhost:3000/registration', {
+            firstName: e.target.firstName.value,
+            lastName: e.target.lastName.value,
+            patronymic: e.target.patronymic.value,
+            dateOfBirth: this.state.dateOB,
+            street: e.target.street.value,
+            building: e.target.building.value,
+            appartment: e.target.appartment.value,
+            email: e.target.email.value,
+            phoneNumber: e.target.phone.value,
+            username: e.target.username.value,
+            password: e.target.password.value
+        })
+        .then(function (response) {
+            console.log(response.data.username);
+            console.log(response.data);
+            if(typeof response.data.error == 'undefined'){
+                t.setState({success: true, error: false, username: response.data.username});
+            } else {
+                t.setState({error: true, errorMessage: response.data.error});
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
   render() {
     return (
         <Container>
           <div className="registration">
             <h3>Registration in clinic</h3>
-            <Validation.components.Form>
+              {this.state.success &&
+              <div className="alert alert-success">
+                  registration success! Your username {this.state.username} <Link to="/">login</Link>
+              </div>
+              }
+              {!this.state.success &&
+
+            <Validation.components.Form onSubmit={this.handleSubmit.bind(this)}>
               <FormGroup row tag="fieldset">
                 <legend className="col-form-legend">Personal data</legend>
                 <FormGroup row>
@@ -176,7 +225,7 @@ class Registration extends React.Component {
                   <Col md={9}>
                     <Validation.components.Input className="form-control" value=""
                       type="password" name="password" id="password" placeholder="password" 
-                      errorClassName='is-invalid-input' validations={['required']}/>
+                      errorClassName='is-invalid-input' validations={['required', 'minThree']}/>
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -184,12 +233,18 @@ class Registration extends React.Component {
                   <Col md={9}>
                     <Validation.components.Input className="form-control" value="" 
                       type="password" name="passwordConfirm" id="passwordConfirm" placeholder="confirm password"
-                      errorClassName='is-invalid-input' validations={['required', 'password']}/>
+                      errorClassName='is-invalid-input' validations={['required', 'password', 'minThree']}/>
                   </Col>
                 </FormGroup>
               </FormGroup>
               <Validation.components.Button className="submit-btn pull-right btn btn-primary">Submit</Validation.components.Button>
             </Validation.components.Form>
+              }
+              {this.state.error &&
+              <div className="alert alert-danger" style={{width: '70%',float:'left'}}>
+                  {this.state.errorMessage}
+              </div>
+              }
           </div>
         </Container>
     );

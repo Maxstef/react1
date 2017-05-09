@@ -13,7 +13,10 @@ module.exports = function(router){
               res.send({error: "username already exist"});
           } else if (typeof req.body.username == "undefined" || typeof req.body.password == "undefined" || typeof req.body.firstName == "undefined"
             || typeof req.body.lastName == "undefined" || typeof req.body.patronymic == "undefined" || typeof req.body.dateOfBirth == "undefined"
-            || typeof req.body.email == "undefined" || typeof req.body.phoneNumber == "undefined"){
+            || typeof req.body.email == "undefined" || typeof req.body.phoneNumber == "undefined" || req.body.username.trim().length == 0
+            || req.body.password.trim().length == 0 || req.body.firstName.trim().length == 0
+            || req.body.lastName.trim().length == 0 || req.body.patronymic.trim().length == 0
+            || req.body.email.trim().length == 0 || req.body.phoneNumber.trim().length == 0 ){
               res.send({error: "require field not specified (username, password, firstName, lastName, patronymic, email, dateOfBirth, phoneNumber)"});
           } else {
               var newUser = new User({
