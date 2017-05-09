@@ -4,18 +4,16 @@ import {browserHistory} from "react-router";
 import {Button, Container, Row, Col} from 'reactstrap';
 import axios from 'axios';
 
-const id = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
 function DoctorsListFunc(props) {
-  const doctorId = props.id;
-  const doctorList = doctorId.map((id) =>
+  const doctorId = props.info;
+  const doctorList = doctorId.map((doctor) =>
       <Row className="doctors-list">
         <Col xs="12">
           <li>
-            <Link to={"/doctor/" + id} activeClassName="active">
+            <Link to={"/doctor/" + doctor} activeClassName="active">
               <Row>
                 <Col>
-                  Doctor #{id}
+                  Doctor #{doctor}
                 </Col>
               </Row>
               <Row>
@@ -35,13 +33,47 @@ function DoctorsListFunc(props) {
   );
 }
 
+function renderDoctors(info) {
+  if (info.length > 0) {
+    return info.map((doctor, index) => (
+        <Doctor key={index} doctor={doctor}/>
+    ));
+  }
+  else return [];
+}
+
+const Doctor = ({doctor}) => {
+  return (
+        <Row className="doctors-list">
+          <Col xs="12">
+            <doctor key={doctor._id}>
+              <Link to={"/doctor/" + doctor._id} activeClassName="active">
+                <Row>
+                  <Col>
+                    Doctor{' '}{doctor.name.first}{' '}{doctor.name.last}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <p>
+                      <span>{doctor.doctorData.doctorType[0].name}</span>
+                      <span>{doctor.doctorData.doctorType[0].description}</span>
+                    </p>
+                    <p>{doctor._id}</p>
+                  </Col>
+                </Row>
+              </Link>
+            </doctor>
+          </Col>
+        </Row>
+  );
+};
+
 class DoctorsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      info: [],
-      name: {},
-      doctorType: {}
+      info: []
     };
   };
   
@@ -52,16 +84,16 @@ class DoctorsList extends React.Component {
            // let name = res.data[0].name;
            // let doctorType = res.data[0].doctorData.doctorType[0];
            this.setState({info});
+           console.log(info[0]);
          });
   }
   
-  toHome() {
-    return browserHistory.push('/');
-  }
-  
   render() {
+    const articles = renderDoctors(this.state.info);
     return (
-        <DoctorsListFunc id={this.state.info}/>
+        <section>
+          {articles}
+        </section>
     )
   }
 }
