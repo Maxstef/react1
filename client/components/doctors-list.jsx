@@ -4,44 +4,61 @@ import {browserHistory} from "react-router";
 import {Button, Container, Row, Col} from 'reactstrap';
 import axios from 'axios';
 
-const id = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+function renderDoctors(info) {
+  if (info.length > 0) {
+    return info.map((doctor, index) => (
+        <Doctor key={index} doctor={doctor}/>
+    ));
+  }
+  else return [];
+}
 
-function DoctorsListFunc(props) {
-  const doctorId = props.id;
-  const doctorList = doctorId.map((id) =>
+function renderDoctorTypes(doctor) {
+  const dType = doctor.doctorData.doctorType;
+  return dType.map((type, index) => (
+      <Type key={index} type={type}/>
+  ));
+}
+
+const Type = ({type}) => {
+  return (
+      <div>
+        <span>{'\n'}{type.name}{'.\n'}</span>
+        <span>{type.description}</span>
+      </div>
+  )
+};
+
+const Doctor = ({doctor}) => {
+  const doctorTypes = renderDoctorTypes(doctor);
+  return (
       <Row className="doctors-list">
         <Col xs="12">
-          <li>
-            <Link to={"/doctor/" + id} activeClassName="active">
+          <doctor key={doctor._id}>
+            <Link to={"/doctor/" + doctor._id} activeClassName="active">
               <Row>
                 <Col>
-                  Doctor #{id}
+                  Doctor{' '}{doctor.name.first}{' '}{doctor.name.last}
                 </Col>
               </Row>
               <Row>
                 <Col>
-                  Description: speciality and other important things
+                  {doctorTypes}
+                  <p>{doctor._id}</p>
                 </Col>
               </Row>
             </Link>
-          </li>
+          </doctor>
         </Col>
       </Row>
   );
-  return (
-      <div className="doctors-list">
-        <ul>{doctorList}</ul>
-      </div>
-  );
-}
+};
 
 class DoctorsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      info: [],
-      name: {},
-      doctorType: {}
+      info: []
     };
   };
   
@@ -49,19 +66,17 @@ class DoctorsList extends React.Component {
     axios.get('http://localhost:3000/doctors')
          .then(res => {
            let info = res.data;
-           // let name = res.data[0].name;
-           // let doctorType = res.data[0].doctorData.doctorType[0];
            this.setState({info});
+           console.log(info[0]);
          });
   }
   
-  toHome() {
-    return browserHistory.push('/');
-  }
-  
   render() {
+    const articles = renderDoctors(this.state.info);
     return (
-        <DoctorsListFunc id={this.state.info}/>
+        <section>
+          {articles}
+        </section>
     )
   }
 }
