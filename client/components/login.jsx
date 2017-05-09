@@ -49,9 +49,9 @@ class Login extends React.Component {
     })
     .then(function (response) {
       if(typeof response.data.error == 'undefined'){
-          browserHistory.push('/home');
           localStorage.setItem("username", response.data.username);
           localStorage.setItem("id", response.data._id);
+          browserHistory.push('/home');
       } else {
           t.setState({loginError: true, loginErrorMessage: response.data.error});
       }

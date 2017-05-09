@@ -30,14 +30,14 @@ var UserSchema = new Schema({
             doctorType: [{
                 name: String,
                 description: String
-            }]
+            }],
+            bio: String
         },
-        bio: String,
         default: null
     },
     adminData: {
         type: {
-
+            admin: Boolean
         },
         default: null
     }

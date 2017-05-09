@@ -115,8 +115,6 @@ class Registration extends React.Component {
             password: e.target.password.value
         })
         .then(function (response) {
-            console.log(response.data.username);
-            console.log(response.data);
             if(typeof response.data.error == 'undefined'){
                 t.setState({success: true, error: false, username: response.data.username});
             } else {
