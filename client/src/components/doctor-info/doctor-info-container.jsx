@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import DoctorInfo from './doctor-info';
+import { connect } from 'react-redux';
 
 class DoctorInfoContainer extends React.Component {
   constructor(props) {
