@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Home from './src/components/home';
+import HomeContainer from './src/components/home/home-container';
 import Wrapper from './src/components/wrapper';
 import DoctorInfoContainer from './src/components/doctor-info/doctor-info-container';
 import DoctorsListContainer from './src/components/doctors-list/doctors-list-container';
 import Meeting from './src/components/meeting';
+import AdminDoctorsListContainer from './src/components/admin-doctors-list/admin-doctors-list-container';
 import NotFound from './src/components/not-found';
-import Login from './src/components/login';
-import Registration from './src/components/registration';
+import LoginContainer from './src/components/login/login-container';
+import RegistrationContainer from './src/components/registration/registration-container';
 import Cabinet from './src/components/cabinet';
 import {Router, Route, IndexRoute, browserHistory, hashHistory} from "react-router";
 import * as Redux from "redux";
@@ -51,13 +52,13 @@ console.log(store.getState());
 
 ReactDOM.render((
         <Router history={browserHistory}>
-          <Route path="/" component={Login}/>
-          <Route path="registration" component={Registration}/>
+          <Route path="/" component={LoginContainer}/>
+          <Route path="registration" component={RegistrationContainer}/>
           
           <Route component={Wrapper}>
             <Route path="cabinet" component={Cabinet}/>
-  
-            <Route path="home" component={Home}/>
+  			    <Route path="admin-doctors-list" component={AdminDoctorsListContainer}/>
+            <Route path="home" component={HomeContainer}/>
             <Route path="doctor/:doctorId" component={DoctorInfoContainer}/>
             <Route path="doctors-list" component={DoctorsListContainer}/>
             <Route path="meeting" component={Meeting}/>

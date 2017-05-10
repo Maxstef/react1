@@ -1,6 +1,7 @@
 import React from 'react';
 import {Container, Row, Col, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap';
 import {Link} from "react-router";
+import Logout from "./logout";
 
 class Wrapper extends React.Component {
   render() {
@@ -19,6 +20,9 @@ class Wrapper extends React.Component {
                   </NavItem>
                   <NavItem>
                     <Link className="nav-link" to="/doctors-list">List button</Link>
+                  </NavItem>
+                  <NavItem>
+                    <Logout></Logout>
                   </NavItem>
                 </Nav>
               </Collapse>

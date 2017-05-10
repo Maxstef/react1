@@ -1,4 +1,4 @@
-var express = require('express');
+var express = require('express'),
     app = express(),
     mongoose = require('mongoose'),
     Config = require('./config'),
