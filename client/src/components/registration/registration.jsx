@@ -5,140 +5,22 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Validation from 'react-validation';
 import validator from 'validator';
-import axios from 'axios';
-
-
-Object.assign(Validation.rules, {
-    required: {
-        rule: value => {
-            return value.toString().trim();
-        },
-        hint: value => {
-            return <span className='form-error is-visible'>Required</span>
-        }
-    },
-    minThree: {
-      rule: value => {
-        return value.toString().trim().length > 2;
-      },
-      hint: value => {
-        return <span className='form-error is-visible'>Minimum 3 characters</span>
-      }
-    },
-    number: {
-      rule: value => {
-        return validator.isNumeric(value);
-      },
-      hint: value => {
-        return <span className='form-error is-visible'>{value} isn't a number.</span>
-      }
-    },
-    onlyLetters: {
-      rule: value => {
-        return value.match(/^[a-zA-Z.\-_]*$/);
-      },
-      hint: value => {
-        return <span className='form-error is-visible'>Only latin letters allowed</span>
-      }
-    },
-    email: {
-        rule: value => {
-            return validator.isEmail(value);
-        },
-        hint: value => {
-            return <span className='form-error is-visible'>{value} isn't an Email.</span>
-        }
-    },
-    password: {
-        rule: (value, components) => {
-            const password = components.password.state;
-            const passwordConfirm = components.passwordConfirm.state;
-            const isBothUsed = password
-                && passwordConfirm
-                && password.isUsed
-                && passwordConfirm.isUsed;
-            const isBothChanged = isBothUsed && password.isChanged && passwordConfirm.isChanged;
- 
-            if (!isBothUsed || !isBothChanged) {
-                return true;
-            }
- 
-            return password.value === passwordConfirm.value;
-        },
-        hint: () => <span className="form-error is-visible">Passwords should be equal.</span>
-    }
-});
 
 class Registration extends React.Component {
-
-  constructor (props) {
-    super(props)
-    this.state = {
-      dateOB: moment(),
-      success: false,
-      error: false,
-      errorMessage: '',
-      username: '',
-      borderErr: {
-        borderColor: '#d9534f',
-      }
-    };
-    this.handleDateChange = this.handleDateChange.bind(this);
-  }
-
-  componentWillMount(){
-    if(localStorage.getItem('username') !== null && localStorage.getItem('id') !== null){
-        browserHistory.push('/home');
-    }
-  }
-
-  handleDateChange(date) {
-    this.setState({
-      dateOB: date
-    });
-  }
-
-    handleSubmit(e){
-      e.preventDefault();
-        var t = this;
-        axios.post('http://localhost:3000/registration', {
-            firstName: e.target.firstName.value,
-            lastName: e.target.lastName.value,
-            patronymic: e.target.patronymic.value,
-            dateOfBirth: this.state.dateOB,
-            street: e.target.street.value,
-            building: e.target.building.value,
-            appartment: e.target.appartment.value,
-            email: e.target.email.value,
-            phoneNumber: e.target.phone.value,
-            username: e.target.username.value,
-            password: e.target.password.value
-        })
-        .then(function (response) {
-            if(typeof response.data.error == 'undefined'){
-                t.setState({success: true, error: false, username: response.data.username});
-            } else {
-                t.setState({error: true, errorMessage: response.data.error});
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-    }
 
   render() {
     return (
         <Container>
           <div className="registration">
             <h3>Registration in clinic</h3>
-              {this.state.success &&
+              {this.props.success &&
               <div className="alert alert-success">
-                  registration success! Your username {this.state.username} <Link to="/">login</Link>
+                  registration success! Your username {this.props.username} <Link to="/">login</Link>
               </div>
               }
-              {!this.state.success &&
+              {!this.props.success &&
 
-            <Validation.components.Form onSubmit={this.handleSubmit.bind(this)}>
+            <Validation.components.Form onSubmit={this.props.handleSubmit}>
               <FormGroup row tag="fieldset">
                 <legend className="col-form-legend">Personal data</legend>
                 <FormGroup row>
@@ -168,7 +50,7 @@ class Registration extends React.Component {
                 <FormGroup row>
                   <Label for="dateOfBirth" md={3}>Date of birth:</Label>
                   <Col md={9}>
-                    <DatePicker selected={this.state.dateOB} onChange={this.handleDateChange} />
+                    <DatePicker selected={this.props.dateOB} onChange={this.props.handleDateChange} />
                   </Col>
                 </FormGroup>
               </FormGroup>
@@ -213,7 +95,7 @@ class Registration extends React.Component {
                 <FormGroup row>
                   <Label for="username" md={3}>Username:</Label>
                   <Col md={9}>
-                    <Validation.components.Input className="form-control" value=""
+                    <Validation.components.Input className="form-control" value="" onKeyUp={this.props.cleanError}
                       type="text" name="username" id="username" placeholder="username" 
                       errorClassName='is-invalid-input' validations={['required', 'minThree']} />
                   </Col>
@@ -238,9 +120,9 @@ class Registration extends React.Component {
               <Validation.components.Button className="submit-btn pull-right btn btn-primary">Submit</Validation.components.Button>
             </Validation.components.Form>
               }
-              {this.state.error &&
+              {this.props.error &&
               <div className="alert alert-danger" style={{width: '70%',float:'left'}}>
-                  {this.state.errorMessage}
+                  {this.props.errorMessage}
               </div>
               }
           </div>

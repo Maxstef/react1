@@ -1,9 +1,9 @@
 import React from 'react';
-import {Container, Button, Form, FormGroup, Label, Input, FormText} from 'reactstrap';
 import {Link, browserHistory} from "react-router";
 import axios from 'axios';
+import Login from './login';
 
-class Login extends React.Component {
+class LoginContainer extends React.Component {
 
   constructor (props) {
     super(props)
@@ -63,32 +63,16 @@ class Login extends React.Component {
 
   render() {
     return (
-        <Container>
-          <div className="login">
-            <h3>Login to clinic</h3>
-            <Form onSubmit={this.handleSubmit.bind(this)} className="login-form">
-              <FormGroup>
-                <Label for="username">Username</Label>
-                <Input type="text" name="username" id="username" placeholder="username" onChange={this.checkUsername} />
-                <span className="fa fa fa-user-circle-o fa-lg input-icon"></span>
-              </FormGroup>
-              <FormGroup>
-                <Label for="password">Password</Label>
-                <Input type="password" name="password" id="password" placeholder="password" onChange={this.checkPassword} />
-                <span className="fa fa-unlock-alt fa-lg input-icon"></span>
-              </FormGroup>
-              <Link to="registration">registration</Link>
-              <Button className="submit-btn pull-right" color="primary" disabled={!(this.state.usernameValid && this.state.passwordValid)}>Login</Button>
-            </Form>
-              {this.state.loginError &&
-              <div className="alert alert-danger">
-                  {this.state.loginErrorMessage}
-              </div>
-              }
-          </div>
-        </Container>
+        <Login handleSubmit={this.handleSubmit}
+               checkPassword={this.checkPassword}
+               checkUsername={this.checkUsername}
+               usernameValid={this.state.usernameValid}
+               passwordValid={this.state.passwordValid}
+               loginError={this.state.loginError}
+               loginErrorMessage={this.state.loginErrorMessage}>
+        </Login>
     );
   }
 }
 
-export default Login;
+export default LoginContainer;

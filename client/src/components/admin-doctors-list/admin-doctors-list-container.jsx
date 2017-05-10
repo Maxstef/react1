@@ -1,10 +1,10 @@
 import React from 'react';
 import {Link} from "react-router";
 import {browserHistory} from "react-router";
-import {Button, Container, Row, Col} from 'reactstrap';
 import axios from 'axios';
+import AdminDoctorsList from './admin-doctors-list';
 
-class AdminDoctorsList extends React.Component {
+class AdminDoctorsListContainer extends React.Component {
 
     constructor(props) {
         super(props);
@@ -15,12 +15,11 @@ class AdminDoctorsList extends React.Component {
         };
     };
 
-
     render() {
         return (
-            <h2>Admin doctors</h2>
+            <AdminDoctorsList></AdminDoctorsList>
         )
     }
 }
 
-export default AdminDoctorsList;
+export default AdminDoctorsListContainer;

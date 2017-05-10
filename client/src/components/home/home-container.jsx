@@ -1,9 +1,8 @@
 import React from 'react';
-import {Container} from 'reactstrap';
-import {Link} from "react-router";
 import axios from 'axios';
+import Home from './home';
 
-class Home extends React.Component {
+class HomeContainer extends React.Component {
 
     constructor (props) {
         super(props)
@@ -26,18 +25,11 @@ class Home extends React.Component {
             });
     }
 
-  render() {
-    return (
-        <Container>
-          <div className="homepage">
-            <h3>This is a homepage component</h3>
-              <p>login as {this.state.role}</p>
-              {this.state.role == 'admin' && <Link to="admin-doctors-list">Doctor list</Link>}
-              {this.state.role == 'patient' && <Link to="doctors-list">Doctor list</Link>}
-          </div>
-        </Container>
-    );
-  }
+    render() {
+        return (
+            <Home role={this.state.role}></Home>
+        );
+    }
 }
 
-export default Home;
+export default HomeContainer;
