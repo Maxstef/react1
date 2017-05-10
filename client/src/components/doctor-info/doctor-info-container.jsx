@@ -17,6 +17,8 @@ class DoctorInfoContainer extends React.Component {
   };
   
   componentDidMount() {
+    console.log(this.props.user, this.props.year);
+    
     axios.get('http://localhost:3000/doctors')
          .then(res => {
            let info = res.data[0];
@@ -30,7 +32,7 @@ class DoctorInfoContainer extends React.Component {
     this.setState({
       modal: !this.state.modal
     });
-    console.log(this.state.info._id, this.state.name, this.state.description);
+    // console.log(this.state.info._id, this.state.name, this.state.description);
   }
   
   render() {
@@ -46,4 +48,11 @@ class DoctorInfoContainer extends React.Component {
   }
 }
 
-export default DoctorInfoContainer;
+function mapStateToProps (state) {
+  return {
+    user: state.user.name,
+    year: state.page.year
+  }
+}
+
+export default connect(mapStateToProps)(DoctorInfoContainer);
