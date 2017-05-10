@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Home from './src/components/home';
 import Wrapper from './src/components/wrapper';
-import DoctorInfo from './src/components/doctor-info';
+import DoctorInfoContainer from './src/components/doctor-info/doctor-info-container';
 import DoctorsListContainer from './src/components/doctors-list/doctors-list-container';
 import Meeting from './src/components/meeting';
 import NotFound from './src/components/not-found';
@@ -58,7 +58,7 @@ ReactDOM.render((
             <Route path="cabinet" component={Cabinet}/>
   
             <Route path="home" component={Home}/>
-            <Route path="doctor/:doctorId" component={DoctorInfo}/>
+            <Route path="doctor/:doctorId" component={DoctorInfoContainer}/>
             <Route path="doctors-list" component={DoctorsListContainer}/>
             <Route path="meeting" component={Meeting}/>
           </Route>

@@ -11,22 +11,6 @@ function renderDoctors(info) {
   else return [];
 }
 
-function renderDoctorTypes(doctor) {
-  const dType = doctor.doctorData.doctorType;
-  return dType.map((type, index) => (
-      <Type key={index} type={type}/>
-  ));
-}
-
-const Type = ({type}) => {
-  return (
-      <div>
-        <span>{'\n'}{type.name}{'.\n'}</span>
-        <span>{type.description}</span>
-      </div>
-  )
-};
-
 const Doctor = ({doctor}) => {
   const doctorTypes = renderDoctorTypes(doctor);
   return (
@@ -51,6 +35,23 @@ const Doctor = ({doctor}) => {
       </Row>
   );
 };
+
+function renderDoctorTypes(doctor) {
+  const dType = doctor.doctorData.doctorType;
+  return dType.map((type, index) => (
+      <Type key={index} type={type}/>
+  ));
+}
+
+const Type = ({type}) => {
+  return (
+      <div>
+        <span>{'\n'}{type.name}{'.\n'}</span>
+        <span>{type.description}</span>
+      </div>
+  )
+};
+
 
 class DoctorsList extends React.Component {
   
