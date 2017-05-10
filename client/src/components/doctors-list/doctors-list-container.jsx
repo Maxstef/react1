@@ -15,7 +15,7 @@ class DoctorsListContainer extends React.Component {
          .then(res => {
            let info = res.data;
            this.setState({info});
-           console.log(info[0]);
+           // console.log(info[0]);
          });
   }
   
