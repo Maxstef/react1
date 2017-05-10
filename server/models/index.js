@@ -47,7 +47,8 @@ module.exports = function () {
                     doctorType: [{
                         name: 'Therapist',
                         description: ''
-                    }]
+                    }],
+                    bio: 'doctor'
                 }
             });
 
