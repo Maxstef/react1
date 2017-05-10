@@ -51,6 +51,18 @@ module.exports = function () {
                 }
             });
 
+            var userAdmin = new User({
+                username: 'admin',
+                password: passwordHash.generate('admin', {algorithm: config.hashAlgorithm}),
+                name: {
+                    first: 'admin',
+                    last: 'admin',
+                    patronymic: 'admin'
+                },
+                dateOfBirth: new Date(),
+                adminData: {admin: true}
+            });
+
             userPatient.save(function(err, user){
                 if(err){
                     console.log(err);
@@ -70,6 +82,11 @@ module.exports = function () {
                                 }
                             });
                             meeting.save(function(err, m){
+                                if(err){
+                                    console.log(err);
+                                }
+                            });
+                            userAdmin.save(function(err){
                                 if(err){
                                     console.log(err);
                                 }

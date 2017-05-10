@@ -10,7 +10,7 @@ module.exports = function(router){
         if(!user){
             res.send({error: "wrong username"});
         } else if(passwordHash.verify(req.body.password, user.password)) {
-            res.send({data: user});
+            res.send(user);
         } else {
             res.send({error: "wrong password"});
         }
