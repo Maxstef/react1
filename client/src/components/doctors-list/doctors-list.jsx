@@ -1,8 +1,6 @@
 import React from 'react';
 import {Link} from "react-router";
-import {browserHistory} from "react-router";
 import {Button, Container, Row, Col} from 'reactstrap';
-import axios from 'axios';
 
 function renderDoctors(info) {
   if (info.length > 0) {
@@ -12,22 +10,6 @@ function renderDoctors(info) {
   }
   else return [];
 }
-
-function renderDoctorTypes(doctor) {
-  const dType = doctor.doctorData.doctorType;
-  return dType.map((type, index) => (
-      <Type key={index} type={type}/>
-  ));
-}
-
-const Type = ({type}) => {
-  return (
-      <div>
-        <span>{'\n'}{type.name}{'.\n'}</span>
-        <span>{type.description}</span>
-      </div>
-  )
-};
 
 const Doctor = ({doctor}) => {
   const doctorTypes = renderDoctorTypes(doctor);
@@ -54,28 +36,30 @@ const Doctor = ({doctor}) => {
   );
 };
 
+function renderDoctorTypes(doctor) {
+  const dType = doctor.doctorData.doctorType;
+  return dType.map((type, index) => (
+      <Type key={index} type={type}/>
+  ));
+}
+
+const Type = ({type}) => {
+  return (
+      <div>
+        <span>{'\n'}{type.name}{'.\n'}</span>
+        <span>{type.description}</span>
+      </div>
+  )
+};
+
+
 class DoctorsList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      info: []
-    };
-  };
-  
-  componentDidMount() {
-    axios.get('http://localhost:3000/doctors')
-         .then(res => {
-           let info = res.data;
-           this.setState({info});
-           console.log(info[0]);
-         });
-  }
   
   render() {
-    const articles = renderDoctors(this.state.info);
+    const doctors = renderDoctors(this.props.info);
     return (
         <section>
-          {articles}
+          {doctors}
         </section>
     )
   }
