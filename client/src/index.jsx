@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import HomeContainer from './src/components/home/home-container';
-import Wrapper from './src/components/wrapper';
-import DoctorInfoContainer from './src/components/doctor-info/doctor-info-container';
-import DoctorsListContainer from './src/components/doctors-list/doctors-list-container';
-import Meeting from './src/components/meeting';
-import AdminDoctorsListContainer from './src/components/admin-doctors-list/admin-doctors-list-container';
-import NotFound from './src/components/not-found';
-import LoginContainer from './src/components/login/login-container';
-import RegistrationContainer from './src/components/registration/registration-container';
-import Cabinet from './src/components/cabinet';
+import HomeContainer from './components/home/home-container';
+import Wrapper from './components/wrapper';
+import DoctorInfoContainer from './components/doctor-info/doctor-info-container';
+import DoctorAddEditContainer from './components/doctor-add-edit/doctor-add-edit-container';
+import DoctorsListContainer from './components/doctors-list/doctors-list-container';
+import Meeting from './components/meeting';
+import AdminDoctorsListContainer from './components/admin-doctors-list/admin-doctors-list-container';
+import NotFound from './components/not-found';
+import LoginContainer from './components/login/login-container';
+import RegistrationContainer from './components/registration/registration-container';
+import Cabinet from './components/cabinet';
 import {Router, Route, IndexRoute, browserHistory, hashHistory} from "react-router";
 import * as Redux from "redux";
 import {createStore, combineReducers} from "redux";
@@ -59,6 +60,7 @@ ReactDOM.render((
             <Route path="cabinet" component={Cabinet}/>
   			    <Route path="admin-doctors-list" component={AdminDoctorsListContainer}/>
             <Route path="home" component={HomeContainer}/>
+            <Route path="doctor-add-edit/:doctorId" component={DoctorAddEditContainer}/>
             <Route path="doctor/:doctorId" component={DoctorInfoContainer}/>
             <Route path="doctors-list" component={DoctorsListContainer}/>
             <Route path="meeting" component={Meeting}/>

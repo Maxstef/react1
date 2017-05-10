@@ -9,15 +9,23 @@ class AdminDoctorsListContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            info: [],
-            name: {},
-            doctorType: {}
+        info: []
         };
     };
+    
+    componentDidMount() {
+        axios.get('http://localhost:3000/doctors')
+            .then(res => {
+                let info = res.data;
+                this.setState({info});
+                console.log(info[0]);
+                console.log(info);
+            });
+    }
 
     render() {
         return (
-            <AdminDoctorsList></AdminDoctorsList>
+            <AdminDoctorsList info={this.state.info}></AdminDoctorsList>
         )
     }
 }

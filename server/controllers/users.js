@@ -33,7 +33,8 @@ module.exports = function(router){
         },
         dateOfBirth: req.body.dateOfBirth,
         doctorData: {
-            doctorType: req.body.doctorData
+            doctorType: req.body.doctorType,
+            bio:  req.body.bio
         }
       });
       newUser.save(function(err, user){
