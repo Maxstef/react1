@@ -1,36 +1,44 @@
 import React from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col, FormGroup, Label} from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col, FormGroup, Label, Input} from 'reactstrap';
 import Validation from 'react-validation';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import {Link} from "react-router";
 
 
-function renderDoctorTypes(doctorTypes) {
-  return doctorTypes.map((type, index) => (
-      <Type key={index} type={type}/>
+function renderDoctorTypes() {
+  console.log(this.props.doctorType);
+  let t = this;
+  console.log(t.props.doctorType);
+  let length = t.props.doctorType.length;
+  console.log(t.props.doctorType);
+  return t.props.doctorType.map((type, index) => (
+      <Type key={index} length={length} index={index} type={type} t={t}/>
   ));
 }
 
-const Type = ({type}) => {
+const Type = ({length, index, type, t}) => {
   return (
     <div>
+      <h4>Type {index + 1}</h4>
       <FormGroup row>
         <Label for="typeName" md={3}>Type name:</Label>
-        <Col md={9}>
-          <Validation.components.Input className="form-control" type="text" 
-            value={type.name} name="typeName" id="typeName" placeholder="type name"
-            errorClassName='is-invalid-input' validations={['required']}/>
+        <Col md={8}>
+          <Input className="form-control" type="text" onChange={(e) => t.props.setDoctorType(e.target.value, index, 'name')} 
+            value={t.props.doctorType[index]['name']} name="typeName" id="typeName" placeholder="type name"/>
+        </Col>
+        <Col md={1}>
+          {index !== 0 && <Button onClick={()=>{t.props.removeDoctorType(index)}} type="button" color="danger">x</Button>}
         </Col>
       </FormGroup>
       <FormGroup row>
         <Label for="typeDesc" md={3}>Type description:</Label>
         <Col md={9}>
-          <Validation.components.Input className="form-control" type="text" 
-            value={type.description} name="typeDesc" id="typeDesc" placeholder="type description"
-            errorClassName='is-invalid-input' validations={['required']}/>
+          <Input className="form-control" type="text"  onChange={(e) => t.props.setDoctorType(e.target.value, index, 'description')}
+            value={t.props.doctorType[index]['description']} name="typeDesc" id="typeDesc" placeholder="type description"/>
         </Col>
       </FormGroup>
+      {(index + 1 === length && length < 6) && <Button onClick={t.props.newDoctorType} type="button" color="success">+</Button>}
     </div>
   )
 };
@@ -89,7 +97,35 @@ class DoctorAddEdit extends React.Component {
               </FormGroup>
               <FormGroup row tag="fieldset">
                 <legend className="col-form-legend">Doctor Type</legend>
-                {renderDoctorTypes(this.props.doctorType)}
+                {renderDoctorTypes.call(this)}
+              </FormGroup>
+              <FormGroup row tag="fieldset">
+                <legend className="col-form-legend">Login data</legend>
+                <FormGroup row>
+                  <Label for="username" md={3}>Username:</Label>
+                  <Col md={9}>
+                    <Validation.components.Input className="form-control"
+                    value={this.props.info.username} name="username" id="username" placeholder="username"
+                    errorClassName='is-invalid-input' validations={['required', 'minThree']}/>
+                  </Col>
+                </FormGroup>
+                {(this.props.doctorId !== 'add' && !this.props.newPassword) && 
+                  <div>
+                    <span>password set </span>
+                    <Button type="button" onClick={this.props.toggleNewPassword}>new password</Button>
+                  </div>}
+                {(this.props.doctorId == 'add' || this.props.newPassword) && 
+                  <FormGroup row>
+                    
+                    <Label for="password" md={3}>Password:</Label>
+                    <Col md={9}>
+                      <Validation.components.Input className="form-control"
+                      value="" name="password" id="password" placeholder="password"
+                      errorClassName='is-invalid-input' validations={['required', 'minThree']}/>
+                    </Col>
+                  </FormGroup>
+                }
+                {(this.props.doctorId !== 'add' && this.props.newPassword) && <Button type="button" onClick={this.props.toggleNewPassword}>cancel password</Button>}
               </FormGroup>
               <Validation.components.Button className="pull-right btn btn-success">Save</Validation.components.Button>
               {this.props.doctorId !== 'add' && <Button color="danger" style={{marginRight: '10px'}} className="pull-right" onClick={this.props.toggle}>Remove</Button>}

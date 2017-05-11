@@ -71,6 +71,7 @@ class DoctorAddEditContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      newPassword: false,
       modal: false,
       backdrop: "static",
       info: {
@@ -92,7 +93,10 @@ class DoctorAddEditContainer extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.saveDoctor = this.saveDoctor.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
-    
+    this.toggleNewPassword = this.toggleNewPassword.bind(this);
+    this.newDoctorType = this.newDoctorType.bind(this);
+    this.removeDoctorType = this.removeDoctorType.bind(this);
+    this.setDoctorType = this.setDoctorType.bind(this);
   };
   
   componentDidMount() {
@@ -126,6 +130,13 @@ class DoctorAddEditContainer extends React.Component {
     info.dateOfBirth = moment(date);
     this.setState({info});
   }
+
+  toggleNewPassword(){
+    console.log('here');
+    this.setState({
+      newPassword: !this.state.newPassword
+    });
+  }
   
   toggle() {
     this.setState({
@@ -133,11 +144,38 @@ class DoctorAddEditContainer extends React.Component {
     });
     console.log(this.state.info._id, this.state.name, this.state.description);
   }
+
+  setDoctorType(value, index, key){
+    console.log(value, index, key);
+    this.state.doctorType[index][key] = value;
+    this.setState({doctorType: this.state.doctorType});
+  }
+
+  removeDoctorType(index){
+    console.log(index);
+    let removed = this.state.doctorType.splice(index, 1);
+    console.log(removed);
+    this.setState({doctorType: this.state.doctorType});
+    console.log(this.state.doctorType);
+  }
+
+  newDoctorType(){
+    this.setState({doctorType: this.state.doctorType.concat({
+      name: '',
+      description: ''})
+    });
+    console.log(this.state.doctorType);
+  }
   
   render() {
     return (
         <DoctorAddEdit modal={this.state.modal}
+                       newPassword={this.state.newPassword}
                        handleDateChange={this.handleDateChange}
+                       toggleNewPassword={this.toggleNewPassword}
+                       setDoctorType={this.setDoctorType}
+                       newDoctorType={this.newDoctorType}
+                       removeDoctorType={this.removeDoctorType}
                        saveDoctor={this.saveDoctor}
                        backdrop={this.state.backdrop}
                        info={this.state.info}
