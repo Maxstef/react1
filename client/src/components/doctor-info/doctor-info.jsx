@@ -1,23 +1,42 @@
-import React from 'react';
+import React, {PropTypes, Component} from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col} from 'reactstrap';
 
 class DoctorInfo extends React.Component {
+  
+  renderDoctorTypes(doctorType) {
+    const Type = ({type}) => {
+      return (
+          <div>
+            <span>{'\n'}{type.name}{'.\n'}</span>
+            <span>{type.description}</span>
+          </div>
+      )
+    };
+    return doctorType.map((type, index) => (
+        <Type key={index} type={type}/>
+    ));
+  }
   
   render() {
     return (
         <div>
           <Col md={{size: 8, offset: 2}} xs={{size: 10, offset: 1}}>
             <header className="search-header">{this.props.info.username}{' '}#{this.props.doctorId}{' '}
-            {this.props.name.first}{' '}{this.props.name.last},{' '}{this.props.doctorType.name}
+              {this.props.name.first}{' '}{this.props.name.last}
             </header>
             <p>
-              {this.props.doctorType.description}{"\n"}
-              {this.props.info._id}
+              {this.renderDoctorTypes(this.props.doctorType)}
+              <hr/>
+              <p>Current doctor {this.props.currentDoctor}</p>
+              <p>{String(this.props.listEmpty)} list</p>
             </p>
             <Button color="warning" onClick={this.props.toggle}>Make meeting</Button>
           </Col>
           
-          <Modal isOpen={this.props.modal} toggle={this.props.toggle} className="modal-lg" backdrop={this.props.backdrop}>
+          <Modal isOpen={this.props.modal}
+                 toggle={this.props.toggle}
+                 className="modal-lg"
+                 backdrop={this.props.backdrop}>
             <ModalHeader toggle={this.props.toggle}>Modal title</ModalHeader>
             <ModalBody>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
@@ -36,5 +55,9 @@ class DoctorInfo extends React.Component {
     );
   }
 }
+
+// DoctorInfo.propTypes = {
+//   setYear: PropTypes.func.isRequired
+// };
 
 export default DoctorInfo;

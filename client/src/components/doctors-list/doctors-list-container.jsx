@@ -1,6 +1,10 @@
 import React from 'react';
-import axios from 'axios';
 import DoctorsList from './doctors-list';
+import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
+import * as doctorsActions from '../../actions/doctors-action';
+import HttpService from '../http-service';
+
 
 class DoctorsListContainer extends React.Component {
   constructor(props) {
@@ -10,20 +14,27 @@ class DoctorsListContainer extends React.Component {
     };
   };
   
-  componentDidMount() {
-    axios.get('http://localhost:3000/doctors')
-         .then(res => {
-           let info = res.data;
-           this.setState({info});
-           // console.log(info[0]);
-         });
-  }
-  
   render() {
     return (
-        <DoctorsList info={this.state.info} />
+        <div>
+          <HttpService/>
+          <DoctorsList info={this.props.info}/>
+        </div>
     );
   }
 }
 
-export default DoctorsListContainer;
+function mapStateToProps (state) {
+  return {
+    info: state.doctors.info,
+    listEmpty: state.doctors.listEmpty
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setListEmpty: bindActionCreators(doctorsActions.listEmpty, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DoctorsListContainer);

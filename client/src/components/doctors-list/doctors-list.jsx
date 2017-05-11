@@ -7,40 +7,43 @@ function renderDoctors(info) {
     return info.map((doctor, index) => (
         <Doctor key={index} doctor={doctor}/>
     ));
-  }
-  else return [];
+  } else return [];
 }
 
 const Doctor = ({doctor}) => {
-  const doctorTypes = renderDoctorTypes(doctor);
-  return (
-      <Row className="doctors-list">
-        <Col xs="12">
-          <doctor key={doctor._id}>
-            <Link to={"/doctor/" + doctor._id} activeClassName="active">
-              <Row>
-                <Col>
-                  Doctor{' '}{doctor.name.first}{' '}{doctor.name.last}
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  {doctorTypes}
-                  <p>{doctor._id}</p>
-                </Col>
-              </Row>
-            </Link>
-          </doctor>
-        </Col>
-      </Row>
-  );
+  if (doctor) {
+    const doctorTypes = renderDoctorTypes(doctor);
+    return (
+        <Row className="doctors-list">
+          <Col xs="12">
+            <doctor key={doctor._id}>
+              <Link to={"/doctor/" + doctor._id} activeClassName="active">
+                <Row>
+                  <Col>
+                    Doctor{' '}{doctor.name.first}{' '}{doctor.name.last}
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    {doctorTypes}
+                    <p>{doctor._id}</p>
+                  </Col>
+                </Row>
+              </Link>
+            </doctor>
+          </Col>
+        </Row>
+    );
+  }
 };
 
 function renderDoctorTypes(doctor) {
-  const dType = doctor.doctorData.doctorType;
-  return dType.map((type, index) => (
-      <Type key={index} type={type}/>
-  ));
+  if (doctor) {
+    const dType = doctor.doctorData.doctorType;
+    return dType.map((type, index) => (
+        <Type key={index} type={type}/>
+    ));
+  }
 }
 
 const Type = ({type}) => {
