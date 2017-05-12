@@ -5,10 +5,8 @@ var Schema = mongoose.Schema,
 var MeetingSchema = new Schema({
     patient: {type: ObjectId, ref: 'user'},
     doctor: {type: ObjectId, ref: 'user'},
-    time: {
-        start: Date,
-        end: Date
-    }
+    date: Date,
+    slot: Number
 });
 
 module.exports = mongoose.model('meeting', MeetingSchema);
