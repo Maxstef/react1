@@ -11,6 +11,7 @@ import {Router, Route, IndexRoute, browserHistory, hashHistory} from "react-rout
 import {connect} from 'react-redux';
 import LoginContainer from './components/login/login-container';
 import RegistrationContainer from './components/registration/registration-container';
+import AddMeetingContainer from './components/add-meeting/add-meeting-container';
 
 export default class Index extends React.Component {
   
@@ -23,7 +24,9 @@ export default class Index extends React.Component {
           <Route component={Wrapper}>
             <Route path="cabinet" component={Cabinet}/>
             <Route path="home" component={HomeContainer}/>
-            <Route path="doctor/:doctorId" component={DoctorInfoContainer}/>
+            <Route path="doctor/:doctorId" component={DoctorInfoContainer}>
+              {/*<Route component={AddMeetingContainer}/>*/}
+            </Route>
             <Route path="doctor-add-edit/:doctorId" component={DoctorAddEditContainer}/>
             <Route path="doctors-list" component={DoctorsListContainer}/>
             <Route path="meeting" component={Meeting}/>

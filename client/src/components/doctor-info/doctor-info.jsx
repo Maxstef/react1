@@ -30,7 +30,7 @@ class DoctorInfo extends React.Component {
               <p>Current doctor {this.props.currentDoctor}</p>
               <p>{String(this.props.listEmpty)} list</p>
             </p>
-            <Button color="warning" onClick={this.props.toggle}>Make meeting</Button>
+            { !this.props.meeting && <Button color="warning" onClick={this.props.toggleMeeting}>Make meeting</Button>}
           </Col>
           
           <Modal isOpen={this.props.modal}

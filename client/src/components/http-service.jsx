@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import {bindActionCreators} from "redux";
 import * as doctorsActions from '../actions/doctors-action';
 
-
-
 class HttpService extends React.Component {
   render() {
     return null;
@@ -14,7 +12,6 @@ class HttpService extends React.Component {
   getAllDoctors() {
     axios.get('http://localhost:3000/doctors')
          .then(res => {
-           console.log('http service get!!!!1', this.props.listEmpty);
            this.props.setInfo(res.data);
          });
   }
