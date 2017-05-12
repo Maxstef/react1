@@ -1,5 +1,8 @@
 import React from 'react';
 import {Link, browserHistory} from "react-router";
+import { connect } from 'react-redux';
+import {bindActionCreators} from "redux";
+import * as activeUserActions from '../actions/active-user-action';
 
 class Logout extends React.Component {
 
@@ -7,6 +10,8 @@ class Logout extends React.Component {
         localStorage.removeItem('username');
         localStorage.removeItem('id');
         browserHistory.push('/');
+        this.props.setRole(null);
+        this.props.setInfo(null);
     }
 
     render() {
@@ -16,4 +21,18 @@ class Logout extends React.Component {
     }
 }
 
-export default Logout;
+function mapStateToProps (state) {
+  return {
+    role: state.activeUser.role,
+    info: state.activeUser.info
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setInfo: bindActionCreators(activeUserActions.setUserInfo, dispatch),
+    setRole: bindActionCreators(activeUserActions.setRole, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);

@@ -18,7 +18,7 @@ const Doctor = ({doctor}) => {
       <Row className="doctors-list">
         <Col xs="12">
           <doctor key={doctor._id}>
-            <Link to={"/doctor-add-edid/" + doctor._id} activeClassName="active">
+            <Link to={"/doctor-add-edit/" + doctor._id} activeClassName="active">
               <Row>
                 <Col>
                   Doctor{' '}{doctor.name.first}{' '}{doctor.name.last}
@@ -59,7 +59,9 @@ class AdminDoctorsList extends React.Component {
         const doctors = renderDoctors(this.props.info);
         return (
             <section>
-                <Button color="success" style={{cursor: 'pointer', marginBottom: '40px'}}><i className="fa fa-3x fa-plus-circle" aria-hidden="true"></i></Button>
+                <Link to={"/doctor-add-edit/add"} activeClassName="active">
+                  <Button color="success" style={{cursor: 'pointer', marginBottom: '40px'}}><i className="fa fa-3x fa-plus-circle" aria-hidden="true"></i></Button>
+                </Link>
                 {doctors}
             </section>
         )

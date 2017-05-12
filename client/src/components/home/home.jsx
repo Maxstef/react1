@@ -10,8 +10,7 @@ class Home extends React.Component {
             <div className="homepage">
                 <h3>This is a homepage component</h3>
                 <p>login as {this.props.role}</p>
-                {this.props.role == 'admin' && <Link to="admin-doctors-list">Doctor list</Link>}
-                {this.props.role == 'patient' && <Link to="doctors-list">Doctor list</Link>}
+                {(this.props.role == 'patient' || this.props.role == 'admin') && <Link to="doctors-list">Doctor list</Link>}
             </div>
             </Container>
         );

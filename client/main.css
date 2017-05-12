@@ -58,6 +58,13 @@ a.navbar-brand {
   font-weight: 900;
 }
 
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
 /***********************************************
 *****************   LOGIN   ********************
 ***********************************************/
@@ -109,7 +116,7 @@ input.form-control {
   color: #d9534f;
 }
 
-input.is-invalid-input {
+input.is-invalid-input, textarea.is-invalid-input {
   border-color: #d9534f;
   background-color: #fff3ff;
 }

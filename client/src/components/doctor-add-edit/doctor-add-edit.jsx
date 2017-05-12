@@ -1,5 +1,47 @@
 import React from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col} from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col, FormGroup, Label, Input} from 'reactstrap';
+import Validation from 'react-validation';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import {Link} from "react-router";
+
+
+function renderDoctorTypes() {
+  console.log(this.props.doctorType);
+  let t = this;
+  console.log(t.props.doctorType);
+  let length = t.props.doctorType.length;
+  console.log(t.props.doctorType);
+  return t.props.doctorType.map((type, index) => (
+      <Type key={index} length={length} index={index} type={type} t={t}/>
+  ));
+}
+
+const Type = ({length, index, type, t}) => {
+  return (
+    <div>
+      <h4>Type {index + 1}</h4>
+      <FormGroup row>
+        <Label for="typeName" md={3}>Type name:</Label>
+        <Col md={8}>
+          <Input className="form-control" type="text" onChange={(e) => t.props.setDoctorType(e.target.value, index, 'name')} 
+            value={t.props.doctorType[index]['name']} name="typeName" id="typeName" placeholder="type name"/>
+        </Col>
+        <Col md={1}>
+          {index !== 0 && <Button onClick={()=>{t.props.removeDoctorType(index)}} type="button" color="danger">x</Button>}
+        </Col>
+      </FormGroup>
+      <FormGroup row>
+        <Label for="typeDesc" md={3}>Type description:</Label>
+        <Col md={9}>
+          <Input className="form-control" type="text"  onChange={(e) => t.props.setDoctorType(e.target.value, index, 'description')}
+            value={t.props.doctorType[index]['description']} name="typeDesc" id="typeDesc" placeholder="type description"/>
+        </Col>
+      </FormGroup>
+      {(index + 1 === length && length < 6) && <Button onClick={t.props.newDoctorType} type="button" color="success">+</Button>}
+    </div>
+  )
+};
 
 class DoctorAddEdit extends React.Component {
   
@@ -7,28 +49,98 @@ class DoctorAddEdit extends React.Component {
     return (
         <div>
           <Col md={{size: 8, offset: 2}} xs={{size: 10, offset: 1}}>
-            <header className="search-header">{this.props.info.username}{' '}#{this.props.doctorId}{' '}
-            {this.props.name.first}{' '}{this.props.name.last},{' '}{this.props.doctorType.name}
-            </header>
-            <p>
-              {this.props.doctorType.description}{"\n"}
-              {this.props.info._id}
-            </p>
-            <Button color="danger" onClick={this.props.toggle}>Remove</Button>
+            <h2>
+              {this.props.doctorId === 'add' && 'Add new doctor'}
+              {this.props.doctorId !== 'add' && "Doctor's info"}
+            </h2>
+            <Validation.components.Form onSubmit={this.props.saveDoctor}>
+              <FormGroup row tag="fieldset">
+                <legend className="col-form-legend">Personal data</legend>
+                <FormGroup row>
+                  <Label for="firstName" md={3}>First name:</Label>
+                  <Col md={9}>
+                    <Validation.components.Input type="text" errorClassName='is-invalid-input'
+                      value={this.props.name.first} className="form-control" name="firstName" 
+                      id="firstName" placeholder="first name" validations={['required', 'onlyLetters']} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="lastName" md={3}>Last name:</Label>
+                  <Col md={9}>
+                    <Validation.components.Input className="form-control" type="text" 
+                      value={this.props.name.last} name="lastName" id="lastName" placeholder="last name"
+                      errorClassName='is-invalid-input' validations={['required', 'onlyLetters']} />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="patronymic" md={3}>Patronymic:</Label>
+                  <Col md={9}>
+                    <Validation.components.Input className="form-control" type="text" 
+                      value={this.props.name.patronymic} name="patronymic" id="patronymic" placeholder="patronymic"
+                      errorClassName='is-invalid-input' validations={['required', 'onlyLetters']}/>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="dateOfBirth" md={3}>Date of birth:</Label>
+                  <Col md={9}>
+                    <DatePicker  selected={this.props.info.dateOfBirth} onChange={this.props.handleDateChange} />
+                  </Col>
+                </FormGroup>
+              </FormGroup>
+              <FormGroup row tag="fieldset">
+                <legend className="col-form-legend">Biography</legend>
+                <Col md={12}>
+                  <Validation.components.Textarea className="form-control" rows="5" style={{resize: 'none'}}
+                    value={this.props.bio} name="biography" id="biography" placeholder="biography"
+                    errorClassName='is-invalid-input' validations={['required']}/>
+                </Col>
+              </FormGroup>
+              <FormGroup row tag="fieldset">
+                <legend className="col-form-legend">Doctor Type</legend>
+                {renderDoctorTypes.call(this)}
+              </FormGroup>
+              <FormGroup row tag="fieldset">
+                <legend className="col-form-legend">Login data</legend>
+                <FormGroup row>
+                  <Label for="username" md={3}>Username:</Label>
+                  <Col md={9}>
+                    <Validation.components.Input className="form-control"
+                    value={this.props.info.username} name="username" id="username" placeholder="username"
+                    errorClassName='is-invalid-input' validations={['required', 'minThree']}/>
+                  </Col>
+                </FormGroup>
+                {(this.props.doctorId !== 'add' && !this.props.newPassword) && 
+                  <div>
+                    <span>password set </span>
+                    <Button type="button" onClick={this.props.toggleNewPassword}>new password</Button>
+                  </div>}
+                {(this.props.doctorId == 'add' || this.props.newPassword) && 
+                  <FormGroup row>
+                    
+                    <Label for="password" md={3}>Password:</Label>
+                    <Col md={9}>
+                      <Validation.components.Input className="form-control"
+                      value="" name="password" id="password" placeholder="password"
+                      errorClassName='is-invalid-input' validations={['required', 'minThree']}/>
+                    </Col>
+                  </FormGroup>
+                }
+                {(this.props.doctorId !== 'add' && this.props.newPassword) && <Button type="button" onClick={this.props.toggleNewPassword}>cancel password</Button>}
+              </FormGroup>
+              <Validation.components.Button className="pull-right btn btn-success">Save</Validation.components.Button>
+              {this.props.doctorId !== 'add' && <Button color="danger" style={{marginRight: '10px'}} className="pull-right" onClick={this.props.toggle}>Remove</Button>}
+            </Validation.components.Form>
+            <Link to="admin-doctors-list">Doctors list</Link>
           </Col>
           
-          <Modal isOpen={this.props.modal} toggle={this.props.toggle} className="modal-lg" backdrop={this.props.backdrop}>
-            <ModalHeader toggle={this.props.toggle}>Modal title</ModalHeader>
+          <Modal isOpen={this.props.modal} toggle={this.props.toggle} className="modal-sm" backdrop={this.props.backdrop}>
+            <ModalHeader toggle={this.props.toggle}>Remove doctor</ModalHeader>
             <ModalBody>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-              ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-              deserunt mollit anim id est laborum.
+              Are your sure you want to remove this doctor and all related meetings?
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={this.props.toggle}>Do Something</Button>{' '}
-              <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+              <Button color="primary" onClick={this.props.toggle}>Yes</Button>{' '}
+              <Button color="secondary" onClick={this.props.toggle}>No</Button>
             </ModalFooter>
           </Modal>
         
