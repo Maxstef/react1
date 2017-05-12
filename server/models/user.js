@@ -31,7 +31,11 @@ var UserSchema = new Schema({
                 name: String,
                 description: String
             }],
-            bio: String
+            bio: String,
+            available: [{
+                day: String,
+                slot: [Number]
+            }]
         },
         default: null
     },
