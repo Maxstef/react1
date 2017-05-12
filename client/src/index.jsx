@@ -9,7 +9,6 @@ import NotFound from './components/not-found';
 import Cabinet from './components/cabinet';
 import {Router, Route, IndexRoute, browserHistory, hashHistory} from "react-router";
 import {connect} from 'react-redux';
-import AdminDoctorsListContainer from './components/admin-doctors-list/admin-doctors-list-container';
 import LoginContainer from './components/login/login-container';
 import RegistrationContainer from './components/registration/registration-container';
 
@@ -23,7 +22,6 @@ export default class Index extends React.Component {
           
           <Route component={Wrapper}>
             <Route path="cabinet" component={Cabinet}/>
-            <Route path="admin-doctors-list" component={AdminDoctorsListContainer}/>
             <Route path="home" component={HomeContainer}/>
             <Route path="doctor/:doctorId" component={DoctorInfoContainer}/>
             <Route path="doctor-add-edit/:doctorId" component={DoctorAddEditContainer}/>

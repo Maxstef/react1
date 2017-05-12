@@ -1,24 +1,22 @@
 import React from 'react';
 import DoctorsList from './doctors-list';
+import AdminDoctorsList from './admin-doctors-list';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import * as doctorsActions from '../../actions/doctors-action';
 import HttpService from '../http-service';
-
+import AuthoriationService from '../authorization';
+import axios from 'axios';
 
 class DoctorsListContainer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      info: []
-    };
-  };
   
   render() {
     return (
         <div>
           <HttpService/>
-          <DoctorsList info={this.props.info}/>
+          <AuthoriationService/>
+          {(this.props.role === 'admin') && <AdminDoctorsList info={this.props.info}/>}
+          {(this.props.role === 'patient' || this.props.role === 'guest') && <DoctorsList info={this.props.info}/>}
         </div>
     );
   }
@@ -27,7 +25,8 @@ class DoctorsListContainer extends React.Component {
 function mapStateToProps (state) {
   return {
     info: state.doctors.info,
-    listEmpty: state.doctors.listEmpty
+    listEmpty: state.doctors.listEmpty,
+    role: state.activeUser.role
   }
 }
 

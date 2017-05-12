@@ -20,7 +20,7 @@ class HttpService extends React.Component {
   }
   
   componentWillMount() {
-    if (this.props.listEmpty || true) {
+    if (this.props.listEmpty) {
       this.getAllDoctors();
     } else {
       console.log('list is not empty');

@@ -1,35 +1,42 @@
 import React from 'react';
 import axios from 'axios';
 import Home from './home';
+import { connect } from 'react-redux';
+import {bindActionCreators} from "redux";
+import AuthoriationService from '../authorization';
+import * as activeUserActions from '../../actions/active-user-action';
 
 class HomeContainer extends React.Component {
 
     constructor (props) {
         super(props)
         this.state = {
-            role: ''
-        };
-    }
 
-    componentDidMount() {
-        var t = this;
-        axios.get('http://localhost:3000/users/' + localStorage.getItem('id'))
-            .then(res => {
-                if(res.data.adminData){
-                    t.setState({role: 'admin'});
-                } else if(res.data.patientData){
-                    t.setState({role: 'patient'});
-                } else if(res.data.doctorData){
-                    t.setState({role: 'doctor'});
-                }
-            });
+        };
     }
 
     render() {
         return (
-            <Home role={this.state.role}></Home>
+            <div className="name">
+                <AuthoriationService/>
+                <Home role={this.props.role}></Home>
+            </div>
         );
     }
 }
 
-export default HomeContainer;
+function mapStateToProps (state) {
+  return {
+    role: state.activeUser.role,
+    info: state.activeUser.info
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setInfo: bindActionCreators(activeUserActions.setUserInfo, dispatch),
+    setRole: bindActionCreators(activeUserActions.setRole, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);
