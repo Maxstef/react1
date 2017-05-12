@@ -77,10 +77,8 @@ module.exports = function () {
                             var meeting = new Meeting({
                                 doctor: doctorId,
                                 patient: patientId,
-                                time: {
-                                    start: new Date(),
-                                    end: new Date()
-                                }
+                                date: new Date(),
+                                slot: 1
                             });
                             meeting.save(function(err, m){
                                 if(err){
