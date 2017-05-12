@@ -4,7 +4,6 @@ import {Link, browserHistory} from "react-router";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import Validation from 'react-validation';
-import validator from 'validator';
 
 class Registration extends React.Component {
 

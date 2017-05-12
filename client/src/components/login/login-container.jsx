@@ -2,6 +2,7 @@ import React from 'react';
 import {Link, browserHistory} from "react-router";
 import axios from 'axios';
 import Login from './login';
+import config from 'react-global-configuration';
 
 class LoginContainer extends React.Component {
 
@@ -43,7 +44,7 @@ class LoginContainer extends React.Component {
   handleSubmit(e){
     e.preventDefault();
     var t = this;
-    axios.post('http://localhost:3000/login', {
+    axios.post(config.get('api') + 'login', {
         username: e.target.username.value,
         password: e.target.password.value
     })

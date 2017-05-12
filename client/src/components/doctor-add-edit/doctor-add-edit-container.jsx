@@ -2,70 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import DoctorAddEdit from './doctor-add-edit';
-import Validation from 'react-validation';
-import validator from 'validator';
-
-
-Object.assign(Validation.rules, {
-    required: {
-        rule: value => {
-            return value.toString().trim();
-        },
-        hint: value => {
-            return <span className='form-error is-visible'>Required</span>
-        }
-    },
-    minThree: {
-      rule: value => {
-        return value.toString().trim().length > 2;
-      },
-      hint: value => {
-        return <span className='form-error is-visible'>Minimum 3 characters</span>
-      }
-    },
-    number: {
-      rule: value => {
-        return validator.isNumeric(value);
-      },
-      hint: value => {
-        return <span className='form-error is-visible'>{value} isn't a number.</span>
-      }
-    },
-    onlyLetters: {
-      rule: value => {
-        return value.match(/^[a-zA-Z.\-_]*$/);
-      },
-      hint: value => {
-        return <span className='form-error is-visible'>Only latin letters allowed</span>
-      }
-    },
-    email: {
-        rule: value => {
-            return validator.isEmail(value);
-        },
-        hint: value => {
-            return <span className='form-error is-visible'>{value} isn't an Email.</span>
-        }
-    },
-    password: {
-        rule: (value, components) => {
-            const password = components.password.state;
-            const passwordConfirm = components.passwordConfirm.state;
-            const isBothUsed = password
-                && passwordConfirm
-                && password.isUsed
-                && passwordConfirm.isUsed;
-            const isBothChanged = isBothUsed && password.isChanged && passwordConfirm.isChanged;
- 
-            if (!isBothUsed || !isBothChanged) {
-                return true;
-            }
- 
-            return password.value === passwordConfirm.value;
-        },
-        hint: () => <span className="form-error is-visible">Passwords should be equal.</span>
-    }
-});
+import config from 'react-global-configuration';
 
 class DoctorAddEditContainer extends React.Component {
   constructor(props) {
@@ -100,9 +37,10 @@ class DoctorAddEditContainer extends React.Component {
   };
   
   componentDidMount() {
+    console.log(config.get('api'));
     if(this.props.routeParams.doctorId !== 'add'){
       let t = this;
-      axios.get('http://localhost:3000/users/' + this.props.routeParams.doctorId)
+      axios.get(config.get('api') + 'users/' + this.props.routeParams.doctorId)
          .then(res => {
            console.log(res);
            let info = res.data;
@@ -132,7 +70,6 @@ class DoctorAddEditContainer extends React.Component {
   }
 
   toggleNewPassword(){
-    console.log('here');
     this.setState({
       newPassword: !this.state.newPassword
     });
@@ -142,21 +79,16 @@ class DoctorAddEditContainer extends React.Component {
     this.setState({
       modal: !this.state.modal
     });
-    console.log(this.state.info._id, this.state.name, this.state.description);
   }
 
   setDoctorType(value, index, key){
-    console.log(value, index, key);
     this.state.doctorType[index][key] = value;
     this.setState({doctorType: this.state.doctorType});
   }
 
   removeDoctorType(index){
-    console.log(index);
     let removed = this.state.doctorType.splice(index, 1);
-    console.log(removed);
     this.setState({doctorType: this.state.doctorType});
-    console.log(this.state.doctorType);
   }
 
   newDoctorType(){
@@ -164,7 +96,6 @@ class DoctorAddEditContainer extends React.Component {
       name: '',
       description: ''})
     });
-    console.log(this.state.doctorType);
   }
   
   render() {
