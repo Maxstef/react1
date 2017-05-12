@@ -1,7 +1,9 @@
 import React from 'react';
-import axios from 'axios';
 import DoctorInfo from './doctor-info';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
+import * as doctorsActions from '../../actions/doctors-action';
+import * as _ from 'lodash';
 
 class DoctorInfoContainer extends React.Component {
   constructor(props) {
@@ -11,48 +13,78 @@ class DoctorInfoContainer extends React.Component {
       backdrop: "static",
       info: {},
       name: {},
-      doctorType: {}
+      doctorType: {},
+      currentInfo: {}
     };
     this.toggle = this.toggle.bind(this);
   };
   
+  componentWillMount() {
+    this.takeDoctorInfo(this.props.info);
+    this.props.setCurrentDoctor(this.props.params.doctorId);
+  }
+  
   componentDidMount() {
-    console.log(this.props.user, this.props.year);
-    
-    axios.get('http://localhost:3000/doctors')
-         .then(res => {
-           let info = res.data[0];
-           let name = res.data[0].name;
-           let doctorType = res.data[0].doctorData.doctorType[0];
-           this.setState({info, name, doctorType});
-         });
+    // console.log(this.state.currentInfo, this.state.doctorType);
+  }
+  
+  takeDoctorInfo(info) {
+    _.filter(info, (o) => {
+      if (o._id === this.props.params.doctorId) {
+        let currentInfo = o;
+        let doctorType = o.doctorData.doctorType;
+        let name = o.name;
+        this.setState({
+          currentInfo: currentInfo,
+          doctorType: doctorType,
+          name: name
+        }, function () {
+          // console.log(this.state.currentInfo);
+        });
+        return o;
+      }
+    });
   }
   
   toggle() {
     this.setState({
       modal: !this.state.modal
     });
-    // console.log(this.state.info._id, this.state.name, this.state.description);
   }
   
   render() {
     return (
-        <DoctorInfo modal={this.state.modal}
-                    backdrop={this.state.backdrop}
-                    info={this.state.info}
-                    name={this.state.name}
-                    doctorType={this.state.doctorType}
-                    toggle={this.toggle}
-                    doctorId={this.props.params.doctorId}/>
+        <div>
+          <DoctorInfo modal={this.state.modal}
+                      backdrop={this.state.backdrop}
+                      toggle={this.toggle}
+
+                      info={this.state.currentInfo}
+                      name={this.state.name}
+                      doctorType={this.state.doctorType}
+                      doctorId={this.props.params.doctorId}
+                      currentDoctor={this.props.currentDoctor}
+                      listEmpty={this.props.listEmpty}
+          />
+        </div>
     )
   }
 }
 
-function mapStateToProps (state) {
+
+function mapStateToProps(state) {
   return {
-    user: state.user.name,
-    year: state.page.year
+    info: state.doctors.info,
+    listEmpty: state.doctors.listEmpty,
+    currentDoctor: state.doctors.currentDoctor
   }
 }
 
-export default connect(mapStateToProps)(DoctorInfoContainer);
+function mapDispatchToProps(dispatch) {
+  return {
+    setCurrentDoctor: bindActionCreators(doctorsActions.setCurrentDoctor, dispatch),
+    setListEmpty: bindActionCreators(doctorsActions.listEmpty, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DoctorInfoContainer);
