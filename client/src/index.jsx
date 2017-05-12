@@ -11,6 +11,8 @@ import {Router, Route, IndexRoute, browserHistory, hashHistory} from "react-rout
 import {connect} from 'react-redux';
 import LoginContainer from './components/login/login-container';
 import RegistrationContainer from './components/registration/registration-container';
+import FormValidation from './form-validation';
+import Config from './config';
 
 export default class Index extends React.Component {
   
@@ -34,5 +36,3 @@ export default class Index extends React.Component {
     )
   }
 }
-
-

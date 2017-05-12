@@ -3,6 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import {bindActionCreators} from "redux";
 import * as doctorsActions from '../actions/doctors-action';
+import config from 'react-global-configuration';
 
 
 
@@ -12,7 +13,7 @@ class HttpService extends React.Component {
   }
   
   getAllDoctors() {
-    axios.get('http://localhost:3000/doctors')
+    axios.get(config.get('api') + 'doctors')
          .then(res => {
            console.log('http service get!!!!1', this.props.listEmpty);
            this.props.setInfo(res.data);

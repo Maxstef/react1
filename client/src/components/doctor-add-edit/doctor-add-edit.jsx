@@ -22,20 +22,22 @@ const Type = ({length, index, type, t}) => {
     <div>
       <h4>Type {index + 1}</h4>
       <FormGroup row>
-        <Label for="typeName" md={3}>Type name:</Label>
+        <Label for={'typeName' + index} md={3}>Type name:</Label>
         <Col md={8}>
-          <Input className="form-control" type="text" onChange={(e) => t.props.setDoctorType(e.target.value, index, 'name')} 
-            value={t.props.doctorType[index]['name']} name="typeName" id="typeName" placeholder="type name"/>
+          <Validation.components.Input className="form-control" type="text" errorClassName='is-invalid-input'
+              onChange={(e) => t.props.setDoctorType(e.target.value, index, 'name')} 
+              value={t.props.doctorType[index]['name']} name={'typeName' + index} id={'typeName' + index} placeholder="type name" validations={['required']}/>
         </Col>
         <Col md={1}>
           {index !== 0 && <Button onClick={()=>{t.props.removeDoctorType(index)}} type="button" color="danger">x</Button>}
         </Col>
       </FormGroup>
       <FormGroup row>
-        <Label for="typeDesc" md={3}>Type description:</Label>
+        <Label for={"typeDesc" + index} md={3}>Type description:</Label>
         <Col md={9}>
-          <Input className="form-control" type="text"  onChange={(e) => t.props.setDoctorType(e.target.value, index, 'description')}
-            value={t.props.doctorType[index]['description']} name="typeDesc" id="typeDesc" placeholder="type description"/>
+          <Validation.components.Textarea className="form-control" errorClassName='is-invalid-input' rows="2"
+            onChange={(e) => t.props.setDoctorType(e.target.value, index, 'description')} style={{resize: 'none'}}
+            value={t.props.doctorType[index]['description']} name={"typeDesc" + index} id={"typeDesc" + index} placeholder="type description" validations={['required']}/>
         </Col>
       </FormGroup>
       {(index + 1 === length && length < 6) && <Button onClick={t.props.newDoctorType} type="button" color="success">+</Button>}
@@ -60,7 +62,7 @@ class DoctorAddEdit extends React.Component {
                   <Label for="firstName" md={3}>First name:</Label>
                   <Col md={9}>
                     <Validation.components.Input type="text" errorClassName='is-invalid-input'
-                      value={this.props.name.first} className="form-control" name="firstName" 
+                      value={this.props.name.first} className="form-control" name="firstName"  
                       id="firstName" placeholder="first name" validations={['required', 'onlyLetters']} />
                   </Col>
                 </FormGroup>

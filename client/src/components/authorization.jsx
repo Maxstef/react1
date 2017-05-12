@@ -3,6 +3,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import {bindActionCreators} from "redux";
 import * as activeUserActions from '../actions/active-user-action';
+import config from 'react-global-configuration';
 
 
 
@@ -13,7 +14,7 @@ class AuthoriationService extends React.Component {
 
   getUser(id){
     var t = this;
-    axios.get('http://localhost:3000/users/' + localStorage.getItem('id'))
+    axios.get(config.get('api') + 'users/' + localStorage.getItem('id'))
         .then(res => {
             if(res.data.adminData){
                 this.props.setRole('admin');
