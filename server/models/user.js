@@ -35,7 +35,11 @@ var UserSchema = new Schema({
             available: [{
                 day: String,
                 slot: [Number]
-            }]
+            }],
+            isDeleted: {
+                type: Boolean,
+                default: false
+            }
         },
         default: null
     },

@@ -3,6 +3,7 @@ import axios from 'axios';
 import moment from 'moment';
 import DoctorAddEdit from './doctor-add-edit';
 import config from 'react-global-configuration';
+import {Link, browserHistory} from "react-router";
 
 class DoctorAddEditContainer extends React.Component {
   constructor(props) {
@@ -34,10 +35,11 @@ class DoctorAddEditContainer extends React.Component {
     this.newDoctorType = this.newDoctorType.bind(this);
     this.removeDoctorType = this.removeDoctorType.bind(this);
     this.setDoctorType = this.setDoctorType.bind(this);
+    this.deleteDoctor = this.deleteDoctor.bind(this);
+    this.toDoctorList = this.toDoctorList.bind(this);
   };
   
   componentDidMount() {
-    console.log(config.get('api'));
     if(this.props.routeParams.doctorId !== 'add'){
       let t = this;
       axios.get(config.get('api') + 'users/' + this.props.routeParams.doctorId)
@@ -53,13 +55,72 @@ class DoctorAddEditContainer extends React.Component {
     }
   }
 
+  toDoctorList(){
+    browserHistory.replace('/doctors-list');
+  }
+
+  deleteDoctor(){
+    axios.put(config.get('api') + 'doctors/' + this.state.info._id, {delete: true})
+        .then(res => {
+            this.toggle();
+            console.log(res);
+            browserHistory.replace('/doctors-list');
+          });
+  }
+
   saveDoctor(e){
     e.preventDefault();
     console.log(e.target);
     if(this.state.info._id){
       console.log('update');
+      let data = {};
+       data.username = e.target.username.value;
+       if(typeof e.target.password != 'undefined'){
+         data.password = e.target.password.value;
+       }
+       data.firstName = e.target.firstName.value;
+       data.lastName = e.target.lastName.value;
+       data.patronymic = e.target.patronymic.value;
+       data.bio = e.target.biography.value;
+       data.dateOfBirth = this.state.info.dateOfBirth;
+       data.doctorType = [];
+       [0, 1, 2, 3, 4, 5].forEach((i) => {
+        if(typeof e.target['typeName' + i] != 'undefined'){
+          data.doctorType.push({
+            name: e.target['typeName' + i]['value'],
+            description: e.target['typeDesc' + i]['value']
+          });
+        } 
+       });
+       axios.put(config.get('api') + 'doctors/' + this.state.info._id, data)
+        .then(res => {
+            console.log(res);
+            browserHistory.replace('doctors-list');
+          });
     } else {
        console.log('post');
+       let data = {};
+       data.username = e.target.username.value;
+       data.password = e.target.password.value;
+       data.firstName = e.target.firstName.value;
+       data.lastName = e.target.lastName.value;
+       data.patronymic = e.target.patronymic.value;
+       data.bio = e.target.biography.value;
+       data.dateOfBirth = this.state.info.dateOfBirth;
+       data.doctorType = [];
+       [0, 1, 2, 3, 4, 5].forEach((i) => {
+        if(typeof e.target['typeName' + i] != 'undefined'){
+          data.doctorType.push({
+            name: e.target['typeName' + i]['value'],
+            description: e.target['typeDesc' + i]['value']
+          });
+        } 
+       });
+       axios.post(config.get('api') + 'users?doctor=true', data)
+        .then(res => {
+            console.log(res);
+            browserHistory.replace('doctors-list');
+          });
     }
   }
 
@@ -104,9 +165,11 @@ class DoctorAddEditContainer extends React.Component {
                        newPassword={this.state.newPassword}
                        handleDateChange={this.handleDateChange}
                        toggleNewPassword={this.toggleNewPassword}
+                       deleteDoctor={this.deleteDoctor}
                        setDoctorType={this.setDoctorType}
                        newDoctorType={this.newDoctorType}
                        removeDoctorType={this.removeDoctorType}
+                       toDoctorList={this.toDoctorList}
                        saveDoctor={this.saveDoctor}
                        backdrop={this.state.backdrop}
                        info={this.state.info}

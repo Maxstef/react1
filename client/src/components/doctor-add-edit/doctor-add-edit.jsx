@@ -132,16 +132,16 @@ class DoctorAddEdit extends React.Component {
               <Validation.components.Button className="pull-right btn btn-success">Save</Validation.components.Button>
               {this.props.doctorId !== 'add' && <Button color="danger" style={{marginRight: '10px'}} className="pull-right" onClick={this.props.toggle}>Remove</Button>}
             </Validation.components.Form>
-            <Link to="admin-doctors-list">Doctors list</Link>
+            <span className="back-link" onClick={this.props.toDoctorList}>Doctors list</span>
           </Col>
           
           <Modal isOpen={this.props.modal} toggle={this.props.toggle} className="modal-sm" backdrop={this.props.backdrop}>
             <ModalHeader toggle={this.props.toggle}>Remove doctor</ModalHeader>
             <ModalBody>
-              Are your sure you want to remove this doctor and all related meetings?
+              Are your sure you want to remove this doctor from clinic?
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={this.props.toggle}>Yes</Button>{' '}
+              <Button color="primary" onClick={this.props.deleteDoctor}>Yes</Button>{' '}
               <Button color="secondary" onClick={this.props.toggle}>No</Button>
             </ModalFooter>
           </Modal>
