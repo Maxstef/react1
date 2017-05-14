@@ -6,7 +6,9 @@ var MeetingSchema = new Schema({
     patient: {type: ObjectId, ref: 'user'},
     doctor: {type: ObjectId, ref: 'user'},
     date: Date,
-    slot: Number
+    slot: Number,
+    patientId: String,
+    doctorId: String
 });
 
 module.exports = mongoose.model('meeting', MeetingSchema);

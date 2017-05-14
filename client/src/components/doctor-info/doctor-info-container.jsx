@@ -16,7 +16,8 @@ class DoctorInfoContainer extends React.Component {
       name: {},
       doctorType: {},
       currentInfo: {},
-      meeting: false
+      meeting: false,
+      availableHours: []
     };
     // this.toggle = this.toggle.bind(this);
     this.toggleMeeting = this.toggleMeeting.bind(this);
@@ -27,22 +28,18 @@ class DoctorInfoContainer extends React.Component {
     this.props.setCurrentDoctor(this.props.params.doctorId);
   }
   
-  componentDidMount() {
-    // console.log(this.state.currentInfo, this.state.doctorType);
-  }
-  
   takeDoctorInfo(info) {
     _.filter(info, (o) => {
       if (o._id === this.props.params.doctorId) {
         let currentInfo = o;
         let doctorType = o.doctorData.doctorType;
         let name = o.name;
+        let availableHours = o.doctorData.available;
         this.setState({
+          availableHours: availableHours,
           currentInfo: currentInfo,
           doctorType: doctorType,
           name: name
-        }, function () {
-          // console.log(this.state.currentInfo);
         });
         return o;
       }
@@ -80,6 +77,8 @@ class DoctorInfoContainer extends React.Component {
           { this.state.meeting && <AddMeetingContainer
               toggleMeeting={this.toggleMeeting}
               meeting={this.state.meeting}
+              availableHours={this.state.availableHours}
+              currentInfo={this.state.currentInfo}
           />}
         </div>
     )

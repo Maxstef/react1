@@ -19,10 +19,7 @@ class Wrapper extends React.Component {
                     <Link className="nav-link" to="/doctors-list">List</Link>
                   </NavItem>
                   <NavItem>
-                    <Link className="nav-link" to="/doctors-list">List button</Link>
-                  </NavItem>
-                  <NavItem>
-                    <Logout></Logout>
+                    <Logout/>
                   </NavItem>
                 </Nav>
               </Collapse>

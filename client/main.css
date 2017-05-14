@@ -5,6 +5,7 @@
   line-height: 60px;
   background-color: #30c9a6;
   color: #fff;
+  margin-top: 3em;
 }
 
 .navbar {
@@ -119,4 +120,19 @@ input.form-control {
 input.is-invalid-input, textarea.is-invalid-input {
   border-color: #d9534f;
   background-color: #fff3ff;
+}
+
+/***********************************************
+**************  ADD MEETING   *****************
+***********************************************/
+
+.slots {
+  float: left;
+  margin: 0.5em 0.6em;
+
+}
+
+.slot {
+  padding: 0.5em 1.2em;
+  font-size: 0.9em;
 }
