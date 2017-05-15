@@ -4,10 +4,13 @@
   "description": "ExpressJs server app",
   "author": "Max Stefanko",
   "dependencies": {
+    "agenda": "^0.9.1",
     "body-parser": "^1.17.1",
     "change-case": "^3.0.1",
     "cors": "^2.8.3",
     "express": "^4.15.2",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
     "mongoose": "^4.9.7",
     "password-hash": "^1.2.2",
     "require-dir": "^0.3.1"

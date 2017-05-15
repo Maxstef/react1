@@ -51,7 +51,7 @@ class AddMeeting extends React.Component {
                   onChange={this.props.dpChange}
                   locale="uk-en"
                   // filterDate={this.isWeekday}
-                  includeDates={[moment(), moment().add(1, "days"), moment("2017-05-27T18:19:27.094Z"), ]}
+                  // includeDates={[moment(), moment().add(1, "days"), moment("2017-05-27T18:19:27.094Z"), ]}
                   // highlightDates={[moment().subtract(7, "days"), moment().add(7, "days")]}
               />
             </Col>

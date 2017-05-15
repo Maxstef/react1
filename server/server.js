@@ -19,6 +19,9 @@ app.use(function(req, res, next) {
 });
 app.use(cors());
 
+//Scheduler jobs
+require('./jobs/deleteSpecialDays');
+
 app.get('/', function (req, res) {
   res.send('Express server works!');
 });
