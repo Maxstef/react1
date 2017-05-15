@@ -56,7 +56,7 @@ class AddMeeting extends React.Component {
               />
             </Col>
             <Col md={{size: 6, offset: 0}} xs={{size: 8, offset: 1}}>
-              {this.renderSlots(this.props.currentSlots)}
+              {this.props.currentSlots && this.renderSlots(this.props.currentSlots)}
             </Col>
           </Row>
           <Row>

@@ -67,6 +67,13 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.back-link {
+  cursor: pointer;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
 /***********************************************
 *****************   LOGIN   ********************
 ***********************************************/

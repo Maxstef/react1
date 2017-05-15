@@ -48,6 +48,9 @@ class AddMeetingContainer extends React.Component {
       busySlots: []
     }, () => {
       _.filter(this.state.availableHours, (o) => {
+        if (!o) {
+          o = {};
+        }
         if (o.day === day.weekday() || (moment(o.date).format('DD-MM-YYYY')) === (moment(day).format('DD-MM-YYYY'))) {
           _.filter(this.state.allMeetings, (meeting) => {
             if ((moment(meeting.date).format('DD-MM-YYYY')) === (moment(day).format('DD-MM-YYYY'))) {

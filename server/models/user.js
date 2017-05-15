@@ -2,7 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-  username: {type: String, unique: true},
+  username: {
+    type: String,
+    unique: true
+  },
   password: String,
   photoUrl: String,
   name: {
@@ -14,8 +17,14 @@ var UserSchema = new Schema({
   patientData: {
     type: {
       contacts: {
-        email: {type: String, unique: true},
-        phoneNumber: {type: String, unique: true}
+        email: {
+          type: String,
+          unique: true
+        },
+        phoneNumber: {
+          type: String,
+          unique: true
+        }
       },
       address: {
         street: String,
@@ -39,7 +48,11 @@ var UserSchema = new Schema({
       specialDays: [{
         date: Date,
         slot: [Number]
-      }]
+      }],
+      isDeleted: {
+        type: Boolean,
+        default: false
+      }
     },
     default: null
   },
