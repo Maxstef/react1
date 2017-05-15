@@ -42,7 +42,11 @@ var UserSchema = new Schema({
       }],
       bio: String,
       available: [{
-        day: String,
+        day: Number,
+        slot: [Number]
+      }],
+      specialDays: [{
+        date: Date,
         slot: [Number]
       }],
       isDeleted: {

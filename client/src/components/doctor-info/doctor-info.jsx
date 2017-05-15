@@ -20,13 +20,12 @@ class DoctorInfo extends React.Component {
   render() {
     return (
         <div>
-          <Col md={{size: 8, offset: 2}} xs={{size: 10, offset: 1}}>
+          <Col md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
             <header className="search-header">{this.props.info.username}{' '}#{this.props.doctorId}{' '}
               {this.props.name.first}{' '}{this.props.name.last}
             </header>
             <p>
               {this.renderDoctorTypes(this.props.doctorType)}
-              <hr/>
               <p>Current doctor {this.props.currentDoctor}</p>
               <p>{String(this.props.listEmpty)} list</p>
             </p>
