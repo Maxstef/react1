@@ -6,7 +6,6 @@ import { bindActionCreators } from "redux";
 import * as doctorsActions from '../../actions/doctors-action';
 import HttpService from '../http-service';
 import AuthoriationService from '../authorization';
-import axios from 'axios';
 
 class DoctorsListContainer extends React.Component {
 

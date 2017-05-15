@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import * as doctorsActions from '../../actions/doctors-action';
 import * as _ from 'lodash';
+import AddMeetingContainer from '../add-meeting/add-meeting-container';
 
 class DoctorInfoContainer extends React.Component {
   constructor(props) {
@@ -14,9 +15,11 @@ class DoctorInfoContainer extends React.Component {
       info: {},
       name: {},
       doctorType: {},
-      currentInfo: {}
+      currentInfo: {},
+      meeting: false
     };
-    this.toggle = this.toggle.bind(this);
+    // this.toggle = this.toggle.bind(this);
+    this.toggleMeeting = this.toggleMeeting.bind(this);
   };
   
   componentWillMount() {
@@ -46,9 +49,15 @@ class DoctorInfoContainer extends React.Component {
     });
   }
   
-  toggle() {
+  // toggle() {
+  //   this.setState({
+  //     modal: !this.state.modal
+  //   });
+  // }
+  
+  toggleMeeting() {
     this.setState({
-      modal: !this.state.modal
+      meeting: !this.state.meeting
     });
   }
   
@@ -65,7 +74,13 @@ class DoctorInfoContainer extends React.Component {
                       doctorId={this.props.params.doctorId}
                       currentDoctor={this.props.currentDoctor}
                       listEmpty={this.props.listEmpty}
+                      toggleMeeting={this.toggleMeeting}
+                      meeting={this.state.meeting}
           />
+          { this.state.meeting && <AddMeetingContainer
+              toggleMeeting={this.toggleMeeting}
+              meeting={this.state.meeting}
+          />}
         </div>
     )
   }
