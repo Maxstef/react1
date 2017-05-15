@@ -9,7 +9,7 @@ class AddMeeting extends React.Component {
   
   isDisabled(slot) {
     let flag = false;
-    console.log('busy slots: ', this.props.busySlots, 'slot: ', slot);
+    // console.log('busy slots: ', this.props.busySlots, 'slot: ', slot);
     _.filter(this.props.busySlots, (busyOne) => {
       if (slot === busyOne) {
         flag = true;
@@ -23,12 +23,8 @@ class AddMeeting extends React.Component {
     const Slot = ({slot}) => {
       return (
           <div>
-            {/*<div className={"slots card " + (this.isDisabled(slot) ? 'card-warning' : 'card-outline-warning')}>*/}
-              {/*<div className="slot card-block">*/}
-                {/*{this.props.slotTimes[slot]}*/}
-              {/*</div>*/}
-            {/*</div>*/}
-            <button type="button" className={"btn btn-sm " + (this.isDisabled(slot) ? 'btn-warning disabled' : 'btn-secondary')}>{this.props.slotTimes[slot]}</button>
+            <button type="button"
+                    className={"slots btn btn-sm " + (this.isDisabled(slot) ? 'btn-warning disabled' : 'btn-secondary')}>{this.props.slotTimes[slot]}</button>
           </div>
       );
     };
@@ -53,15 +49,19 @@ class AddMeeting extends React.Component {
                   minDate={moment()}
                   maxDate={moment().add(14, "days")}
                   onChange={this.props.dpChange}
+                  locale="uk-en"
+                  // filterDate={this.isWeekday}
+                  includeDates={[moment(), moment().add(1, "days"), moment("2017-05-27T18:19:27.094Z"), ]}
+                  // highlightDates={[moment().subtract(7, "days"), moment().add(7, "days")]}
               />
             </Col>
-            <Col md={{size: 5, offset: 0}} xs={{size: 8, offset: 2}}>
+            <Col md={{size: 6, offset: 0}} xs={{size: 8, offset: 1}}>
               {this.renderSlots(this.props.currentSlots)}
             </Col>
           </Row>
           <Row>
-            <Col md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
-              <button type="button" className="btn btn-secondary" onClick={this.props.toggleMeeting}>Back</button>
+            <Col className="d-flex justify-content-center mt-2" md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
+              <button type="button" className="btn btn-secondary mr-1" onClick={this.props.toggleMeeting}>Back</button>
               <button type="button" className="btn btn-warning" onClick={this.props.toggleMeeting}>Apply</button>
             </Col>
           </Row>

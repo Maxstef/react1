@@ -9,6 +9,8 @@ import moment from 'moment';
 import config from 'react-global-configuration';
 import axios from 'axios';
 import * as _ from 'lodash';
+import '../../../node_modules/moment/locale/ru.js';
+import '../../../node_modules/moment/locale/uk.js';
 
 class AddMeetingContainer extends React.Component {
   constructor(props) {
@@ -17,6 +19,7 @@ class AddMeetingContainer extends React.Component {
       choosenDate: null,
       allMeetings: [],
       availableHours: null,
+      specialDays: null,
       currentSlots: [],
       busySlots: [],
       slotTimes: config.get('slotTimes')
@@ -26,10 +29,16 @@ class AddMeetingContainer extends React.Component {
   
   componentWillMount() {
     this.getAllMeetings();
+    // moment.locale('uk');
   }
   
   componentDidMount() {
-    this.setState({availableHours: this.props.currentInfo.doctorData.available}, function () {
+    let schedule = _.concat(this.props.currentInfo.doctorData.available, this.props.currentInfo.doctorData.specialDays);
+    this.setState({
+      availableHours: schedule,
+      specialDays: this.props.currentInfo.doctorData.specialDays
+    }, function () {
+      console.log(this.state.availableHours);
     });
   }
   
@@ -39,7 +48,7 @@ class AddMeetingContainer extends React.Component {
       busySlots: []
     }, () => {
       _.filter(this.state.availableHours, (o) => {
-        if (o.day === day.weekday()) {
+        if (o.day === day.weekday() || (moment(o.date).format('DD-MM-YYYY')) === (moment(day).format('DD-MM-YYYY'))) {
           _.filter(this.state.allMeetings, (meeting) => {
             if ((moment(meeting.date).format('DD-MM-YYYY')) === (moment(day).format('DD-MM-YYYY'))) {
               this.state.busySlots.push(meeting.slot);
@@ -72,6 +81,7 @@ class AddMeetingContainer extends React.Component {
   render() {
     return (
         <div>
+          <hr/>
           <AddMeeting toggleMeeting={this.props.toggleMeeting}
                       startDate={this.state.choosenDate}
                       dpChange={this.dpChange}

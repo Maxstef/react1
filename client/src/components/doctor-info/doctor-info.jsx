@@ -26,7 +26,6 @@ class DoctorInfo extends React.Component {
             </header>
             <p>
               {this.renderDoctorTypes(this.props.doctorType)}
-              <hr/>
               <p>Current doctor {this.props.currentDoctor}</p>
               <p>{String(this.props.listEmpty)} list</p>
             </p>
