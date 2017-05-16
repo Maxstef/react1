@@ -2,7 +2,7 @@ var mongoose = require('mongoose'),
     User = require('../models/user'),
     config = require('../config'),
     Agenda = require('agenda'),
-    agenda = new Agenda({db: {address: config.db}});
+    agenda = new Agenda({db: {address: config.db}}),
     _ = require('lodash'),
     moment = require('moment');
 

@@ -16,7 +16,7 @@ module.exports = function (router) {
           $ne: true
         }
       }]
-    }, function (err, doctor) {
+    }, { password: 0 }, function (err, doctor) {
       res.send(doctor);
     });
   });

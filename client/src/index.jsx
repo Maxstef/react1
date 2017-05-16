@@ -6,7 +6,7 @@ import DoctorAddEditContainer from './components/doctor-add-edit/doctor-add-edit
 import DoctorsListContainer from './components/doctors-list/doctors-list-container';
 import Meeting from './components/meeting';
 import NotFound from './components/not-found';
-import Cabinet from './components/cabinet';
+import CabinetContainer from './components/cabinet/cabinet-container';
 import {Router, Route, IndexRoute, browserHistory, hashHistory} from "react-router";
 import {connect} from 'react-redux';
 import LoginContainer from './components/login/login-container';
@@ -23,7 +23,7 @@ export default class Index extends React.Component {
           <Route path="registration" component={RegistrationContainer}/>
           
           <Route component={Wrapper}>
-            <Route path="cabinet" component={Cabinet}/>
+            <Route path="cabinet" component={CabinetContainer}/>
             <Route path="home" component={HomeContainer}/>
             <Route path="doctor/:doctorId" component={DoctorInfoContainer}/>
             <Route path="doctor-add-edit/:doctorId" component={DoctorAddEditContainer}/>
