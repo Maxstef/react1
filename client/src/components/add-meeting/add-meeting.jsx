@@ -9,7 +9,6 @@ class AddMeeting extends React.Component {
   
   isDisabled(slot) {
     let flag = false;
-    // console.log('busy slots: ', this.props.busySlots, 'slot: ', slot);
     _.filter(this.props.busySlots, (busyOne) => {
       if (slot === busyOne) {
         flag = true;
@@ -24,7 +23,10 @@ class AddMeeting extends React.Component {
       return (
           <div>
             <button type="button"
-                    className={"slots btn btn-sm " + (this.isDisabled(slot) ? 'btn-warning disabled' : 'btn-secondary')}>{this.props.slotTimes[slot]}</button>
+                    disabled={this.isDisabled(slot)}
+                    onClick={() => {this.props.addMeeting(slot)}}
+                    className={"slots btn btn-sm " + (this.isDisabled(slot) ? 'btn-info' : 'btn-secondary')}>{this.props.slotTimes[slot]}
+            </button>
           </div>
       );
     };
@@ -46,13 +48,12 @@ class AddMeeting extends React.Component {
               <DatePicker
                   inline
                   selected={this.props.startDate}
-                  minDate={moment()}
+                  minDate={moment().add(1, "days")}
                   maxDate={moment().add(14, "days")}
                   onChange={this.props.dpChange}
                   locale="uk-en"
-                  // filterDate={this.isWeekday}
-                  includeDates={[moment(), moment().add(1, "days"), moment("2017-05-27T18:19:27.094Z"), ]}
-                  // highlightDates={[moment().subtract(7, "days"), moment().add(7, "days")]}
+                  includeDates={this.props.openDates}
+                  highlightDates={[moment()]}
               />
             </Col>
             <Col md={{size: 6, offset: 0}} xs={{size: 8, offset: 1}}>
@@ -62,9 +63,28 @@ class AddMeeting extends React.Component {
           <Row>
             <Col className="d-flex justify-content-center mt-2" md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
               <button type="button" className="btn btn-secondary mr-1" onClick={this.props.toggleMeeting}>Back</button>
-              <button type="button" className="btn btn-warning" onClick={this.props.toggleMeeting}>Apply</button>
+              <button type="button" className="btn btn-warning" onClick={this.props.toggle}>Apply</button>
             </Col>
           </Row>
+          
+          <Modal isOpen={this.props.modal}
+                 toggle={this.props.toggle}
+                 className="modal-lg"
+                 backdrop={this.props.backdrop}>
+            <ModalHeader toggle={this.props.toggle}>Modal title</ModalHeader>
+            <ModalBody>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
+              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+              ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+              deserunt mollit anim id est laborum.
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onClick={() => {this.props.postMeeting(); this.props.toggle()}}>Do Something</Button>{' '}
+              <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+            </ModalFooter>
+          </Modal>
+          
         </Container>
     )
   }

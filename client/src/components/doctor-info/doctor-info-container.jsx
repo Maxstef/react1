@@ -10,7 +10,6 @@ class DoctorInfoContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false,
       backdrop: "static",
       info: {},
       name: {},
@@ -19,7 +18,6 @@ class DoctorInfoContainer extends React.Component {
       meeting: false,
       availableHours: []
     };
-    // this.toggle = this.toggle.bind(this);
     this.toggleMeeting = this.toggleMeeting.bind(this);
   };
   
@@ -45,12 +43,7 @@ class DoctorInfoContainer extends React.Component {
       }
     });
   }
-  
-  // toggle() {
-  //   this.setState({
-  //     modal: !this.state.modal
-  //   });
-  // }
+ 
   
   toggleMeeting() {
     this.setState({
@@ -61,11 +54,7 @@ class DoctorInfoContainer extends React.Component {
   render() {
     return (
         <div>
-          <DoctorInfo modal={this.state.modal}
-                      backdrop={this.state.backdrop}
-                      toggle={this.toggle}
-
-                      info={this.state.currentInfo}
+          <DoctorInfo info={this.state.currentInfo}
                       name={this.state.name}
                       doctorType={this.state.doctorType}
                       doctorId={this.props.params.doctorId}
