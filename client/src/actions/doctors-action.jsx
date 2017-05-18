@@ -18,3 +18,10 @@ export function setCurrentDoctor(id) {
     payload: id
   }
 }
+
+export function setAllMeetings(array) {
+  return {
+    type: 'SET_CURRENT_DOCTOR',
+    payload: array
+  }
+}

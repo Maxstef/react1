@@ -27,7 +27,22 @@ module.exports = function (router) {
   });
   
   router.post('/', function (req, res) {
-    res.send('Post doctor works');
+    var newMeeting;
+      newMeeting = new Meeting({
+        patient: req.body.patient,
+        doctor: req.body.doctor,
+        date: req.body.date,
+        slot: req.body.slot,
+        patientId: req.body.patientId,
+        doctorId: req.body.doctorId
+      });
+      newMeeting.save(function (err, meeting) {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(meeting);
+        }
+      });
   });
 };
 
