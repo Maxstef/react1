@@ -53,6 +53,7 @@ module.exports = function (router) {
         doctor.dateOfBirth = (req.body.dateOfBirth) ? req.body.dateOfBirth : doctor.dateOfBirth;
         doctor.doctorData.bio = (req.body.bio) ? req.body.bio : doctor.doctorData.bio;
         doctor.doctorData.doctorType = (req.body.doctorType) ? req.body.doctorType : doctor.doctorData.doctorType;
+        doctor.doctorData.available = (req.body.available) ? req.body.available : doctor.doctorData.available;
 
         User.update({
           _id: req.params.id
@@ -65,7 +66,8 @@ module.exports = function (router) {
             "name.patronymic": doctor.name.patronymic,
             "dateOfBirth": doctor.dateOfBirth,
             "doctorData.bio": doctor.doctorData.bio,
-            "doctorData.doctorType": doctor.doctorData.doctorType
+            "doctorData.doctorType": doctor.doctorData.doctorType,
+            "doctorData.available": doctor.doctorData.available
           }
         }, function (err) {
           if (err) {

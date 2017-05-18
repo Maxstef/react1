@@ -17,7 +17,8 @@ class AddSchedule extends React.Component {
                         </div>
                         <div>
                             {checked && ranges < 6 && 
-                                <Button style={{marginLeft: "6px"}} onClick={()=>{this.props.newRange(index)}} type="button" color="success">
+                                <Button style={{marginLeft: "6px"}} onClick={()=>{this.props.newRange(index)}} type="button" color="success" 
+                                    disabled={slotValue[slotValue.length -1].to == -1 || slotValue[slotValue.length -1].from == -1}>
                                     <i className="fa fa-plus-circle" aria-hidden="true"></i>
                                 </Button>
                             }
@@ -46,7 +47,7 @@ class AddSchedule extends React.Component {
                     <div className="col-12 col-sm-5">
                         <Input type="select" id={"from-" + day + "-" + index} name={"from-" + day + "-" + index} 
                             onChange={(e)=>{console.log(slotValue[index].from);this.props.changeSlotValue(dayIndex, index, 'from', e.target.value)}}
-                            defaultValue={slotValue[index].from}>
+                            defaultValue={slotValue[index].from} disabled={times > index+1}>
                             {this.renderOptions(slotValue, index, 'from')}
                         </Input>
                         {/*
@@ -68,7 +69,7 @@ class AddSchedule extends React.Component {
                     <div className="col-12 col-sm-5">
                         <Input type="select" id={"to-" + day + "-" + index} name={"to-" + day + "-" + index}
                             onChange={(e)=>{console.log(slotValue[index].to);this.props.changeSlotValue(dayIndex, index, 'to', e.target.value)}}
-                            defaultValue={slotValue[index].to}>
+                            defaultValue={slotValue[index].to} disabled={times > index+1}>
                             {this.renderOptions(slotValue, index, 'to')}
                         </Input>
                         {/*
@@ -178,7 +179,7 @@ class AddSchedule extends React.Component {
             <Container>             
                 <div className="add-schedule">
                     {this.renderAvailableDays()}
-                    <Button color="success" disabled={this.props.invalidForm()}>Save</Button>
+                    <Button color="success" disabled={this.props.invalidForm()} onClick={this.props.saveSchedule}>Save</Button>
                 </div>
             </Container>   
         );
