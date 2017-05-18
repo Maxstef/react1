@@ -7,7 +7,7 @@ import InputMask from 'react-input-mask';
 class AddSchedule extends React.Component {
 
     renderAvailableDays(){
-        const Day = ({day, ranges, index, checked}) => {
+        const Day = ({day, ranges, index, checked, slotValue}) => {
             return (
                 <div className="day-item row" style={{padding: "15px 0", borderBottom: "1px solid #d1d3d4"}}>
                     <div className="col-3 col-md-2 col-lg-1">
@@ -29,56 +29,60 @@ class AddSchedule extends React.Component {
                         </div>
                     </div>
                     <div className="col-9 col-md-10 col-lg-11 row">
-                        {checked && this.renderTimeRange(day, ranges, index)}
+                        {checked && this.renderTimeRange(day, ranges, index, slotValue)}
                     </div>
                 </div>
             );
         };
         return this.props.days.map((day, index) => (
-            <Day key={index} index={index} day={day.day} ranges={day.timeValue.length} checked={day.available}/>
+            <Day key={index} index={index} day={day.day} ranges={day.slotValue.length} checked={day.available} slotValue={day.slotValue}/>
         ));
     }
 
-    renderTimeRange(day, times, dayIndex){
+    renderTimeRange(day, times, dayIndex, slotValue){
         const Range = ({index}) => {
             return (
                 <div className="available-hours-item col-12 col-sm-12 col-md-9 col-lg-6 col-xl-4  row">
                     <div className="col-12 col-sm-5">
-                        <Input type="select" id={"from-" + day + "-" + index} name={"from-" + day + "-" + index}>
-                            {this.renderOptions()}
+                        <Input type="select" id={"from-" + day + "-" + index} name={"from-" + day + "-" + index} 
+                            onChange={(e)=>{console.log(slotValue[index].from);this.props.changeSlotValue(dayIndex, index, 'from', e.target.value)}}
+                            defaultValue={slotValue[index].from}>
+                            {this.renderOptions(slotValue, index, 'from')}
                         </Input>
                         {/*
-                        <InputMask className="form-control" mask="12:34" onFocus={() => {this.props.setFocus(dayIndex, index, 'start')}}
-                        autoFocus={(this.props.focus.day == dayIndex && this.props.focus.range == index && this.props.focus.key == 'start')?true:false}
+                        <InputMask className="form-control" mask="12:34" onFocus={() => {this.props.setFocus(dayIndex, index, 'from')}}
+                        autoFocus={(this.props.focus.day == dayIndex && this.props.focus.range == index && this.props.focus.key == 'from')?true:false}
                         formatChars={{
                             '1': '[0-2]',
-                            '2': this.props.days[dayIndex].timeValue[index].start.startsWith('2') ? '[0-3]' : '[0-9]',
+                            '2': this.props.days[dayIndex].timeValue[index].from.fromsWith('2') ? '[0-3]' : '[0-9]',
                             '3': '[0-5]',
                             '4': '[0-9]'
                         }}
-                        value={this.props.days[dayIndex].timeValue[index].start} 
+                        value={this.props.days[dayIndex].timeValue[index].from} 
                         id={"from-" + day + "-" + index} type="text"
-                        onChange={(e)=> {this.props.changeTimeValue(dayIndex, index, 'start', e.target)}}/>*/}
+                        onChange={(e)=> {this.props.changeTimeValue(dayIndex, index, 'from', e.target)}}/>*/}
                     </div>
                     <div className="col-12 col-sm-2" style={{textAlign: 'center'}}>
                         -
                     </div>
                     <div className="col-12 col-sm-5">
-                        <Input type="select" id={"to-" + day + "-" + index} name={"to-" + day + "-" + index}>
-                            {this.renderOptions()}
+                        <Input type="select" id={"to-" + day + "-" + index} name={"to-" + day + "-" + index}
+                            onChange={(e)=>{console.log(slotValue[index].to);this.props.changeSlotValue(dayIndex, index, 'to', e.target.value)}}
+                            defaultValue={slotValue[index].to}>
+                            {this.renderOptions(slotValue, index, 'to')}
                         </Input>
                         {/*
-                        <InputMask className="form-control" mask="12:34" onFocus={() => {this.props.setFocus(dayIndex, index, 'end')}}
-                        autoFocus={(this.props.focus.day == dayIndex && this.props.focus.range == index && this.props.focus.key == 'end')?true:false}
+                        <InputMask className="form-control" mask="12:34" onFocus={() => {this.props.setFocus(dayIndex, index, 'to')}}
+                        autoFocus={(this.props.focus.day == dayIndex && this.props.focus.range == index && this.props.focus.key == 'to')?true:false}
                         formatChars={{
                             '1': '[0-2]',
-                            '2': this.props.days[dayIndex].timeValue[index].end.startsWith('2') ? '[0-3]' : '[0-9]',
+                            '2': this.props.days[dayIndex].timeValue[index].to.fromsWith('2') ? '[0-3]' : '[0-9]',
                             '3': '[0-5]',
                             '4': '[0-9]'
                         }}
-                        value={this.props.days[dayIndex].timeValue[index].end} 
+                        value={this.props.days[dayIndex].timeValue[index].to} 
                         id={"to-" + day + "-" + index} type="text"
-                        onChange={(e)=> {this.props.changeTimeValue(dayIndex, index, 'end', e.target)}}/>*/}
+                        onChange={(e)=> {this.props.changeTimeValue(dayIndex, index, 'to', e.target)}}/>*/}
                     </div>
                 </div>
             );
@@ -88,14 +92,84 @@ class AddSchedule extends React.Component {
         ));
     }
 
-    renderOptions(){
+    renderOptions(slotValue, indexRange, period){
         const Slot = ({slot}) => {
             return (
-                    <option>{this.props.slotTimes[slot].substr(0, 5)}</option>
+                    <option disabled={(slot == -1)} value={slot}>{(slot == -1)?period:this.props.slotTimes[slot].substr(0, 5)}</option>
             );
         };
-        return Array.from(Array(48)).map((slot, index) => (
-            <Slot key={index} slot={index}/>
+        let available = [-1];
+        if(slotValue.length == 1 && ((slotValue[0].from == -1 && period == 'to') || (slotValue[0].to == -1 && period == 'from'))){
+            Array.from(Array(48)).forEach((x, i) => {
+                if((period == 'to' && i == 0) || (period == 'from' && i == 47)){
+                    return;
+                }
+                available.push(i);     
+            });
+        } else if(slotValue.length == 1 && (slotValue[0].from != -1 && period == 'to')) {
+            Array.from(Array(48)).forEach((x, i) => {
+                if(i > slotValue[0].from){
+                    available.push(i);  
+                }
+            });
+        } else if(slotValue.length == 1 && (slotValue[0].to != -1 && period == 'from')) {
+            Array.from(Array(48)).forEach((x, i) => {
+                if(i < slotValue[0].to){
+                    available.push(i);  
+                }
+            });
+        } else if(slotValue.length != 1 && (slotValue[indexRange].to == -1 && period == 'from')) {
+            Array.from(Array(48)).forEach((x, i) => {
+                let push = true;
+                _.forEach(slotValue, (slotRange, index) => {
+                    if(index != indexRange && i >= parseInt(slotRange.from) - 1 && i <= parseInt(slotRange.to)){
+                        push = false;
+                    }
+                });
+                if(push){
+                    available.push(i);
+                }
+            });
+        } else if(slotValue.length != 1 && (slotValue[indexRange].from == -1 && period == 'to')) {
+            Array.from(Array(48)).forEach((x, i) => {
+                let push = true;
+                _.forEach(slotValue, (slotRange, index) => {
+                    if(index != indexRange && i <= parseInt(slotRange.to) + 1 && i >= parseInt(slotRange.from)){
+                        push = false;
+                    }
+                });
+                if(push){
+                    available.push(i);
+                }
+            });
+        } else if(slotValue.length != 1 && (slotValue[indexRange].from != -1 && period == 'to')) {
+            Array.from(Array(48)).forEach((x, i) => {
+                let push = true;
+                _.forEach(slotValue, (slotRange, index) => {
+                    if((index != indexRange && i <= parseInt(slotRange.to) + 1 && i >= parseInt(slotRange.from)) || (index == indexRange && i <= parseInt(slotValue[indexRange].from))){
+                        push = false;
+                    }
+                });
+                if(push){
+                    available.push(i);
+                }
+            });
+        } else if(slotValue.length != 1 && (slotValue[indexRange].to != -1 && period == 'from')) {
+            Array.from(Array(48)).forEach((x, i) => {
+                let push = true;
+                _.forEach(slotValue, (slotRange, index) => {
+                    if((index != indexRange && i >= parseInt(slotRange.from) - 1 && i <= parseInt(slotRange.to)) || (index == indexRange && i >= parseInt(slotValue[indexRange].to))){
+                        push = false;
+                    }
+                });
+                if(push){
+                    available.push(i);
+                }
+            });
+        }
+
+        return available.map((slot, index) => (
+            <Slot key={index} slot={slot}/>
         ));
     }
 
@@ -104,6 +178,7 @@ class AddSchedule extends React.Component {
             <Container>             
                 <div className="add-schedule">
                     {this.renderAvailableDays()}
+                    <Button color="success" disabled={this.props.invalidForm()}>Save</Button>
                 </div>
             </Container>   
         );

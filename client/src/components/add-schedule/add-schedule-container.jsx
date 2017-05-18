@@ -15,52 +15,53 @@ class AddScheduleContainer extends React.Component {
                     day: 'su',
                     available: false,
                     slots: [],
-                    timeValue: [{start: ' ', end: ' '}]
+                    slotValue: [{from: -1, to: -1}]
                 },
                 {
                     day: 'mo',
                     available: false,
                     slots: [],
-                    timeValue: [{start: ' ', end: ' '}]
+                    slotValue: [{from: -1, to: -1}]
                 },
                 {
                     day: 'tu',
                     available: false,
                     slots: [],
-                    timeValue: [{start: ' ', end: ' '}]
+                    slotValue: [{from: -1, to: -1}]
                 },
                 {
                     day: 'we',
                     available: false,
                     slots: [],
-                    timeValue: [{start: ' ', end: ' '}]
+                    slotValue: [{from: -1, to: -1}]
                 },
                 {
                     day: 'th',
                     available: false,
                     slots: [],
-                    timeValue: [{start: ' ', end: ' '}]
+                    slotValue: [{from: -1, to: -1}]
                 },
                 {
                     day: 'fr',
                     available: false,
                     slots: [],
-                    timeValue: [{start: ' ', end: ' '}]
+                    slotValue: [{from: -1, to: -1}]
                 },
                 {
                     day: 'sa',
                     available: false,
                     slots: [],
-                    timeValue: [{start: ' ', end: ' '}]
+                    slotValue: [{from: -1, to: -1}]
                 }
             ],
-            focus: {day: -1, range: -1, key: ''}
+            //focus: {day: -1, range: -1, key: ''}
         };
         this.changeDay = this.changeDay.bind(this);
         this.newRange = this.newRange.bind(this);
         this.removeRange = this.removeRange.bind(this);
-        this.changeTimeValue = this.changeTimeValue.bind(this);
-        this.setFocus = this.setFocus.bind(this);
+        this.changeSlotValue = this.changeSlotValue.bind(this);
+        this.invalidForm = this.invalidForm.bind(this);
+        //this.setFocus = this.setFocus.bind(this);
     }
 
     changeDay(index){
@@ -71,23 +72,40 @@ class AddScheduleContainer extends React.Component {
 
     newRange(index){
         let d = this.state.days;
-        d[index].timeValue.push({start: ' ', end: ' '});
+        d[index].slotValue.push({from: -1, to: -1});
         this.setState({days: d });
     }
 
     removeRange(index){
         let d = this.state.days;
-        d[index].timeValue.pop();
+        d[index].slotValue.pop();
         this.setState({days: d });
     }
 
-    changeTimeValue(day, index, key, value){
+    changeSlotValue(day, index, key, value){
+        console.log(day, index, key, value);
         let d = this.state.days;
-        d[day].timeValue[index][key] = value;
+        d[day].slotValue[index][key] = value;
         this.setState({days: d });
+        console.log(this.state.days);
     }
 
-    setFocus(day, range, key){
+    invalidForm(){
+        let invalid = true;
+        _.forEach(this.state.days, (day)=>{
+            if(day.available){
+                invalid = false;
+                _.forEach(day.slotValue, (slot)=>{
+                    if(slot.from == -1 || slot.to == -1){
+                        invalid = true;
+                    }
+                });
+            }
+        });
+        return invalid;
+    }
+
+    /*setFocus(day, range, key){
         console.log('here');
         let d = {
             day: day,
@@ -96,7 +114,7 @@ class AddScheduleContainer extends React.Component {
         };
         this.setState({focus: d });
         console.log(this.state.focus);
-    }
+    }*/
 
     render() {
         return (           
@@ -105,9 +123,10 @@ class AddScheduleContainer extends React.Component {
                          changeDay={this.changeDay}
                          newRange={this.newRange}
                          removeRange={this.removeRange}
-                         changeTimeValue={this.changeTimeValue}
+                         changeSlotValue={this.changeSlotValue}
                          focus={this.state.focus}
-                         setFocus={this.setFocus} />   
+                         setFocus={this.setFocus}
+                         invalidForm={this.invalidForm} />   
         );
     }
 }
