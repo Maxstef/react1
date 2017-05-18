@@ -5,6 +5,7 @@ import {bindActionCreators} from "redux";
 import * as doctorsActions from '../../actions/doctors-action';
 import * as _ from 'lodash';
 import AddMeetingContainer from '../add-meeting/add-meeting-container';
+import { Link, browserHistory } from "react-router";
 
 class DoctorInfoContainer extends React.Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class DoctorInfoContainer extends React.Component {
       availableHours: []
     };
     this.toggleMeeting = this.toggleMeeting.bind(this);
+    this.toDoctorList = this.toDoctorList.bind(this);
   };
   
   componentWillMount() {
@@ -51,6 +53,10 @@ class DoctorInfoContainer extends React.Component {
     });
   }
   
+  toDoctorList() {
+    browserHistory.replace('/doctors-list');
+  }
+  
   render() {
     return (
         <div>
@@ -62,12 +68,14 @@ class DoctorInfoContainer extends React.Component {
                       listEmpty={this.props.listEmpty}
                       toggleMeeting={this.toggleMeeting}
                       meeting={this.state.meeting}
+                      toDoctorList={this.toDoctorList}
           />
           { this.state.meeting && <AddMeetingContainer
               toggleMeeting={this.toggleMeeting}
               meeting={this.state.meeting}
               availableHours={this.state.availableHours}
               currentInfo={this.state.currentInfo}
+              doctorsName={this.state.name}
           />}
         </div>
     )

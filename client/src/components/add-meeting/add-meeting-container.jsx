@@ -27,12 +27,18 @@ class AddMeetingContainer extends React.Component {
       slotTimes: config.get('slotTimes'),
       date: null,
       newMeeting: {},
-      newEvent: {}
+      newEvent: {},
+      doctorsName: this.props.doctorsName,
+      meetingSlot: null,
+      myCurrentMeeting: [],
+      isAlreadyAppointed: false
     };
     this.dpChange = this.dpChange.bind(this);
     this.addMeeting = this.addMeeting.bind(this);
     this.postMeeting = this.postMeeting.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.getAllMeetings = this.getAllMeetings.bind(this);
+    this.appointedAlready = this.appointedAlready.bind(this);
   }
   
   componentWillMount() {
@@ -41,6 +47,7 @@ class AddMeetingContainer extends React.Component {
   }
   
   componentDidMount() {
+    // take doctor schedule list
     let schedule = _.concat(this.props.currentInfo.doctorData.available, this.props.currentInfo.doctorData.specialDays);
     this.setState({
       availableHours: schedule,
@@ -54,8 +61,10 @@ class AddMeetingContainer extends React.Component {
   
   componentWillUnmount() {
     this.props.setAllMeetingsStore([]);
+    this.props.setCurrentDoctor(this.props.currentDoctor);
   }
   
+  // if datapicker changed
   renderChoosenDay(day) {
     this.setState({
       currentSlots: [],
@@ -82,6 +91,7 @@ class AddMeetingContainer extends React.Component {
     });
   }
   
+  // this happens when slot was clicked but dousn't yet confirmed
   addMeeting(slotNumber) {
     let newMeeting = {};
     let patient = this.props.userId;
@@ -97,32 +107,60 @@ class AddMeetingContainer extends React.Component {
     });
   }
   
+  // this happens when choosen slot was confirmed
   postMeeting() {
     let newBusySlot = this.state.busySlots;
     let allMeetings = this.state.allMeetings;
     axios.post(config.get('api') + 'meetings/', this.state.newMeeting).then(res => {
-      console.log(res);
       newBusySlot.push(this.state.newMeeting.slot);
       allMeetings.push(this.state.newMeeting);
       this.setState({
             allMeetings: allMeetings,
             busySlots: newBusySlot
-          }, () => {
-            // console.log(this.state.busySlots, this.state.allMeetings);
-          }
-      );
+          });
     })
   }
   
+  // get all meetings of all current doctor and all meetings with current doctor and current user
   getAllMeetings() {
+    let myMeetings;
+    let userId = this.props.userId;
     axios.get(config.get('api') + 'meetings' + '?doctorId=' + this.props.currentDoctor)
          .then(res => {
-           this.setState({allMeetings: res.data});
-           // this.props.setAllMeetingsStore(res.data);
-           console.log(res.data);
+           myMeetings = _.filter(res.data, function(o) {
+             if (o.patientId === userId) {
+               return o;
+             }
+           });
+           this.setState({
+             myMeetings: myMeetings,
+             allMeetings: res.data
+           });
          });
   }
   
+  // get meetings that user already appointed to this doctor
+  appointedAlready() {
+    let myCurrentMeeting = [];
+    let flag = false;
+    let myCurrentMeetingDate = null;
+    _.filter(this.state.myMeetings, (o) => {
+      if (moment().diff(o.date) < 0) {
+        myCurrentMeeting.push(o);
+        flag = true;
+        return flag;
+      }
+    });
+    if (myCurrentMeeting.length) {
+      myCurrentMeetingDate = moment(myCurrentMeeting[0].date).format('DD MMM YYYY, dddd');
+    }
+    this.setState({
+      isAlreadyAppointed: flag,
+      myCurrentMeeting: myCurrentMeetingDate
+    });
+  }
+  
+  // find available dates and slots
   findAvailableDates() {
     this.setState({
       openDates: []
@@ -136,7 +174,6 @@ class AddMeetingContainer extends React.Component {
             let date = moment().add((diff), 'days');
             week += 7;
             date = moment(date._d).format();
-            console.log();
             openDates.push(date);
           }
         }
@@ -148,8 +185,6 @@ class AddMeetingContainer extends React.Component {
         openDates: openDates.map(function (date) {
           return moment(date)
         })
-      }, () => {
-        // console.log(this.state.openDates);
       });
     });
   }
@@ -158,6 +193,7 @@ class AddMeetingContainer extends React.Component {
     this.setState({
       choosenDate: date
     }, () => {
+      this.appointedAlready();
       this.renderChoosenDay(date);
     });
   }
@@ -185,6 +221,12 @@ class AddMeetingContainer extends React.Component {
                       modal={this.state.modal}
                       backdrop={this.state.backdrop}
                       postMeeting={this.postMeeting}
+                      doctorsName={this.props.doctorsName}
+                      day={moment(this.state.date).format('DD MMM YYYY, dddd')}
+                      meetingSlot={this.state.newMeeting.slot}
+                      appointedAlready={this.state.appointedAlready}
+                      isAlreadyAppointed={this.state.isAlreadyAppointed}
+                      myCurrentMeeting={this.state.myCurrentMeeting}
           />
         </div>
     );
@@ -204,7 +246,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setListEmpty: bindActionCreators(doctorsActions.listEmpty, dispatch),
-    setAllMeetingsStore: bindActionCreators(doctorsActions.setAllMeetings, dispatch)
+    setAllMeetingsStore: bindActionCreators(doctorsActions.setAllMeetings, dispatch),
+    setCurrentDoctor: bindActionCreators(doctorsActions.setCurrentDoctor, dispatch)
   }
 }
 

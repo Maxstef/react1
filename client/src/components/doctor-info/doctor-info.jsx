@@ -1,5 +1,5 @@
-import React, {PropTypes, Component} from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col} from 'reactstrap';
+import React from "react";
+import {Button, Col, Container, Modal, ModalBody, ModalFooter, ModalHeader, Row} from "reactstrap";
 
 class DoctorInfo extends React.Component {
   
@@ -20,17 +20,25 @@ class DoctorInfo extends React.Component {
   render() {
     return (
         <div>
-          <Col md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
-            <header className="search-header">{this.props.info.username}{' '}#{this.props.doctorId}{' '}
-              {this.props.name.first}{' '}{this.props.name.last}
-            </header>
-            <p>
-              {this.renderDoctorTypes(this.props.doctorType)}
-              <p>Current doctor {this.props.currentDoctor}</p>
-              <p>{String(this.props.listEmpty)} list</p>
-            </p>
-            { !this.props.meeting && <Button color="warning" onClick={this.props.toggleMeeting}>Make meeting</Button>}
-          </Col>
+          <Row>
+            <Col md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
+              <button type="button" className="btn btn-link mr-1 mb-1" onClick={this.props.toDoctorList}>Back</button>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
+              <header className="search-header">{this.props.info.username}{' '}#{this.props.doctorId}{' '}
+                {this.props.name.first}{' '}{this.props.name.last}
+              </header>
+              <p>
+                {this.renderDoctorTypes(this.props.doctorType)}
+                <p>Current doctor {this.props.currentDoctor}</p>
+                <p>{String(this.props.listEmpty)} list</p>
+                <p>{this.props.info.doctorData.bio}</p>
+              </p>
+              { !this.props.meeting && <Button color="warning" onClick={this.props.toggleMeeting}>Make meeting</Button>}
+            </Col>
+          </Row>
         </div>
     );
   }

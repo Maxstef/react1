@@ -25,7 +25,7 @@ class AddMeeting extends React.Component {
             <button type="button"
                     disabled={this.isDisabled(slot)}
                     onClick={() => {this.props.addMeeting(slot)}}
-                    className={"slots btn btn-sm " + (this.isDisabled(slot) ? 'btn-info' : 'btn-secondary')}>{this.props.slotTimes[slot]}
+                    className={"slots btn btn-sm " + (this.isDisabled(slot) ? 'btn-success' : 'btn-secondary')}>{this.props.slotTimes[slot]}
             </button>
           </div>
       );
@@ -61,29 +61,39 @@ class AddMeeting extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col className="d-flex justify-content-center mt-2" md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
-              <button type="button" className="btn btn-secondary mr-1" onClick={this.props.toggleMeeting}>Back</button>
-              <button type="button" className="btn btn-warning" onClick={this.props.toggle}>Apply</button>
+            <Col className="d-flex justify-content-left mt-2" md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
+              <button type="button" className="btn btn-secondary mr-1" onClick={this.props.toggleMeeting}>Cancel</button>
             </Col>
           </Row>
           
-          <Modal isOpen={this.props.modal}
+          { !this.props.isAlreadyAppointed &&
+          <Modal className="modal-lg"
+                 isOpen={this.props.modal}
                  toggle={this.props.toggle}
-                 className="modal-lg"
                  backdrop={this.props.backdrop}>
-            <ModalHeader toggle={this.props.toggle}>Modal title</ModalHeader>
+            <ModalHeader toggle={this.props.toggle}>Appointment</ModalHeader>
             <ModalBody>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-              ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-              deserunt mollit anim id est laborum.
+              Are you really want to make appointment to {this.props.doctorsName.first}{' '}{this.props.doctorsName.last}{' '}{this.props.day} at {this.props.slotTimes[this.props.meetingSlot]}
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={() => {this.props.postMeeting(); this.props.toggle()}}>Do Something</Button>{' '}
               <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+              <Button color="warning" onClick={() => {this.props.postMeeting(); this.props.toggle()}}>Apply</Button>{' '}
             </ModalFooter>
-          </Modal>
+          </Modal> }
+  
+          { this.props.isAlreadyAppointed && this.props.myCurrentMeeting &&
+          <Modal className="modal-lg"
+                 isOpen={this.props.modal}
+                 toggle={this.props.toggle}
+                 backdrop={this.props.backdrop}>
+            <ModalHeader toggle={this.props.toggle}>Appointment</ModalHeader>
+            { this.props.myCurrentMeeting && <ModalBody>
+              You already appointed to {this.props.doctorsName.first}{' '}{this.props.doctorsName.last} at {this.props.myCurrentMeeting}. If you want to cancel this appointment, please connect to our reception via telephone.
+            </ModalBody> }
+            <ModalFooter>
+              <Button color="secondary" onClick={this.props.toggle}>Understand</Button>
+            </ModalFooter>
+          </Modal> }
           
         </Container>
     )
