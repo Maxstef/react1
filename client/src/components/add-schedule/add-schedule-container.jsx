@@ -65,7 +65,6 @@ class AddScheduleContainer extends React.Component {
                     slotValue: [{from: -1, to: -1}]
                 }
             ],
-            //focus: {day: -1, range: -1, key: ''}
         };
         this.changeDay = this.changeDay.bind(this);
         this.newRange = this.newRange.bind(this);
@@ -73,7 +72,6 @@ class AddScheduleContainer extends React.Component {
         this.changeSlotValue = this.changeSlotValue.bind(this);
         this.invalidForm = this.invalidForm.bind(this);
         this.saveSchedule = this.saveSchedule.bind(this);
-        //this.setFocus = this.setFocus.bind(this);
     }
 
     changeDay(index){
@@ -117,27 +115,6 @@ class AddScheduleContainer extends React.Component {
         return invalid;
     }
 
-    /*getDayNumber(day){
-        switch(day){
-            case 'mo':
-                return 0;
-            case 'tu':
-                return 1;
-            case 'we':
-                return 2;
-            case 'th':
-                return 3;
-            case 'fr':
-                return 4;
-            case 'sa':
-                return 5;
-            case 'su':
-                return 6;
-            default:
-                return -1;
-        }
-    }*/
-
     saveSchedule(){
         console.log('boom');
         let data = {available: []};
@@ -162,17 +139,6 @@ class AddScheduleContainer extends React.Component {
                 this.props.setInfo(user); 
             });
     }
-
-    /*setFocus(day, range, key){
-        console.log('here');
-        let d = {
-            day: day,
-            range: range,
-            key: key
-        };
-        this.setState({focus: d });
-        console.log(this.state.focus);
-    }*/
 
     render() {
         return (           

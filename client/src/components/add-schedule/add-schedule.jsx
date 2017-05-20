@@ -50,18 +50,6 @@ class AddSchedule extends React.Component {
                             defaultValue={slotValue[index].from} disabled={times > index+1}>
                             {this.renderOptions(slotValue, index, 'from')}
                         </Input>
-                        {/*
-                        <InputMask className="form-control" mask="12:34" onFocus={() => {this.props.setFocus(dayIndex, index, 'from')}}
-                        autoFocus={(this.props.focus.day == dayIndex && this.props.focus.range == index && this.props.focus.key == 'from')?true:false}
-                        formatChars={{
-                            '1': '[0-2]',
-                            '2': this.props.days[dayIndex].timeValue[index].from.fromsWith('2') ? '[0-3]' : '[0-9]',
-                            '3': '[0-5]',
-                            '4': '[0-9]'
-                        }}
-                        value={this.props.days[dayIndex].timeValue[index].from} 
-                        id={"from-" + day + "-" + index} type="text"
-                        onChange={(e)=> {this.props.changeTimeValue(dayIndex, index, 'from', e.target)}}/>*/}
                     </div>
                     <div className="col-12 col-sm-2" style={{textAlign: 'center'}}>
                         -
@@ -72,18 +60,6 @@ class AddSchedule extends React.Component {
                             defaultValue={slotValue[index].to} disabled={times > index+1}>
                             {this.renderOptions(slotValue, index, 'to')}
                         </Input>
-                        {/*
-                        <InputMask className="form-control" mask="12:34" onFocus={() => {this.props.setFocus(dayIndex, index, 'to')}}
-                        autoFocus={(this.props.focus.day == dayIndex && this.props.focus.range == index && this.props.focus.key == 'to')?true:false}
-                        formatChars={{
-                            '1': '[0-2]',
-                            '2': this.props.days[dayIndex].timeValue[index].to.fromsWith('2') ? '[0-3]' : '[0-9]',
-                            '3': '[0-5]',
-                            '4': '[0-9]'
-                        }}
-                        value={this.props.days[dayIndex].timeValue[index].to} 
-                        id={"to-" + day + "-" + index} type="text"
-                        onChange={(e)=> {this.props.changeTimeValue(dayIndex, index, 'to', e.target)}}/>*/}
                     </div>
                 </div>
             );
@@ -100,26 +76,7 @@ class AddSchedule extends React.Component {
             );
         };
         let available = [-1];
-        /*if(slotValue.length == 1 && ((slotValue[0].from == -1 && period == 'to') || (slotValue[0].to == -1 && period == 'from'))){
-            Array.from(Array(48)).forEach((x, i) => {
-                if((period == 'to' && i == 0) || (period == 'from' && i == 47)){
-                    return;
-                }
-                available.push(i);     
-            });
-        } else if(slotValue.length == 1 && (slotValue[0].from != -1 && period == 'to')) {
-            Array.from(Array(48)).forEach((x, i) => {
-                if(i > slotValue[0].from){
-                    available.push(i);  
-                }
-            });
-        } else if(slotValue.length == 1 && (slotValue[0].to != -1 && period == 'from')) {
-            Array.from(Array(48)).forEach((x, i) => {
-                if(i < slotValue[0].to){
-                    available.push(i);  
-                }
-            });
-        } else */if(/*slotValue.length != 1 && */(slotValue[indexRange].to == -1 && period == 'from')) {
+        if((slotValue[indexRange].to == -1 && period == 'from')) {
             Array.from(Array(48)).forEach((x, i) => {
                 let push = true;
                 _.forEach(slotValue, (slotRange, index) => {
@@ -131,7 +88,7 @@ class AddSchedule extends React.Component {
                     available.push(i);
                 }
             });
-        } else if(/*slotValue.length != 1 && */(slotValue[indexRange].from == -1 && period == 'to')) {
+        } else if((slotValue[indexRange].from == -1 && period == 'to')) {
             Array.from(Array(48)).forEach((x, i) => {
                 let push = true;
                 _.forEach(slotValue, (slotRange, index) => {
@@ -143,7 +100,7 @@ class AddSchedule extends React.Component {
                     available.push(i);
                 }
             });
-        } else if(/*slotValue.length != 1 && */(slotValue[indexRange].from != -1 && period == 'to')) {
+        } else if((slotValue[indexRange].from != -1 && period == 'to')) {
             Array.from(Array(48)).forEach((x, i) => {
                 let push = true;
                 _.forEach(slotValue, (slotRange, index) => {
@@ -155,7 +112,7 @@ class AddSchedule extends React.Component {
                     available.push(i);
                 }
             });
-        } else if(/*slotValue.length != 1 && */(slotValue[indexRange].to != -1 && period == 'from')) {
+        } else if((slotValue[indexRange].to != -1 && period == 'from')) {
             Array.from(Array(48)).forEach((x, i) => {
                 let push = true;
                 _.forEach(slotValue, (slotRange, index) => {
