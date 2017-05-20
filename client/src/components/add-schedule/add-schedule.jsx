@@ -100,7 +100,7 @@ class AddSchedule extends React.Component {
             );
         };
         let available = [-1];
-        if(slotValue.length == 1 && ((slotValue[0].from == -1 && period == 'to') || (slotValue[0].to == -1 && period == 'from'))){
+        /*if(slotValue.length == 1 && ((slotValue[0].from == -1 && period == 'to') || (slotValue[0].to == -1 && period == 'from'))){
             Array.from(Array(48)).forEach((x, i) => {
                 if((period == 'to' && i == 0) || (period == 'from' && i == 47)){
                     return;
@@ -119,7 +119,7 @@ class AddSchedule extends React.Component {
                     available.push(i);  
                 }
             });
-        } else if(slotValue.length != 1 && (slotValue[indexRange].to == -1 && period == 'from')) {
+        } else */if(/*slotValue.length != 1 && */(slotValue[indexRange].to == -1 && period == 'from')) {
             Array.from(Array(48)).forEach((x, i) => {
                 let push = true;
                 _.forEach(slotValue, (slotRange, index) => {
@@ -131,7 +131,7 @@ class AddSchedule extends React.Component {
                     available.push(i);
                 }
             });
-        } else if(slotValue.length != 1 && (slotValue[indexRange].from == -1 && period == 'to')) {
+        } else if(/*slotValue.length != 1 && */(slotValue[indexRange].from == -1 && period == 'to')) {
             Array.from(Array(48)).forEach((x, i) => {
                 let push = true;
                 _.forEach(slotValue, (slotRange, index) => {
@@ -143,11 +143,11 @@ class AddSchedule extends React.Component {
                     available.push(i);
                 }
             });
-        } else if(slotValue.length != 1 && (slotValue[indexRange].from != -1 && period == 'to')) {
+        } else if(/*slotValue.length != 1 && */(slotValue[indexRange].from != -1 && period == 'to')) {
             Array.from(Array(48)).forEach((x, i) => {
                 let push = true;
                 _.forEach(slotValue, (slotRange, index) => {
-                    if((index != indexRange && i <= parseInt(slotRange.to) + 1 && i >= parseInt(slotRange.from)) || (index == indexRange && i <= parseInt(slotValue[indexRange].from))){
+                    if((index < indexRange && i >= parseInt(slotRange.from) && parseInt(slotValue[indexRange].from) < parseInt(slotRange.from)) || (index == indexRange && i <= parseInt(slotValue[indexRange].from))){
                         push = false;
                     }
                 });
@@ -155,11 +155,11 @@ class AddSchedule extends React.Component {
                     available.push(i);
                 }
             });
-        } else if(slotValue.length != 1 && (slotValue[indexRange].to != -1 && period == 'from')) {
+        } else if(/*slotValue.length != 1 && */(slotValue[indexRange].to != -1 && period == 'from')) {
             Array.from(Array(48)).forEach((x, i) => {
                 let push = true;
                 _.forEach(slotValue, (slotRange, index) => {
-                    if((index != indexRange && i >= parseInt(slotRange.from) - 1 && i <= parseInt(slotRange.to)) || (index == indexRange && i >= parseInt(slotValue[indexRange].to))){
+                    if((index < indexRange && i <= parseInt(slotRange.to) && parseInt(slotValue[indexRange].to) > parseInt(slotRange.to)) || (index == indexRange && i >= parseInt(slotValue[indexRange].to))){
                         push = false;
                     }
                 });
@@ -168,7 +168,6 @@ class AddSchedule extends React.Component {
                 }
             });
         }
-
         return available.map((slot, index) => (
             <Slot key={index} slot={slot}/>
         ));

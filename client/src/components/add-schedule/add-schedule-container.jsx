@@ -3,6 +3,9 @@ import AddSchedule from './add-schedule';
 import config from 'react-global-configuration';
 import * as _ from 'lodash';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
+import * as activeUserActions from '../../actions/active-user-action';
 
 
 class AddScheduleContainer extends React.Component {
@@ -13,43 +16,50 @@ class AddScheduleContainer extends React.Component {
             slotTimes: config.get('slotTimes'),
             days: [
                 {
-                    day: 'su',
-                    available: false,
-                    slots: [],
-                    slotValue: [{from: -1, to: -1}]
-                },
-                {
                     day: 'mo',
+                    dayNumber: 0,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
                 },
                 {
                     day: 'tu',
+                    dayNumber: 1,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
                 },
                 {
                     day: 'we',
+                    dayNumber: 2,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
                 },
                 {
                     day: 'th',
+                    dayNumber: 3,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
                 },
                 {
                     day: 'fr',
+                    dayNumber: 4,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
                 },
                 {
                     day: 'sa',
+                    dayNumber: 5,
+                    available: false,
+                    slots: [],
+                    slotValue: [{from: -1, to: -1}]
+                },
+                {
+                    day: 'su',
+                    dayNumber: 6,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
@@ -107,7 +117,7 @@ class AddScheduleContainer extends React.Component {
         return invalid;
     }
 
-    getDayNumber(day){
+    /*getDayNumber(day){
         switch(day){
             case 'mo':
                 return 0;
@@ -126,7 +136,7 @@ class AddScheduleContainer extends React.Component {
             default:
                 return -1;
         }
-    }
+    }*/
 
     saveSchedule(){
         console.log('boom');
@@ -134,7 +144,7 @@ class AddScheduleContainer extends React.Component {
         _.forEach(this.state.days, (day)=>{
             if(day.available){
                 let slots = [];
-                let n = this.getDayNumber(day.day);
+                let n = day.dayNumber;
                 _.forEach(day.slotValue, (slot)=>{
                     for(let i = slot.from; i < slot.to; i++){
                         slots.push(i);
@@ -144,11 +154,13 @@ class AddScheduleContainer extends React.Component {
             }
         });
         console.log(data);
-        /*axios.put(config.get('api') + 'doctors/' + this.state.info._id, data)
+        axios.put(config.get('api') + 'doctors/' + this.props.user._id, data)
             .then(res => {
                 console.log('done!');
                 console.log(res.data);
-            });*/
+                let user = res.data;
+                this.props.setInfo(user); 
+            });
     }
 
     /*setFocus(day, range, key){
@@ -178,4 +190,18 @@ class AddScheduleContainer extends React.Component {
     }
 }
 
-export default AddScheduleContainer;
+function mapStateToProps(state) {
+    return {
+        role: state.activeUser.role,
+        user: state.activeUser.info
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        setInfo: bindActionCreators(activeUserActions.setUserInfo, dispatch),
+        setRole: bindActionCreators(activeUserActions.setRole, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddScheduleContainer);

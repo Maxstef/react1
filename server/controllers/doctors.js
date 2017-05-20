@@ -49,7 +49,7 @@ module.exports = function (router) {
         }) : doctor.password;
         doctor.name.first = (req.body.firstName) ? req.body.firstName : doctor.name.first;
         doctor.name.last = (req.body.lastName) ? req.body.lastName : doctor.name.last;
-        doctor.name.patronymic = (req.body.patronymic) ? req.body.patronymic : octor.name.patronymic;
+        doctor.name.patronymic = (req.body.patronymic) ? req.body.patronymic : doctor.name.patronymic;
         doctor.dateOfBirth = (req.body.dateOfBirth) ? req.body.dateOfBirth : doctor.dateOfBirth;
         doctor.doctorData.bio = (req.body.bio) ? req.body.bio : doctor.doctorData.bio;
         doctor.doctorData.doctorType = (req.body.doctorType) ? req.body.doctorType : doctor.doctorData.doctorType;

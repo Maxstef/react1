@@ -19,7 +19,7 @@ class CabinetContainer extends React.Component {
         return (
             <Container>
                 <AuthoriationService/>
-                {(this.props.user && typeof this.props.user.doctorData.available) == 'undefined' &&
+                {(this.props.user && (typeof this.props.user.doctorData.available == 'undefined' || this.props.user.doctorData.available === null)) &&
                     <div>
                         <h5>You didn't specify your schedule. Do it for patients can make meeting with you.</h5>
                         <AddScheduleContainer />
