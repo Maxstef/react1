@@ -7,14 +7,41 @@ import { browserHistory } from "react-router";
 import Cabinet from './cabinet';
 import AddScheduleContainer from '../add-schedule/add-schedule-container';
 import AuthoriationService from '../authorization';
+import axios from 'axios';
+import config from 'react-global-configuration';
 
 class CabinetContainer extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            uploaderDispalay: false
+        };
+        this.toggleUploader = this.toggleUploader.bind(this);
+        this.savePhoto = this.savePhoto.bind(this);
+    }
+
+    toggleUploader(){
+        this.setState({uploaderDispalay: !this.state.uploaderDispalay});
+    }
 
     componentDidMount() {
         if (this.props.role !== 'doctor') {
             browserHistory.replace('/home');
         }
     }
+
+    savePhoto(photoUrl){
+        axios.put(config.get('api') + 'doctors/' + this.props.user._id, { photoUrl: photoUrl })
+            .then(res => {
+                console.log(res.data);
+                this.toggleUploader();
+                let user = this.props.user;
+                user.photoUrl = res.data.photoUrl;
+                this.props.setInfo(user);
+            });
+    }
+
     render() {
         return (
             <Container>
@@ -25,7 +52,11 @@ class CabinetContainer extends React.Component {
                         <AddScheduleContainer />
                     </div>
                 }
-                <Cabinet />
+                <Cabinet 
+                    toggleUploader={this.toggleUploader}
+                    uploaderDispalay={this.state.uploaderDispalay}
+                    user={this.props.user}
+                    savePhoto={this.savePhoto}/>
             </Container>
         );
     }

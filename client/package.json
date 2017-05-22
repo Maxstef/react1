@@ -23,6 +23,7 @@
     "react-dom": "^15.5.4",
     "react-global-configuration": "^1.0.1",
     "react-http-request": "^1.0.3",
+    "react-images-uploader": "^1.0.1",
     "react-input-mask": "^0.8.0",
     "react-redux": "^5.0.4",
     "react-router": "^2.3.0",
