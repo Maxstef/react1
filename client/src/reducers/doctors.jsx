@@ -1,7 +1,8 @@
 const initialState = {
   listEmpty: true,
   info: [],
-  currentDoctor: null
+  currentDoctor: null,
+  allMeetings: []
 };
 
 export default function doctors(state = initialState, action) {
@@ -12,6 +13,8 @@ export default function doctors(state = initialState, action) {
       return Object.assign({}, state, { info: action.payload });
     case 'SET_CURRENT_DOCTOR':
       return Object.assign({}, state, { currentDoctor: action.payload });
+    case 'SET_ALL_MEETINGS':
+      return Object.assign({}, state, { allMeetings: action.payload });
       
     default:
       return state;

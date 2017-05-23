@@ -4,7 +4,6 @@ import Wrapper from './components/wrapper';
 import DoctorInfoContainer from './components/doctor-info/doctor-info-container';
 import DoctorAddEditContainer from './components/doctor-add-edit/doctor-add-edit-container';
 import DoctorsListContainer from './components/doctors-list/doctors-list-container';
-import Meeting from './components/meeting';
 import NotFound from './components/not-found';
 import CabinetContainer from './components/cabinet/cabinet-container';
 import {Router, Route, IndexRoute, browserHistory, hashHistory} from "react-router";
@@ -28,7 +27,6 @@ export default class Index extends React.Component {
             <Route path="doctor/:doctorId" component={DoctorInfoContainer}/>
             <Route path="doctor-add-edit/:doctorId" component={DoctorAddEditContainer}/>
             <Route path="doctors-list" component={DoctorsListContainer}/>
-            <Route path="meeting" component={Meeting}/>
           </Route>
           
           <Route path="*" component={NotFound}/>

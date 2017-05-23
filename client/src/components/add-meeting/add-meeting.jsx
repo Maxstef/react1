@@ -9,7 +9,6 @@ class AddMeeting extends React.Component {
   
   isDisabled(slot) {
     let flag = false;
-    // console.log('busy slots: ', this.props.busySlots, 'slot: ', slot);
     _.filter(this.props.busySlots, (busyOne) => {
       if (slot === busyOne) {
         flag = true;
@@ -24,7 +23,10 @@ class AddMeeting extends React.Component {
       return (
           <div>
             <button type="button"
-                    className={"slots btn btn-sm " + (this.isDisabled(slot) ? 'btn-warning disabled' : 'btn-secondary')}>{this.props.slotTimes[slot]}</button>
+                    disabled={this.isDisabled(slot)}
+                    onClick={() => {this.props.addMeeting(slot)}}
+                    className={"slots btn btn-sm " + (this.isDisabled(slot) ? 'btn-success' : 'btn-secondary')}>{this.props.slotTimes[slot]}
+            </button>
           </div>
       );
     };
@@ -46,13 +48,12 @@ class AddMeeting extends React.Component {
               <DatePicker
                   inline
                   selected={this.props.startDate}
-                  minDate={moment()}
+                  minDate={moment().add(1, "days")}
                   maxDate={moment().add(14, "days")}
                   onChange={this.props.dpChange}
                   locale="uk-en"
-                  // filterDate={this.isWeekday}
-                  // includeDates={[moment(), moment().add(1, "days"), moment("2017-05-27T18:19:27.094Z"), ]}
-                  // highlightDates={[moment().subtract(7, "days"), moment().add(7, "days")]}
+                  includeDates={this.props.openDates}
+                  highlightDates={[moment()]}
               />
             </Col>
             <Col md={{size: 6, offset: 0}} xs={{size: 8, offset: 1}}>
@@ -60,11 +61,40 @@ class AddMeeting extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col className="d-flex justify-content-center mt-2" md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
-              <button type="button" className="btn btn-secondary mr-1" onClick={this.props.toggleMeeting}>Back</button>
-              <button type="button" className="btn btn-warning" onClick={this.props.toggleMeeting}>Apply</button>
+            <Col className="d-flex justify-content-left mt-2" md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
+              <button type="button" className="btn btn-secondary mr-1" onClick={this.props.toggleMeeting}>Cancel</button>
             </Col>
           </Row>
+          
+          { !this.props.isAlreadyAppointed &&
+          <Modal className="modal-lg"
+                 isOpen={this.props.modal}
+                 toggle={this.props.toggle}
+                 backdrop={this.props.backdrop}>
+            <ModalHeader toggle={this.props.toggle}>Appointment</ModalHeader>
+            <ModalBody>
+              Are you really want to make appointment to {this.props.doctorsName.first}{' '}{this.props.doctorsName.last}{' '}{this.props.day} at {this.props.slotTimes[this.props.meetingSlot]}
+            </ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+              <Button color="warning" onClick={() => {this.props.postMeeting(); this.props.toggle()}}>Apply</Button>{' '}
+            </ModalFooter>
+          </Modal> }
+  
+          { this.props.isAlreadyAppointed && this.props.myCurrentMeeting &&
+          <Modal className="modal-lg"
+                 isOpen={this.props.modal}
+                 toggle={this.props.toggle}
+                 backdrop={this.props.backdrop}>
+            <ModalHeader toggle={this.props.toggle}>Appointment</ModalHeader>
+            { this.props.myCurrentMeeting && <ModalBody>
+              You already appointed to {this.props.doctorsName.first}{' '}{this.props.doctorsName.last} at {this.props.myCurrentMeeting}. If you want to cancel this appointment, please connect to our reception via telephone.
+            </ModalBody> }
+            <ModalFooter>
+              <Button color="secondary" onClick={this.props.toggle}>Understand</Button>
+            </ModalFooter>
+          </Modal> }
+          
         </Container>
     )
   }
