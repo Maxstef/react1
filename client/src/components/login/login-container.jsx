@@ -52,7 +52,12 @@ class LoginContainer extends React.Component {
         if (typeof response.data.error == 'undefined') {
           localStorage.setItem("username", response.data.username);
           localStorage.setItem("id", response.data._id);
-          browserHistory.push('/home');
+          if(response.data.doctorData !== null){
+            browserHistory.push('/cabinet');
+          } else {
+            browserHistory.push('/home');
+          }
+          
         } else {
           t.setState({ loginError: true, loginErrorMessage: response.data.error });
         }
