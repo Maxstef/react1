@@ -121,7 +121,7 @@ class AddScheduleContainer extends React.Component {
                 let n = day.dayNumber;
                 _.forEach(day.slotValue, (slot)=>{
                     for(let i = slot.from; i < slot.to; i++){
-                        slots.push(i);
+                        slots.push(parseInt(i));
                     }
                 });
                 data.available.push({day: n, slot: slots});

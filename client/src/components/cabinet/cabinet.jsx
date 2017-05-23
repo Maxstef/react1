@@ -3,6 +3,7 @@ import { Container } from 'reactstrap';
 import { Link } from "react-router";
 import ImagesUploader from 'react-images-uploader';
 import config from 'react-global-configuration';
+import AvatarImageCropper from 'react-avatar-image-cropper';
 
 class Cabinet extends React.Component {
     render() {
@@ -43,7 +44,19 @@ class Cabinet extends React.Component {
                         }}
                         label="Upload a picture"
                     />
+                } 
+
+                {(this.props.user && (this.props.user.photoUrl === null || typeof this.props.user.photoUrl == 'undefined')) && 
+                    <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black'}}>
+                        <AvatarImageCropper apply={this.props.apply} />
+                    </div>
                 }
+                {(this.props.user && (this.props.user.photoUrl !== null && typeof this.props.user.photoUrl != 'undefined')) && 
+                    <div style={{ width: '250px', height: '250px', margin: 'auto', border: '1px solid black' }}>
+                        <AvatarImageCropper apply={this.props.apply} />
+                    </div>
+                }
+                
                 
             </Container>
         );

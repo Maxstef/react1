@@ -19,6 +19,8 @@ class CabinetContainer extends React.Component {
         };
         this.toggleUploader = this.toggleUploader.bind(this);
         this.savePhoto = this.savePhoto.bind(this);
+        this.apply = this.apply.bind(this);
+        this.uploadRequest=this.uploadRequest.bind(this);
     }
 
     toggleUploader(){
@@ -42,6 +44,27 @@ class CabinetContainer extends React.Component {
             });
     }
 
+    apply(file) {
+        let formData = new FormData();
+        formData.append('file', file, "imageCropped.jpg");
+        let xhr = this.uploadRequest(formData);
+        axios.post("http://localhost:3000/upload-photo", formData)
+            .then(res => {
+                this.savePhoto(res.data.fileName);
+            });
+    }
+
+    uploadRequest(formData) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', "http://localhost:3000/upload-photo", true);
+        xhr.setRequestHeader("enctype", "multipart/form-data");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.setRequestHeader("Cache-Control", "no-store");
+        xhr.setRequestHeader("Pragma", "no-cache");
+        xhr.send(formData);
+        return xhr;
+    }
+
     render() {
         return (
             <Container>
@@ -56,7 +79,8 @@ class CabinetContainer extends React.Component {
                     toggleUploader={this.toggleUploader}
                     uploaderDispalay={this.state.uploaderDispalay}
                     user={this.props.user}
-                    savePhoto={this.savePhoto}/>
+                    savePhoto={this.savePhoto}
+                    apply={this.apply}/>
             </Container>
         );
     }
