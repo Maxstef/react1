@@ -93,11 +93,9 @@ class AddScheduleContainer extends React.Component {
     }
 
     changeSlotValue(day, index, key, value){
-        console.log(day, index, key, value);
         let d = this.state.days;
         d[day].slotValue[index][key] = value;
         this.setState({days: d });
-        console.log(this.state.days);
     }
 
     invalidForm(){
@@ -116,7 +114,6 @@ class AddScheduleContainer extends React.Component {
     }
 
     saveSchedule(){
-        console.log('boom');
         let data = {available: []};
         _.forEach(this.state.days, (day)=>{
             if(day.available){
@@ -130,11 +127,8 @@ class AddScheduleContainer extends React.Component {
                 data.available.push({day: n, slot: slots});
             }
         });
-        console.log(data);
         axios.put(config.get('api') + 'doctors/' + this.props.user._id, data)
             .then(res => {
-                console.log('done!');
-                console.log(res.data);
                 let user = res.data;
                 this.props.setInfo(user); 
             });

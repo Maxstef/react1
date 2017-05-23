@@ -46,7 +46,7 @@ class AddSchedule extends React.Component {
                 <div className="available-hours-item col-12 col-sm-12 col-md-9 col-lg-6 col-xl-4  row">
                     <div className="col-12 col-sm-5">
                         <Input type="select" id={"from-" + day + "-" + index} name={"from-" + day + "-" + index} 
-                            onChange={(e)=>{console.log(slotValue[index].from);this.props.changeSlotValue(dayIndex, index, 'from', e.target.value)}}
+                            onChange={(e)=>{this.props.changeSlotValue(dayIndex, index, 'from', e.target.value)}}
                             defaultValue={slotValue[index].from} disabled={times > index+1}>
                             {this.renderOptions(slotValue, index, 'from')}
                         </Input>
@@ -56,7 +56,7 @@ class AddSchedule extends React.Component {
                     </div>
                     <div className="col-12 col-sm-5">
                         <Input type="select" id={"to-" + day + "-" + index} name={"to-" + day + "-" + index}
-                            onChange={(e)=>{console.log(slotValue[index].to);this.props.changeSlotValue(dayIndex, index, 'to', e.target.value)}}
+                            onChange={(e)=>{this.props.changeSlotValue(dayIndex, index, 'to', e.target.value)}}
                             defaultValue={slotValue[index].to} disabled={times > index+1}>
                             {this.renderOptions(slotValue, index, 'to')}
                         </Input>
