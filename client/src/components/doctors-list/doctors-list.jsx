@@ -20,15 +20,15 @@ const Doctor = ({doctor}) => {
                     <doctor key={doctor._id}>
                         <Link to={"/doctor/" + doctor._id} activeClassName="active">
                             <Row>
-                                <Col xs="2">
-                                    {doctor.photoUrl === null || typeof doctor.photoUrl == 'undefined' &&
+                                <Col xs="4" md="2">
+                                    {(doctor.photoUrl === null || typeof doctor.photoUrl == 'undefined') &&
                                         <img src={config.get('defaultAvatarUrl')} style={{width: "100%", height: "auto"}} />
                                     }
-                                    {doctor.photoUrl !== null && typeof doctor.photoUrl != 'undefined' &&
+                                    {(doctor.photoUrl !== null && typeof doctor.photoUrl != 'undefined')&&
                                         <img src={config.get('api') + doctor.photoUrl} style={{width: "100%", height: "auto"}} />
                                     }
                                 </Col>
-                                <Col xs="10">
+                                <Col xs="8" md="10">
                                     <Row>
                                         <Col xs="12">
                                             Doctor{' '}{doctor.name.first}{' '}{doctor.name.last}

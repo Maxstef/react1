@@ -135,7 +135,7 @@ class AddSchedule extends React.Component {
             <Container>             
                 <div className="add-schedule">
                     {this.renderAvailableDays()}
-                    <Button color="success" disabled={this.props.invalidForm()} onClick={this.props.saveSchedule}>Save</Button>
+                    <Button color="success" disabled={this.props.invalidForm()} onClick={this.props.saveSchedule} style={{marginTop: "10px"}}>Save</Button>
                 </div>
             </Container>   
         );
