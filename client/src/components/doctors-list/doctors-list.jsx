@@ -76,9 +76,11 @@ class DoctorsList extends React.Component {
     render() {
         const doctors = renderDoctors(this.props.info);
         return (
-            <Row className="equal">
-                {doctors}
-            </Row>
+            <Container>
+                <Row className="equal">
+                    {doctors}
+                </Row>
+            </Container>
         )
     }
 }

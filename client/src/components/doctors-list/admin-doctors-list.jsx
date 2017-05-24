@@ -73,16 +73,18 @@ class AdminDoctorsList extends React.Component {
     render() {
         const doctors = renderDoctors(this.props.info);
         return (
-            <Row>
-                <Col xs="12">
-                    <Link to={"/doctor-add-edit/add"} activeClassName="active">
-                        <Button color="success" style={{ cursor: 'pointer', marginBottom: '40px' }}><i className="fa fa-3x fa-plus-circle" aria-hidden="true"></i></Button>
-                    </Link>
-                </Col>
-                <Row className="equal">
-                    {doctors}
+            <Container>
+                <Row>
+                    <Col xs="12">
+                        <Link to={"/doctor-add-edit/add"} activeClassName="active">
+                            <Button color="success" style={{ cursor: 'pointer', marginBottom: '40px' }}><i className="fa fa-3x fa-plus-circle" aria-hidden="true"></i></Button>
+                        </Link>
+                    </Col>
+                    <Row className="equal">
+                        {doctors}
+                    </Row>
                 </Row>
-            </Row>
+            </Container>
         )
     }
 }
