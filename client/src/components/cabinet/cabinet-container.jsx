@@ -15,16 +15,11 @@ class CabinetContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uploaderDispalay: false
+            
         };
-        this.toggleUploader = this.toggleUploader.bind(this);
         this.savePhoto = this.savePhoto.bind(this);
         this.apply = this.apply.bind(this);
         this.uploadRequest=this.uploadRequest.bind(this);
-    }
-
-    toggleUploader(){
-        this.setState({uploaderDispalay: !this.state.uploaderDispalay});
     }
 
     componentDidMount() {
@@ -36,11 +31,10 @@ class CabinetContainer extends React.Component {
     savePhoto(photoUrl){
         axios.put(config.get('api') + 'doctors/' + this.props.user._id, { photoUrl: photoUrl })
             .then(res => {
-                console.log(res.data);
-                this.toggleUploader();
                 let user = this.props.user;
                 user.photoUrl = res.data.photoUrl;
                 this.props.setInfo(user);
+                this.forceUpdate()
             });
     }
 

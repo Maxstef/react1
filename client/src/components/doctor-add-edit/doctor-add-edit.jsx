@@ -34,7 +34,7 @@ const Type = ({length, index, type, t}) => {
         <Col md={9}>
           <Validation.components.Textarea className="form-control" errorClassName='is-invalid-input' rows="2"
             onChange={(e) => t.props.setDoctorType(e.target.value, index, 'description')} style={{ resize: 'none' }}
-            value={t.props.doctorType[index]['description']} name={"typeDesc" + index} id={"typeDesc" + index} placeholder="type description" validations={['required']} />
+            value={t.props.doctorType[index]['description']} name={"typeDesc" + index} id={"typeDesc" + index} placeholder="type description" validations={[]} />
         </Col>
       </FormGroup>
       {(index + 1 === length && length < 6) && <Button onClick={t.props.newDoctorType} type="button" color="success">+</Button>}

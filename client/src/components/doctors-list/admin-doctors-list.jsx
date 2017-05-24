@@ -15,28 +15,33 @@ function renderDoctors(info) {
 
 const Doctor = ({doctor}) => {
     const doctorTypes = renderDoctorTypes(doctor);
+    const doctorBio = doctor.doctorData.bio.substring(0, 100) + '...';
     return (
-        <Row className="doctors-list">
-            <Col xs="12">
+        <Col xs="12" sm="12" md="12" lg="6" className="doctors-list">
+            <Col xs="12" className="doctor-item">
                 <doctor key={doctor._id}>
                     <Link to={"/doctor-add-edit/" + doctor._id} activeClassName="active">
                         <Row>
-                            <Col xs="4" md="2">
+                            <Col xs="4" sm="3" md="2" lg="4">
                                 {(doctor.photoUrl === null || typeof doctor.photoUrl == 'undefined') &&
-                                    <img src={config.get('defaultAvatarUrl')} style={{ width: "100%", height: "auto" }} />
+                                    <img src={config.get('defaultAvatarUrl')} className="avatar-photo" />
                                 }
                                 {(doctor.photoUrl !== null && typeof doctor.photoUrl != 'undefined') &&
-                                    <img src={config.get('api') + doctor.photoUrl} style={{ width: "100%", height: "auto" }} />
+                                    <img src={config.get('api') + doctor.photoUrl} className="avatar-photo" />
                                 }
                             </Col>
-                            <Col xs="8" md="10">
+                            <Col xs="8" sm="9" md="10" lg="8">
                                 <Row>
                                     <Col xs="12">
-                                        Doctor{' '}{doctor.name.first}{' '}{doctor.name.last}
+                                        <h4>{doctor.name.first}{' '}{doctor.name.last}</h4>
                                     </Col>
                                     <Col xs="12">
-                                        {doctorTypes}
-                                        <p>{doctor._id}</p>
+                                        <ul className="doctor-types">
+                                            {doctorTypes}
+                                        </ul>
+                                    </Col>
+                                    <Col xs="12">
+                                        <p>{doctorBio}</p>
                                     </Col>
                                 </Row>
                             </Col>
@@ -44,7 +49,7 @@ const Doctor = ({doctor}) => {
                     </Link>
                 </doctor>
             </Col>
-        </Row>
+        </Col>
     );
 };
 
@@ -57,10 +62,9 @@ function renderDoctorTypes(doctor) {
 
 const Type = ({type}) => {
     return (
-        <div>
-            <span>{'\n'}{type.name}{'.\n'}</span>
-            <span>{type.description}</span>
-        </div>
+        <li>
+            {type.name}{'. '}{type.description}
+        </li>
     )
 };
 
@@ -69,12 +73,16 @@ class AdminDoctorsList extends React.Component {
     render() {
         const doctors = renderDoctors(this.props.info);
         return (
-            <section>
-                <Link to={"/doctor-add-edit/add"} activeClassName="active">
-                    <Button color="success" style={{ cursor: 'pointer', marginBottom: '40px' }}><i className="fa fa-3x fa-plus-circle" aria-hidden="true"></i></Button>
-                </Link>
-                {doctors}
-            </section>
+            <Row>
+                <Col xs="12">
+                    <Link to={"/doctor-add-edit/add"} activeClassName="active">
+                        <Button color="success" style={{ cursor: 'pointer', marginBottom: '40px' }}><i className="fa fa-3x fa-plus-circle" aria-hidden="true"></i></Button>
+                    </Link>
+                </Col>
+                <Row className="equal">
+                    {doctors}
+                </Row>
+            </Row>
         )
     }
 }
