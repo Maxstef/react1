@@ -17,7 +17,7 @@ class AddSchedule extends React.Component {
                         </div>
                         <div>
                             {checked && ranges < 6 && 
-                                <Button style={{marginLeft: "6px"}} onClick={()=>{this.props.newRange(index)}} type="button" color="success" 
+                                <Button style={{marginLeft: "6px", marginBottom: "2px"}} onClick={()=>{this.props.newRange(index)}} type="button" color="success" 
                                     disabled={slotValue[slotValue.length -1].to == -1 || slotValue[slotValue.length -1].from == -1}>
                                     <i className="fa fa-plus-circle" aria-hidden="true"></i>
                                 </Button>
@@ -51,15 +51,16 @@ class AddSchedule extends React.Component {
                             {this.renderOptions(slotValue, index, 'from')}
                         </Input>
                     </div>
-                    <div className="col-12 col-sm-2" style={{textAlign: 'center'}}>
-                        -
-                    </div>
                     <div className="col-12 col-sm-5">
+                        <span className="schedule-separator">-</span>
                         <Input type="select" id={"to-" + day + "-" + index} name={"to-" + day + "-" + index}
                             onChange={(e)=>{this.props.changeSlotValue(dayIndex, index, 'to', e.target.value)}}
                             defaultValue={slotValue[index].to} disabled={times > index+1}>
                             {this.renderOptions(slotValue, index, 'to')}
                         </Input>
+                    </div>
+                    <div className="col-12 col-sm-2" style={{textAlign: 'center'}}>
+                        
                     </div>
                 </div>
             );

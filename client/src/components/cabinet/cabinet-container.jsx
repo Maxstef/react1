@@ -15,10 +15,11 @@ class CabinetContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      uploaderDispalay: false
+            
     };
-    this.toggleUploader = this.toggleUploader.bind(this);
     this.savePhoto = this.savePhoto.bind(this);
+    this.apply = this.apply.bind(this);
+    this.uploadRequest=this.uploadRequest.bind(this);
   }
   
   toggleUploader() {
@@ -29,16 +30,36 @@ class CabinetContainer extends React.Component {
     browserHistory.replace('/');
   }
   
-  savePhoto(photoUrl) {
-    axios.put(config.get('api') + 'doctors/' + this.props.user._id, {photoUrl: photoUrl})
-         .then(res => {
-           console.log(res.data);
-           this.toggleUploader();
-           let user = this.props.user;
-           user.photoUrl = res.data.photoUrl;
-           this.props.setInfo(user);
-         });
-  }
+  savePhoto(photoUrl){
+        axios.put(config.get('api') + 'doctors/' + this.props.user._id, { photoUrl: photoUrl })
+            .then(res => {
+                let user = this.props.user;
+                user.photoUrl = res.data.photoUrl;
+                this.props.setInfo(user);
+                this.forceUpdate()
+            });
+    }
+
+    apply(file) {
+        let formData = new FormData();
+        formData.append('file', file, "imageCropped.jpg");
+        let xhr = this.uploadRequest(formData);
+        axios.post("http://localhost:3000/upload-photo", formData)
+            .then(res => {
+                this.savePhoto(res.data.fileName);
+            });
+    }
+
+    uploadRequest(formData) {
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', "http://localhost:3000/upload-photo", true);
+        xhr.setRequestHeader("enctype", "multipart/form-data");
+        xhr.setRequestHeader("Cache-Control", "no-cache");
+        xhr.setRequestHeader("Cache-Control", "no-store");
+        xhr.setRequestHeader("Pragma", "no-cache");
+        xhr.send(formData);
+        return xhr;
+    }
   
   render() {
     return (

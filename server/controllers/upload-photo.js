@@ -11,8 +11,8 @@ module.exports = function (router) {
         }
         
         // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file 
-        let image = req.files.imageFiles;
-        let ext = pathmod.extname(req.files.imageFiles.name);
+        let image = req.files.file;
+        let ext = pathmod.extname(req.files.file.name);
         let name = uniqueFilename('./files/doctors-photo/');
         
         // Use the mv() method to place the file somewhere on your server 

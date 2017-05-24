@@ -229,8 +229,69 @@ label.su::before {
 }
 
 .available-hours-item {
-  padding-top: 15px;
+    padding-top: 15px;
 }
+
+.schedule-separator {
+    position: absolute;
+    left: -3px;
+    top: 4px;
+}
+
+/***********************************************
+**************  CABINET   *****************
+***********************************************/
+
+.upload-photo {
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    top: 0;
+}
+
+.upload-photo svg, .upload-photo svg + p {
+    visibility: hidden;
+}
+
+.upload-photo:hover svg, .upload-photo:hover svg + p {
+    visibility: visible;
+}
+
+/***********************************************
+**************  DOCTOR LIST   *****************
+***********************************************/
+
+.avatar-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 5%;
+}
+
+.doctor-item {
+    border: 1px solid #eee;
+    padding: 20px;
+}
+
+ul.doctor-types {
+    list-style-type: disc;
+    -webkit-column-count: 1;
+    -webkit-column-gap: 2.5em;
+    column-count: 1;
+    column-gap: 2.5em; 
+}
+
+.equal {
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+}
+
+.equal > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
 
 /***********************************************
 **************  STARTPAGE   *****************
@@ -253,4 +314,16 @@ label.su::before {
   /*margin-top: 5%;*/
   /*font-weight: 600;*/
   color: white;
+}
+
+@media only screen and (max-width: 577px) {
+    .schedule-separator {
+        display: none;
+    }  
+}
+
+@media only screen and (min-width: 1200px) {
+    .avatar-photo {
+        width: 80%;
+    } 
 }
