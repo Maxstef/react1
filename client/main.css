@@ -147,14 +147,87 @@ input.is-invalid-input, textarea.is-invalid-input {
 }
 
 /***********************************************
-**************  HOMEPAGE   *****************
+**************  ADD SCHEDULE   *****************
 ***********************************************/
 
-/*.current-meetings-btn {*/
-  /*width: 50%;*/
-  /*float: left;*/
-/*}*/
+.available-day-item {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: block;
+    background-color: #d1d3d4;
+    margin: 8px 4px;
+}
 
-/*.past-meetings-btn {*/
-  /*width: 50%;*/
-/*}*/
+.available-day-item input[type="checkbox"] {
+    visibility: hidden;
+}
+
+.available-day-item label {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #d1d3d4;
+    border-radius: 50%;
+}
+
+.available-day-item input[type="checkbox"]:checked + label {
+    background-color: #00adee;
+}
+
+.available-day-item label:before {
+    color: #fff;
+    position: absolute;
+    font-size: 12px;
+    font-weight: bold;
+    top: 6px;
+    left: 6px;
+    opacity: 1;
+}
+
+label.sa::before {
+    content: "Sa";
+    font-size: 25px;
+    padding-left: 5px;
+}
+
+label.mo::before {
+    content: "Mo";
+    font-size: 25px;
+}
+
+label.th::before {
+    content: "Th";
+    font-size: 25px;
+    padding-left: 5px;
+}
+
+label.tu::before {
+    content: "Tu";
+    font-size: 25px;
+    padding-left: 5px;
+}
+
+label.we::before {
+    content: "We";
+    font-size: 25px;
+}
+
+label.fr::before {
+    content: "Fr";
+    font-size: 25px;
+    padding-left: 7px;
+}
+
+label.su::before {
+    content: "Su";
+    font-size: 25px;
+    padding-left: 6px;
+}
+
+.available-hours-item {
+  padding-top: 15px;
+}
