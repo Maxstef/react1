@@ -7,7 +7,7 @@ import config from 'react-global-configuration';
 class LoginContainer extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       usernameValid: false,
       passwordValid: false,

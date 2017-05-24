@@ -143,6 +143,18 @@ input.is-invalid-input, textarea.is-invalid-input {
 }
 
 .slot {
-  /*padding: 0.5em 1.2em;*/
   font-size: 0.9em;
 }
+
+/***********************************************
+**************  HOMEPAGE   *****************
+***********************************************/
+
+/*.current-meetings-btn {*/
+  /*width: 50%;*/
+  /*float: left;*/
+/*}*/
+
+/*.past-meetings-btn {*/
+  /*width: 50%;*/
+/*}*/

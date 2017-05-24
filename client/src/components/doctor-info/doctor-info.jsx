@@ -30,12 +30,11 @@ class DoctorInfo extends React.Component {
               <header className="search-header">{this.props.info.username}{' '}#{this.props.doctorId}{' '}
                 {this.props.name.first}{' '}{this.props.name.last}
               </header>
-              <p>
+              <div>
                 {this.renderDoctorTypes(this.props.doctorType)}
                 <p>Current doctor {this.props.currentDoctor}</p>
-                <p>{String(this.props.listEmpty)} list</p>
                 <p>{this.props.info.doctorData.bio}</p>
-              </p>
+              </div>
               { !this.props.meeting && <Button color="warning" onClick={this.props.toggleMeeting}>Make meeting</Button>}
             </Col>
           </Row>

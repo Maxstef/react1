@@ -16,7 +16,7 @@ class Wrapper extends React.Component {
                     <Link className="nav-link" to="/">Home</Link>
                   </NavItem>
                   <NavItem>
-                    <Link className="nav-link" to="/doctors-list">List</Link>
+                    <Link className="nav-link" to="/doctors-list">Doctors list</Link>
                   </NavItem>
                   <NavItem>
                     <Logout/>

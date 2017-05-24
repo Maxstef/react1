@@ -48,7 +48,12 @@ class AddMeetingContainer extends React.Component {
   
   componentDidMount() {
     // take doctor schedule list
-    let schedule = _.concat(this.props.currentInfo.doctorData.available, this.props.currentInfo.doctorData.specialDays);
+    let schedule;
+    if (this.props.currentInfo.doctorData.specialDays) {
+      schedule = _.concat(this.props.currentInfo.doctorData.available, this.props.currentInfo.doctorData.specialDays);
+    } else {
+      schedule = this.props.currentInfo.doctorData.available;
+    }
     this.setState({
       availableHours: schedule,
       specialDays: this.props.currentInfo.doctorData.specialDays
@@ -121,7 +126,7 @@ class AddMeetingContainer extends React.Component {
     })
   }
   
-  // get all meetings of all current doctor and all meetings with current doctor and current user
+  // get all meetings of current doctor and all meetings with current doctor and current user
   getAllMeetings() {
     let myMeetings;
     let userId = this.props.userId;
