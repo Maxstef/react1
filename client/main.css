@@ -230,5 +230,17 @@ label.su::before {
 }
 
 .available-hours-item {
-  padding-top: 15px;
+    padding-top: 15px;
+}
+
+.schedule-separator {
+    position: absolute;
+    left: -3px;
+    top: 4px;
+}
+
+@media only screen and (max-width: 577px) {
+    .schedule-separator {
+        display: none;
+    }  
 }
