@@ -16,7 +16,7 @@ class Logout extends React.Component {
 
     render() {
         return (
-            <a className="nav-link" onClick={this.logout.bind(this)} style={{cursor: 'pointer'}}>Logout</a>
+            <a className="nav-link" onClick={this.logout.bind(this)} style={{cursor: 'pointer'}}>Log out</a>
         );
     }
 }

@@ -16,7 +16,7 @@ function renderDoctorTypes() {
 
 const Type = ({length, index, type, t}) => {
   return (
-    <div>
+    <Container>
       <h4>Type {index + 1}</h4>
       <FormGroup row>
         <Label for={'typeName' + index} md={3}>Type name:</Label>
@@ -38,7 +38,7 @@ const Type = ({length, index, type, t}) => {
         </Col>
       </FormGroup>
       {(index + 1 === length && length < 6) && <Button onClick={t.props.newDoctorType} type="button" color="success">+</Button>}
-    </div>
+    </Container>
   )
 };
 

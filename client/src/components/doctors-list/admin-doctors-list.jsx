@@ -69,12 +69,12 @@ class AdminDoctorsList extends React.Component {
     render() {
         const doctors = renderDoctors(this.props.info);
         return (
-            <section>
+            <Container>
                 <Link to={"/doctor-add-edit/add"} activeClassName="active">
                     <Button color="success" style={{ cursor: 'pointer', marginBottom: '40px' }}><i className="fa fa-3x fa-plus-circle" aria-hidden="true"></i></Button>
                 </Link>
                 {doctors}
-            </section>
+            </Container>
         )
     }
 }
