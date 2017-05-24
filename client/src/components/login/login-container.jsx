@@ -7,7 +7,7 @@ import config from 'react-global-configuration';
 class LoginContainer extends React.Component {
 
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       usernameValid: false,
       passwordValid: false,
@@ -55,7 +55,7 @@ class LoginContainer extends React.Component {
           if(response.data.doctorData !== null){
             browserHistory.push('/cabinet');
           } else {
-            browserHistory.push('/home');
+            browserHistory.push('/');
           }
           
         } else {

@@ -15,21 +15,27 @@ class Wrapper extends React.Component {
                   <NavItem>
                     <Link className="nav-link" to="/">Home</Link>
                   </NavItem>
+                  {localStorage.getItem('id') !== null && <NavItem>
+                    <Link className="nav-link" to="/patient-cabinet">Cabinet</Link>
+                  </NavItem>}
                   <NavItem>
-                    <Link className="nav-link" to="/doctors-list">List</Link>
+                    <Link className="nav-link" to="/doctors-list">Doctors list</Link>
                   </NavItem>
-                  <NavItem>
+                  {localStorage.getItem('id') === null && <NavItem>
+                    <Link className="nav-link" to="/login">Log in</Link>
+                  </NavItem>}
+                  {localStorage.getItem('id') !== null && <NavItem>
                     <Logout/>
-                  </NavItem>
+                  </NavItem>}
                 </Nav>
               </Collapse>
             </Navbar>
           
-          <Container className="content">
+          <div className="content">
             <main>
               {this.props.children}
             </main>
-          </Container>
+          </div>
           <footer className="footer">
             <Container>
               <span>Place sticky footer content here.</span>

@@ -13,6 +13,14 @@ module.exports = function (router) {
              .exec(function (err, meeting) {
                res.send(meeting);
              });
+    } else if (req.query.patientId !== undefined) {
+      Meeting.find({
+        patientId: req.query.patientId
+      })
+          .populate('doctor').populate('patient')
+          .exec(function (err, meeting) {
+            res.send(meeting);
+          })
     } else {
       Meeting.find().populate('doctor').populate('patient').exec(function (err, meeting) {
         res.send(meeting);
