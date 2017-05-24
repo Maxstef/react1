@@ -231,3 +231,26 @@ label.su::before {
 .available-hours-item {
   padding-top: 15px;
 }
+
+/***********************************************
+**************  STARTPAGE   *****************
+***********************************************/
+
+.image-container {
+  background-image: url('https://static.pexels.com/photos/247786/pexels-photo-247786.jpeg');
+  background-repeat: no-repeat;
+  background-color: grey;
+  background-size: 100% auto;
+  background-position: center 75%;
+  background-attachment: scroll;
+  height: 40vw;
+  margin: 3rem 0 3rem 0;
+  padding-top: 5%;
+}
+
+.title {
+  font-size: 4vw;
+  /*margin-top: 5%;*/
+  /*font-weight: 600;*/
+  color: white;
+}

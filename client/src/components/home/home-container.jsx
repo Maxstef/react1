@@ -4,6 +4,7 @@ import Home from './home';
 import {connect} from 'react-redux';
 import config from "react-global-configuration";
 import {bindActionCreators} from "redux";
+import {browserHistory} from "react-router";
 import AuthoriationService from '../authorization';
 import * as activeUserActions from '../../actions/active-user-action';
 import moment from "moment";
@@ -28,6 +29,10 @@ class HomeContainer extends React.Component {
     this.getPatientMeetings();
   }
   
+  redirect() {
+    browserHistory.replace('/');
+  }
+  
   getPatientMeetings() {
     let currentMeetings = [];
     let meetingsInPast = [];
@@ -46,7 +51,7 @@ class HomeContainer extends React.Component {
              currentMeetings: currentMeetings,
              meetingsInPast: meetingsInPast
            }, () => {
-             console.log(this.state.allMeetings, this.state.currentMeetings, this.state.meetingsInPast);
+             // console.log(this.state.allMeetings, this.state.currentMeetings, this.state.meetingsInPast);
            });
          });
   }
@@ -67,15 +72,17 @@ class HomeContainer extends React.Component {
   
   render() {
     return (
-        <div className="name">
+        <div>
           <AuthoriationService/>
+          {(this.props.role === 'guest') && this.redirect()}
+          {(this.props.role === 'doctor' || this.props.role === 'patient' || this.props.role === 'admin') &&
           <Home currentMeetings={this.state.currentMeetings}
                 meetingsInPast={this.state.meetingsInPast}
                 togglePast={this.togglePast}
                 toggleCurrent={this.toggleCurrent}
                 togglerPast={this.state.togglerPast}
                 togglerCurrent={this.state.togglerCurrent}
-                role={this.props.role}/>
+                role={this.props.role}/>}
         </div>
     );
   }

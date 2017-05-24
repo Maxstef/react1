@@ -55,7 +55,7 @@ class LoginContainer extends React.Component {
           if(response.data.doctorData !== null){
             browserHistory.push('/cabinet');
           } else {
-            browserHistory.push('/home');
+            browserHistory.push('/');
           }
           
         } else {

@@ -19,7 +19,7 @@ class DoctorInfo extends React.Component {
   
   render() {
     return (
-        <div>
+        <Container>
           <Row>
             <Col md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
               <button type="button" className="btn btn-link mr-1 mb-1" onClick={this.props.toDoctorList}>Back</button>
@@ -38,7 +38,7 @@ class DoctorInfo extends React.Component {
               { !this.props.meeting && <Button color="warning" onClick={this.props.toggleMeeting}>Make meeting</Button>}
             </Col>
           </Row>
-        </div>
+        </Container>
     );
   }
 }
