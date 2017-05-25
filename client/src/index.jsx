@@ -10,6 +10,8 @@ import StartPageContainer from './components/startpage/startpage-container';
 import {Router, Route, IndexRoute, browserHistory, hashHistory} from "react-router";
 import {connect} from 'react-redux';
 import LoginContainer from './components/login/login-container';
+import ForgotPasswordContainer from './components/forgot-password/forgot-password-container';
+import RestorePasswordContainer from './components/restore-password/restore-password-container';
 import RegistrationContainer from './components/registration/registration-container';
 import FormValidation from './form-validation';
 import Config from './config';
@@ -21,6 +23,8 @@ export default class Index extends React.Component {
         <Router history={browserHistory}>
           <Route path="login" component={LoginContainer}/>
           <Route path="registration" component={RegistrationContainer}/>
+          <Route path="forgot-password" component={ForgotPasswordContainer}/>
+          <Route path="restore-password" component={RestorePasswordContainer}/>
           
           <Route component={Wrapper}>
             <Route path="/" component={StartPageContainer}/>

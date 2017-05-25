@@ -79,7 +79,8 @@ button:disabled {
 ***********************************************/
 
 .login-form {
-  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #eee;
 }
 
 .login {
@@ -314,6 +315,16 @@ ul.doctor-types {
   /*margin-top: 5%;*/
   /*font-weight: 600;*/
   color: white;
+}
+
+.reset-pass-form {
+    margin-bottom: 15px;
+}
+
+.forgot-pass-title {
+    margin: 100px 0 40px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
 }
 
 @media only screen and (max-width: 577px) {

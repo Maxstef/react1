@@ -1,0 +1,7 @@
+var smtpConfig = {};
+
+smtpConfig.service = "";
+smtpConfig.user = "";
+smtpConfig.password = "";
+
+module.exports = smtpConfig;

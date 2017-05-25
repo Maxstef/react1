@@ -2,3 +2,4 @@
 .vscode/
 debug.log
 /node_modules
+smtpConfig.js
