@@ -243,14 +243,83 @@ label.su::before {
   background-size: 100% auto;
   background-position: center 75%;
   background-attachment: scroll;
-  height: 40vw;
-  margin: 3rem 0 3rem 0;
-  padding-top: 5%;
+  height: 45vw;
+  margin: .8rem 0 3rem 0;
+  padding: 3% 0 0 5%;
 }
 
 .title {
-  font-size: 4vw;
+  font-size: 4.3vw;
   /*margin-top: 5%;*/
   /*font-weight: 600;*/
   color: white;
+  display: inline;
+}
+
+.login-links {
+  margin-top: -2.2rem;
+}
+
+.widget1 {
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 30%;
+  height: 45%;
+  float: right;
+  margin: 0 2rem 0 0;
+  padding: 0.6rem;
+  border-radius: 3px;
+}
+
+.widget1:hover, .widget2:hover, .widget3:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+.widget2 {
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 30%;
+  height: 45%;
+  float: left;
+  margin: 0 0rem 0 0rem;
+  padding: 0.6rem;
+  border-radius: 3px;
+}
+
+.widget3 {
+  clear: both;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 30%;
+  height: 45%;
+  float: right;
+  margin: 1rem 2rem 0 0;
+  padding: 0.6rem;
+  border-radius: 3px;
+}
+
+@media (max-width: 480px) {
+  .image-container {
+    background-image: url('https://static.pexels.com/photos/247786/pexels-photo-247786.jpeg');
+    background-repeat: no-repeat;
+    background-color: grey;
+    background-size: 150% auto;
+    background-position: center 75%;
+    background-attachment: scroll;
+    height: 70vw;
+    margin: .8rem 0 3rem 0;
+    padding: 3% 0 0 5%;
+  }
+}
+
+@media (min-width: 480px) and (max-width: 970px) {
+  .image-container {
+    background-image: url('https://static.pexels.com/photos/247786/pexels-photo-247786.jpeg');
+    background-repeat: no-repeat;
+    background-color: grey;
+    background-size: 120% auto;
+    background-position: center 75%;
+    background-attachment: scroll;
+    height: 55vw;
+    margin: .8rem 0 3rem 0;
+    padding: 3% 0 0 5%;
+  }
 }

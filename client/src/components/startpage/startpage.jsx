@@ -9,8 +9,28 @@ class StartPage extends React.Component {
   render() {
     return (
         <div>
+          {(this.props.role === 'guest' || this.props.role === null) && <div className="login-links d-flex justify-content-center">
+            <buton className="btn btn-link" onClick={this.props.redirectToLogin}>Log In</buton>
+            <buton className="btn btn-link" onClick={this.props.redirectToRegistration}>Sign Up</buton>
+          </div>}
+          {this.props.role !== 'guest' && this.props.role !== null && <div className="login-links d-flex justify-content-center">
+            Welcome, {this.props.info && <span>{' '}{this.props.info.name.first}</span>}
+          </div>}
           <div className="image-container">
-            <h2 className="title">the clinic</h2>
+            <h2 className="title">the CLINIC</h2>
+            <div className="widget1">
+              <h5>Personal cabinet</h5>
+              <p>In your cabinet you can view your next appointments to doctors either as view history of appointments.</p>
+            </div>
+            
+            <div className="widget3">
+              <h5>Contact with us</h5>
+              <p>Feel free to contact us and ask questions about our clinic and doctors. Also you can make appointment via phone.</p>
+            </div>
+            <div className="widget2">
+              <h5>Make appointment</h5>
+              <p>Choose one of our specialists. You can find doctors in every medicine specialization. In our clinic work only professionals. Just choose date and time you wish.</p>
+            </div>
           </div>
           <Container>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce mi lorem, congue ac ligula a, pretium

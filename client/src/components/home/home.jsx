@@ -35,8 +35,7 @@ class Home extends React.Component {
           <div className="homepage">
             {(this.props.role == 'patient' || this.props.role == 'admin') &&
             <Link to="doctors-list">to doctors list</Link>}
-            <h3>This is a homepage component</h3>
-            <p>login as {this.props.role}</p>
+            <h4>Your appointments</h4>
             {(this.props.currentMeetings.length || this.props.meetingsInPast.length) && <div>
               {/*<div className="row">*/}
                 {/*<div className="col-6 col-md-4 col-md-offset-2">*/}

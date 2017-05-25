@@ -1,4 +1,5 @@
 import React from 'react';
+import {browserHistory} from "react-router";
 import axios from 'axios';
 import StartPage from './startpage';
 import {connect} from 'react-redux';
@@ -14,18 +15,30 @@ class StartPageContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    
     };
   }
   
   componentWillMount() {
   }
   
+  redirectToLogin() {
+    browserHistory.push('/login');
+  }
+  
+  redirectToRegistration() {
+    browserHistory.push('/registration');
+  }
+  
   render() {
     return (
         <div>
           <AuthoriationService/>
-          <StartPage/>
+          <StartPage
+              redirectToLogin={this.redirectToLogin}
+              redirectToRegistration={this.redirectToRegistration}
+              role={this.props.role}
+              info={this.props.info}
+          />
         </div>
     );
   }
