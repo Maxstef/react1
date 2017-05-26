@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container} from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col} from 'reactstrap';
 import {Link} from "react-router";
 import moment from "moment";
 
@@ -9,27 +9,32 @@ class StartPage extends React.Component {
   render() {
     return (
         <div>
-          {(this.props.role === 'guest' || this.props.role === null) && <div className="login-links d-flex justify-content-center">
+          {(this.props.role === 'guest' || this.props.role === null) &&
+          <div className="login-links d-flex justify-content-center">
             <buton className="btn btn-link" onClick={this.props.redirectToLogin}>Log In</buton>
             <buton className="btn btn-link" onClick={this.props.redirectToRegistration}>Sign Up</buton>
           </div>}
-          {this.props.role !== 'guest' && this.props.role !== null && <div className="login-links d-flex justify-content-center">
+          {this.props.role !== 'guest' && this.props.role !== null &&
+          <div className="login-links d-flex justify-content-center">
             Welcome, {this.props.info && <span>{' '}{this.props.info.name.first}</span>}
           </div>}
           <div className="image-container">
             <h2 className="title">the CLINIC</h2>
-            <div className="widget1">
+            <div className="widget1"
+                 onClick={ (this.props.role === 'guest' || this.props.role === null) ? this.props.toggle : this.props.redirectToCabinet}>
               <h5>Personal cabinet</h5>
-              <p>In your cabinet you can view your next appointments to doctors either as view history of appointments.</p>
+              <p>If You are registered in our system, you can use our personal cabinet. In your cabinet You can view
+                your next appointments to doctors either as view history of appointments.</p>
             </div>
-            
-            <div className="widget3">
+            <div className="widget3" onClick={this.props.toggle2}>
               <h5>Contact with us</h5>
-              <p>Feel free to contact us and ask questions about our clinic and doctors. Also you can make appointment via phone.</p>
+              <p>Feel free to contact us and ask questions about our clinic and doctors. Also you can make appointment
+                via phone.</p>
             </div>
-            <div className="widget2">
+            <div className="widget2" onClick={this.props.redirectToDoctorsList}>
               <h5>Make appointment</h5>
-              <p>Choose one of our specialists. You can find doctors in every medicine specialization. In our clinic work only professionals. Just choose date and time you wish.</p>
+              <p>Choose one of our specialists. You can find doctors in every medicine specialization. In our clinic
+                work only professionals. Just choose date and time you wish.</p>
             </div>
           </div>
           <Container>
@@ -54,6 +59,35 @@ class StartPage extends React.Component {
               magna magna lobortis nibh, sit amet eleifend odio ipsum id elit. Nulla scelerisque iaculis ligula, quis
               dignissim risus consectetur non. Aenean euismod neque eu quam tincidunt ornare. Aliquam at porttitor
               purus, a pulvinar urna.</p>
+            
+            <Modal className="modal-lg"
+                   isOpen={this.props.modal}
+                   toggle={this.props.toggle}>
+              <ModalHeader toggle={this.props.toggle}>You are not logged in</ModalHeader>
+              <ModalBody>
+                To use our personal cabinet and many other features, You should sign up to our system.
+              </ModalBody>
+              <ModalFooter>
+                <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+                <Button color="warning" onClick={() => {
+                  this.props.redirectToLogin();
+                  this.props.toggle()
+                }}>Log In</Button>{' '}
+              </ModalFooter>
+            </Modal>
+  
+            <Modal className="modal-lg"
+                   isOpen={this.props.modal2}
+                   toggle={this.props.toggle2}>
+              <ModalHeader toggle={this.props.toggle2}>Contuct Us</ModalHeader>
+              <ModalBody>
+                telephone: 2412-535436-23
+              </ModalBody>
+              <ModalFooter>
+                <Button color="secondary" onClick={this.props.toggle2}>Close</Button>
+              </ModalFooter>
+            </Modal>
+          
           </Container>
         </div>
     );

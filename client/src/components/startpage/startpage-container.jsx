@@ -15,7 +15,11 @@ class StartPageContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      modal: false,
+      modal2: false
     };
+    this.toggle = this.toggle.bind(this);
+    this.toggle2 = this.toggle2.bind(this);
   }
   
   componentWillMount() {
@@ -29,6 +33,30 @@ class StartPageContainer extends React.Component {
     browserHistory.push('/registration');
   }
   
+  redirectToCabinet() {
+    browserHistory.push('/patient-cabinet');
+  }
+  
+  redirectToContuctUs() {
+    browserHistory.push('/contact-us');
+  }
+  
+  redirectToDoctorsList() {
+    browserHistory.push('/doctors-list');
+  }
+  
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+  
+  toggle2() {
+    this.setState({
+      modal2: !this.state.modal2
+    });
+  }
+  
   render() {
     return (
         <div>
@@ -36,8 +64,15 @@ class StartPageContainer extends React.Component {
           <StartPage
               redirectToLogin={this.redirectToLogin}
               redirectToRegistration={this.redirectToRegistration}
+              redirectToCabinet={this.redirectToCabinet}
+              redirectToContuctUs={this.redirectToContuctUs}
+              redirectToDoctorsList={this.redirectToDoctorsList}
               role={this.props.role}
               info={this.props.info}
+              toggle={this.toggle}
+              modal={this.state.modal}
+              toggle2={this.toggle2}
+              modal2={this.state.modal2}
           />
         </div>
     );

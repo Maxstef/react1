@@ -2,7 +2,6 @@ import React from 'react';
 import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col} from 'reactstrap';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-// import 'react-datepicker/dist/react-datepicker.css';
 import * as _ from 'lodash';
 
 class AddMeeting extends React.Component {
@@ -39,12 +38,12 @@ class AddMeeting extends React.Component {
     return (
         <Container>
           <Row>
-            <Col md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
-              Add meeting component!
+            <Col className="mb-4 mt-2" md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
+              To make an appointment, please choose available date and time.
             </Col>
           </Row>
           <Row>
-            <Col md={{size: 5, offset: 1}} xs={{size: 10, offset: 1}}>
+            <Col className="mb-4" xs={{size: 10, offset: 1}} md={{size: 5, offset: 1}} lg={{size: 4, offset: 1}}>
               <DatePicker
                   inline
                   selected={this.props.startDate}
@@ -56,7 +55,7 @@ class AddMeeting extends React.Component {
                   highlightDates={[moment()]}
               />
             </Col>
-            <Col md={{size: 6, offset: 0}} xs={{size: 8, offset: 1}}>
+            <Col className="mb-1" xs={{size: 8, offset: 1}} md={{size: 6, offset: 0}} lg={{size: 5, offset: 0}}>
               {this.props.currentSlots && this.renderSlots(this.props.currentSlots)}
             </Col>
           </Row>

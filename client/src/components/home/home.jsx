@@ -11,17 +11,15 @@ function renderMeetings(currentMeetings) {
 
 const Meetings = ({meeting}) => {
   return (
-      <div className="container">
-        <div className="row">
-          <div className="col-xs-10">
-            <p>
-              {meeting.doctor.name.first}{' '}
-              {meeting.doctor.name.last}{' '}
-              {moment(meeting.date).format('DD MMM YYYY, dddd, hh:mm')}
-            </p>
-          </div>
-        </div>
-      </div>
+      <tr>
+        <td>
+          {moment(meeting.date).format('DD MMM YYYY, dddd, hh:mm')}
+        </td>
+        <td>
+          {meeting.doctor.name.first}{' '}
+          {meeting.doctor.name.last}{' '}
+        </td>
+      </tr>
   )
 };
 
@@ -32,29 +30,31 @@ class Home extends React.Component {
     const pastMeetings = renderMeetings(this.props.meetingsInPast);
     return (
         <Container>
-          <div className="homepage">
-            {(this.props.role == 'patient' || this.props.role == 'admin') &&
-            <Link to="doctors-list">to doctors list</Link>}
-            <h4>Your appointments</h4>
-            {(this.props.currentMeetings.length || this.props.meetingsInPast.length) && <div>
-              {/*<div className="row">*/}
-                {/*<div className="col-6 col-md-4 col-md-offset-2">*/}
-                  <button className={"btn btn-secondary current-meetings-btn " + (this.props.togglerCurrent ? 'active' : '')}
-                          onClick={this.props.toggleCurrent}>
-                    Current meetings
-                  </button>
-                {/*</div>*/}
-                {/*<div className="col-6 col-md-4">*/}
-                  <button className={"btn btn-secondary past-meetings-btn " + (this.props.togglerPast ? 'active' : '')}
-                          onClick={this.props.togglePast}>
-                    Past meetings
-                  </button>
-              {/*//   </div>*/}
-              {/*// </div>*/}
-              {this.props.togglerCurrent && <div>{meetings}</div>}
-              {this.props.togglerPast && <div>{pastMeetings}</div>}
-            </div>}
-          </div>
+            <div className="homepage col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+              {(this.props.role == 'patient' || this.props.role == 'admin') &&
+              <Link to="doctors-list"><i className="fa fa-mail-forward"></i> to doctors list</Link>}
+              <h4 className="mb-4 mt-3">Your appointments</h4>
+              {(this.props.currentMeetings.length || this.props.meetingsInPast.length) && <div>
+                <button className={"mr-2 btn btn-secondary current-meetings-btn " + (this.props.togglerCurrent ? 'active' : '')}
+                        onClick={this.props.toggleCurrent}>
+                  Current meetings
+                </button>
+                <button className={"btn btn-secondary past-meetings-btn " + (this.props.togglerPast ? 'active' : '')}
+                        onClick={this.props.togglePast}>
+                  Past meetings
+                </button>
+                <table className="table table-striped mt-4">
+                  <thead>
+                  <tr>
+                    <th>date</th>
+                    <th>doctor</th>
+                  </tr>
+                  </thead>
+                  {this.props.togglerCurrent && <tbody>{meetings}</tbody>}
+                  {this.props.togglerPast && <tbody>{pastMeetings}</tbody>}
+                </table>
+              </div>}
+            </div>
         </Container>
     );
   }
