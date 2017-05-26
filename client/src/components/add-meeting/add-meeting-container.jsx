@@ -51,13 +51,16 @@ class AddMeetingContainer extends React.Component {
     let schedule;
     if (this.props.currentInfo.doctorData.specialDays) {
       schedule = _.concat(this.props.currentInfo.doctorData.available, this.props.currentInfo.doctorData.specialDays);
-    } else {
+    } else if (this.props.currentInfo.doctorData.available) {
       schedule = this.props.currentInfo.doctorData.available;
+    } else {
+      schedule = [];
     }
     this.setState({
       availableHours: schedule,
       specialDays: this.props.currentInfo.doctorData.specialDays
     }, function () {
+      // check if exists schedule or spec days
       if (schedule[0] || schedule[1]) {
         this.findAvailableDates();
       }

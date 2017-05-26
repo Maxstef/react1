@@ -37,11 +37,11 @@ class Home extends React.Component {
               {(this.props.currentMeetings.length || this.props.meetingsInPast.length) && <div>
                 <button className={"mr-2 btn btn-secondary current-meetings-btn " + (this.props.togglerCurrent ? 'active' : '')}
                         onClick={this.props.toggleCurrent}>
-                  Current meetings
+                  Current appointments
                 </button>
                 <button className={"btn btn-secondary past-meetings-btn " + (this.props.togglerPast ? 'active' : '')}
                         onClick={this.props.togglePast}>
-                  Past meetings
+                  Past appointments
                 </button>
                 <table className="table table-striped mt-4">
                   <thead>

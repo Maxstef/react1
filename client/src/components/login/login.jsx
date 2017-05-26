@@ -21,7 +21,7 @@ class Login extends React.Component {
               <span className="fa fa-unlock-alt fa-lg input-icon"></span>
             </FormGroup>
             <Link to="registration">registration</Link>
-            <Button className="submit-btn pull-right" color="primary" disabled={!(this.props.usernameValid && this.props.passwordValid)}>Login</Button>
+            <Button className="submit-btn pull-right" color="info" disabled={!(this.props.usernameValid && this.props.passwordValid)}>Login</Button>
           </Form>
           {this.props.loginError &&
             <div className="alert alert-danger">
