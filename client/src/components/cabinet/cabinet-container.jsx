@@ -74,6 +74,7 @@ class CabinetContainer extends React.Component {
           {(this.props.role === 'guest' || this.props.role === 'patient' || this.props.role === 'admin') && this.redirect()}
           {(this.props.role === 'doctor') &&
           <Cabinet
+              apply={this.apply}
               toggleUploader={this.toggleUploader}
               uploaderDispalay={this.state.uploaderDispalay}
               user={this.props.user}
