@@ -6,8 +6,6 @@ import * as activeUserActions from '../actions/active-user-action';
 import config from 'react-global-configuration';
 import { browserHistory } from "react-router";
 
-
-
 class AuthoriationService extends React.Component {
     render() {
         return null;

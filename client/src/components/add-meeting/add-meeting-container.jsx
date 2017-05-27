@@ -132,15 +132,22 @@ class AddMeetingContainer extends React.Component {
     let userId = this.props.userId;
     axios.get(config.get('api') + 'meetings' + '?doctorId=' + this.props.currentDoctor)
          .then(res => {
-           myMeetings = _.filter(res.data, function(o) {
-             if (o.patientId === userId) {
-               return o;
-             }
-           });
-           this.setState({
-             myMeetings: myMeetings,
-             allMeetings: res.data
-           });
+           if (userId !== null) {
+             myMeetings = _.filter(res.data, function (o) {
+               if (o.patientId === userId._id) {
+                 return o;
+               }
+             });
+             this.setState({
+               myMeetings: myMeetings,
+               allMeetings: res.data
+             });
+           } else {
+             this.setState({
+               myMeetings: [],
+               allMeetings: res.data
+             });
+           }
          });
   }
   
@@ -244,7 +251,7 @@ function mapStateToProps(state) {
     listEmpty: state.doctors.listEmpty,
     allMeetingsStore: state.doctors.allMeetings,
     role: state.activeUser.role,
-    userId: state.activeUser.info._id
+    userId: state.activeUser.info
   }
 }
 

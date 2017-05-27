@@ -3,6 +3,9 @@ import { Link, browserHistory } from "react-router";
 import axios from 'axios';
 import Login from './login';
 import config from 'react-global-configuration';
+import { bindActionCreators } from "redux";
+import * as activeUserActions from '../../actions/active-user-action';
+import {connect} from 'react-redux';
 
 class LoginContainer extends React.Component {
 
@@ -21,7 +24,7 @@ class LoginContainer extends React.Component {
 
   componentWillMount() {
     if (localStorage.getItem('username') !== null && localStorage.getItem('id') !== null) {
-      browserHistory.push('/home');
+      browserHistory.push('/');
     }
   }
 
@@ -48,14 +51,27 @@ class LoginContainer extends React.Component {
       username: e.target.username.value,
       password: e.target.password.value
     })
-      .then(function (response) {
+      .then((response) => {
         if (typeof response.data.error == 'undefined') {
           localStorage.setItem("username", response.data.username);
           localStorage.setItem("id", response.data._id);
-          if(response.data.doctorData !== null){
-            browserHistory.push('/cabinet');
+          if (response.data.adminData) {
+            this.props.setRole('admin');
+            this.props.setInfo(response.data);
+          } else if (response.data.patientData) {
+            this.props.setRole('patient');
+            this.props.setInfo(response.data);
+          } else if (response.data.doctorData) {
+            this.props.setRole('doctor');
+            this.props.setInfo(response.data);
           } else {
-            browserHistory.push('/');
+            this.props.setRole('guest');
+            this.props.setInfo(response.data);
+          }
+          if(response.data.doctorData !== null){
+            browserHistory.replace('/cabinet');
+          } else {
+            browserHistory.replace('/');
           }
           
         } else {
@@ -81,4 +97,18 @@ class LoginContainer extends React.Component {
   }
 }
 
-export default LoginContainer;
+function mapStateToProps(state) {
+  return {
+    role: state.activeUser.role,
+    info: state.activeUser.info
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setInfo: bindActionCreators(activeUserActions.setUserInfo, dispatch),
+    setRole: bindActionCreators(activeUserActions.setRole, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (LoginContainer);

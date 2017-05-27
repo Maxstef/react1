@@ -1,15 +1,25 @@
+.btn-link, a {
+  color: #F89406;
+}
+
+.btn-link:hover, a:hover {
+  color: #f57408;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .footer {
   bottom: 0;
   width: 100%;
   height: 60px;
   line-height: 60px;
-  background-color: #30c9a6;
+  background-color: #55B4B0;
   color: #fff;
   margin-top: 3em;
 }
 
 .navbar {
-  background-color: #30c9a6;
+  background-color: #55B4B0;
   margin-bottom: 3em;
 }
 
@@ -293,7 +303,6 @@ ul.doctor-types {
     flex-direction: column;
 }
 
-
 /***********************************************
 **************  STARTPAGE   *****************
 ***********************************************/
@@ -306,15 +315,165 @@ ul.doctor-types {
   background-position: center 75%;
   background-attachment: scroll;
   height: 40vw;
-  margin: 3rem 0 3rem 0;
-  padding-top: 5%;
+  margin: .8rem 0 3rem 0;
+  padding: 3% 0 0 5%;
 }
 
 .title {
-  font-size: 4vw;
+  font-size: 4.3vw;
   /*margin-top: 5%;*/
   /*font-weight: 600;*/
   color: white;
+  display: inline;
+}
+
+.login-links {
+  margin-top: -2.2rem;
+}
+
+.widget1 {
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 35%;
+  height: 45%;
+  float: right;
+  margin: 0 2rem 0 0;
+  padding: 0.6rem;
+  border-radius: 3px;
+}
+
+.widget1:hover, .widget2:hover, .widget3:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+.widget2 {
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 40%;
+  height: 45%;
+  float: left;
+  margin: 0 0rem 0 0rem;
+  padding: 0.6rem;
+  border-radius: 3px;
+}
+
+.widget3 {
+  clear: both;
+  background-color: rgba(255, 255, 255, 0.5);
+  width: 35%;
+  height: 45%;
+  float: right;
+  margin: 1rem 2rem 0 0;
+  padding: 0.6rem;
+  border-radius: 3px;
+}
+
+/***********************************************
+**************  STARTPAGE   *****************
+***********************************************/
+
+.avatar-photo-info {
+  width: 5rem;
+  heigth: 5rem;
+  float: left;
+  margin: 0 2rem 0 0;
+}
+
+.doctor-info-header {
+
+}
+
+.float-none {
+  clear: both;
+  height: 1rem;
+}
+
+/***********************************************
+**************  DATEPICKER   *****************
+***********************************************/
+
+.react-datepicker__day--highlighted {
+  border-radius: 0.3rem;
+  background-color: #55B4B0;
+  color: #fff; }
+
+.react-datepicker__day:hover {
+  border-radius: 0.3rem;
+  background-color: #ffcc99; }
+
+.react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range {
+  border-radius: 0.3rem;
+  background-color: #F89406;
+  color: #fff; }
+
+/***********************************************
+**************  MEDIA QUERIES   *****************
+***********************************************/
+
+@media (max-width: 480px) {
+  .title {
+    display: none;
+  }
+  .image-container {
+    background-image: url('https://static.pexels.com/photos/247786/pexels-photo-247786.jpeg');
+    background-repeat: no-repeat;
+    background-color: grey;
+    background-size: 160% auto;
+    background-position: center 75%;
+    background-attachment: scroll;
+    height: 85vw;
+    margin: .8rem 0 1rem 0;
+    padding: 3% 5% 0 5%;
+  }
+  .widget1, .widget2, .widget3 {
+    width: 100%;
+    height: auto;
+    float: none;
+    font-size: .75em;
+    margin: 1em 0 0 0;
+  }
+  .widget1 h5, .widget2 h5, .widget3 h5 {
+    font-size: 1em;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 730px) {
+  .image-container {
+    background-image: url('https://static.pexels.com/photos/247786/pexels-photo-247786.jpeg');
+    background-repeat: no-repeat;
+    background-color: grey;
+    background-size: 120% auto;
+    background-position: center 75%;
+    background-attachment: scroll;
+    height: 55vw;
+    margin: .8rem 0 3rem 0;
+    padding: 3% 0 0 5%;
+  }
+  .widget1, .widget2, .widget3 {
+    width: 45%;
+    height: 45%;
+    font-size: .8em;
+  }
+  .widget1 h5, .widget2 h5, .widget3 h5 {
+    font-size: 1em;
+  }
+}
+
+@media (min-width: 731px) and (max-width: 970px) {
+  .image-container {
+    background-image: url('https://static.pexels.com/photos/247786/pexels-photo-247786.jpeg');
+    background-repeat: no-repeat;
+    background-color: grey;
+    background-size: 120% auto;
+    background-position: center 75%;
+    background-attachment: scroll;
+    height: 55vw;
+    margin: .8rem 0 3rem 0;
+    padding: 3% 0 0 5%;
+  }
+  .widget1, .widget2, .widget3 {
+    width: 45%;
+    height: 42%;
+  }
 }
 
 .reset-pass-form {
@@ -336,5 +495,5 @@ ul.doctor-types {
 @media only screen and (min-width: 1200px) {
     .avatar-photo {
         width: 80%;
-    } 
+    }
 }
