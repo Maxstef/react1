@@ -11,15 +11,31 @@ class RegistrationContainer extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      formValue: {
+        firstName: "",
+        lastName: "",
+        patronymic: "",
+        street: "",
+        building: "",
+        appartment: "",
+        email: "",
+        phoneNumber: "",
+        username: "",
+        password: "",
+        passwordConfirm: ""
+      },
       dateOB: moment(),
       success: false,
       error: false,
       errorMessage: '',
-      username: ''
+      username: '',
+      step: 1
     };
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.cleanError = this.cleanError.bind(this);
+    this.changeStep = this.changeStep.bind(this);
+    this.setValue = this.setValue.bind(this);
   }
 
   componentWillMount() {
@@ -36,20 +52,10 @@ class RegistrationContainer extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    var t = this;
-    axios.post(config.get('api') + 'registration', {
-      firstName: e.target.firstName.value,
-      lastName: e.target.lastName.value,
-      patronymic: e.target.patronymic.value,
-      dateOfBirth: this.state.dateOB,
-      street: e.target.street.value,
-      building: e.target.building.value,
-      appartment: e.target.appartment.value,
-      email: e.target.email.value,
-      phoneNumber: e.target.phone.value,
-      username: e.target.username.value,
-      password: e.target.password.value
-    })
+    var t = this,
+        data = this.state.formValue;
+    data.dateOfBirth = this.state.dateOB;
+    axios.post(config.get('api') + 'registration', data)
       .then(function (response) {
         if (typeof response.data.error == 'undefined') {
           t.setState({ success: true, error: false, username: response.data.username });
@@ -66,6 +72,20 @@ class RegistrationContainer extends React.Component {
     this.setState({ error: false });
   }
 
+  changeStep(n){
+    if(n == 2 && this.state.firstTime){
+      this.setState({disabled: true});
+      this.setState({firstTime: false});
+    }
+    this.setState({step: n});
+  }
+
+  setValue(key, value){
+    let data = this.state.formValue;
+    data[key] = value;
+    this.setState({formValue: data});
+  }
+
   render() {
     return (
       <Registration handleSubmit={this.handleSubmit}
@@ -75,7 +95,11 @@ class RegistrationContainer extends React.Component {
         success={this.state.success}
         error={this.state.error}
         errorMessage={this.state.errorMessage}
-        username={this.state.username}>
+        username={this.state.username}
+        step={this.state.step}
+        changeStep={this.changeStep}
+        formValue={this.state.formValue}
+        setValue={this.setValue}>
       </Registration>
     );
   }

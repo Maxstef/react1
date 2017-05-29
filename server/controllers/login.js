@@ -6,8 +6,10 @@ var config = require('../config');
 
 module.exports = function (router) {
   router.post('/', function (req, res) {
-    User.findOne({
-      username: req.body.username
+    User.findOne({ $or: [
+      {username: req.body.username},
+      {"patientData.contacts.email": req.body.username}
+    ] 
     }, function (err, user) {
       if (!user) {
         res.send({

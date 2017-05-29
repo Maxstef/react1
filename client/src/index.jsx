@@ -21,12 +21,12 @@ export default class Index extends React.Component {
   render() {
     return (
         <Router history={browserHistory}>
-          <Route path="login" component={LoginContainer}/>
-          <Route path="registration" component={RegistrationContainer}/>
-          <Route path="forgot-password" component={ForgotPasswordContainer}/>
-          <Route path="restore-password" component={RestorePasswordContainer}/>
           
           <Route component={Wrapper}>
+            <Route path="login" component={LoginContainer}/>
+            <Route path="registration" component={RegistrationContainer}/>
+            <Route path="forgot-password" component={ForgotPasswordContainer}/>
+            <Route path="restore-password" component={RestorePasswordContainer}/>
             <Route path="/" component={StartPageContainer}/>
             <Route path="cabinet" component={CabinetContainer}/>
             <Route path="patient-cabinet" component={HomeContainer}/>
