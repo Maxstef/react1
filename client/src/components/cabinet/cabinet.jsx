@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container } from 'reactstrap';
 import { Link } from "react-router";
-import ImagesUploader from 'react-images-uploader';
 import config from 'react-global-configuration';
 import AvatarImageCropper from 'react-avatar-image-cropper';
 
