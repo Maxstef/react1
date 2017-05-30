@@ -72,13 +72,14 @@ class CabinetContainer extends React.Component {
           </div>
           }
           {(this.props.role === 'guest' || this.props.role === 'patient' || this.props.role === 'admin') && this.redirect()}
-          {(this.props.role === 'doctor') &&
+          {(this.props.role === 'doctor' && (this.props.user && (!(typeof this.props.user.doctorData.available == 'undefined' || this.props.user.doctorData.available === null)))) &&
           <Cabinet
               apply={this.apply}
               toggleUploader={this.toggleUploader}
               uploaderDispalay={this.state.uploaderDispalay}
               user={this.props.user}
-              savePhoto={this.savePhoto}/>}
+              savePhoto={this.savePhoto}/>
+          }
         </Container>
     );
   }
