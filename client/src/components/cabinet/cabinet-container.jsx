@@ -1,9 +1,9 @@
 import React from 'react';
-import { Container, Alert } from 'reactstrap';
-import { connect } from 'react-redux';
-import { bindActionCreators } from "redux";
+import {Container, Alert} from 'reactstrap';
+import {connect} from 'react-redux';
+import {bindActionCreators} from "redux";
 import * as activeUserActions from '../../actions/active-user-action';
-import { browserHistory } from "react-router";
+import {browserHistory} from "react-router";
 import Cabinet from './cabinet';
 import AddScheduleContainer from '../add-schedule/add-schedule-container';
 import AuthoriationService from '../authorization';
