@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/user');
 var passwordHash = require('password-hash');
 var config = require('../config');
+var _ = require("lodash");
 
 module.exports = function (router) {
     router.get('/', function (req, res) {
@@ -40,45 +41,66 @@ module.exports = function (router) {
                 });
         } else {
             User.findById(req.params.id, function (err, doctor) {
+                let done = false;
                 if (err) {
                     res.send(err);
+                } else {
+                    doctor.username = (req.body.username) ? req.body.username : doctor.username;
+                    doctor.password = (req.body.password) ? passwordHash.generate(req.body.password, {
+                        algorithm: config.hashAlgorithm
+                    }) : doctor.password;
+                    doctor.name.first = (req.body.firstName) ? req.body.firstName : doctor.name.first;
+                    doctor.name.last = (req.body.lastName) ? req.body.lastName : doctor.name.last;
+                    doctor.name.patronymic = (req.body.patronymic) ? req.body.patronymic : doctor.name.patronymic;
+                    doctor.dateOfBirth = (req.body.dateOfBirth) ? req.body.dateOfBirth : doctor.dateOfBirth;
+                    doctor.photoUrl = (req.body.photoUrl) ? req.body.photoUrl : doctor.photoUrl;
+                    doctor.doctorData.bio = (req.body.bio) ? req.body.bio : doctor.doctorData.bio;
+                    doctor.doctorData.doctorType = (req.body.doctorType) ? req.body.doctorType : doctor.doctorData.doctorType;
+                    doctor.doctorData.available = (req.body.available) ? req.body.available : doctor.doctorData.available;
+                    if(req.body.specialDays && typeof doctor.doctorData.specialDays != 'undefined'){
+                        _.forEach(doctor.doctorData.specialDays, (day) => {
+                            if(day.date == doctor.doctorData.specialDays[0].date && !done){
+                                _.forEach(doctor.doctorData.specialDays[0].slot, (s) => {
+                                    if(_.includes(day.slot, s) && !done){
+                                        done = true;
+                                        res.send({error: true, message: 'Some hours are already saved. You can not add it again. Check your saved overtime hours.'});
+                                    }
+                                })
+                            }
+                        })
+                    }
+                    if(typeof doctor.doctorData.specialDays == 'undefined'){
+                        doctor.doctorData.specialDays = [];
+                    }
+                    doctor.doctorData.specialDays = (req.body.specialDays) ? doctor.doctorData.specialDays.concat(req.body.specialDays) : doctor.doctorData.specialDays;
+                    if(!done){
+                        User.update({
+                                _id: req.params.id
+                            }, {
+                                $set: {
+                                    "username": doctor.username,
+                                    "password": doctor.password,
+                                    "name.first": doctor.name.first,
+                                    "name.last": doctor.name.last,
+                                    "name.patronymic": doctor.name.patronymic,
+                                    "dateOfBirth": doctor.dateOfBirth,
+                                    "doctorData.bio": doctor.doctorData.bio,
+                                    "doctorData.doctorType": doctor.doctorData.doctorType,
+                                    "doctorData.available": doctor.doctorData.available,
+                                    "doctorData.specialDays": doctor.doctorData.specialDays,
+                                    "photoUrl": doctor.photoUrl
+                                }
+                            }, function (err) {
+                                if (err) {
+                                    res.send(err);
+                                }
+                                User.findById(req.params.id, function (err, doctor) {
+                                    res.send(doctor);
+                                });
+                            });
+                    }
                 }
-                doctor.username = (req.body.username) ? req.body.username : doctor.username;
-                doctor.password = (req.body.password) ? passwordHash.generate(req.body.password, {
-                    algorithm: config.hashAlgorithm
-                }) : doctor.password;
-                doctor.name.first = (req.body.firstName) ? req.body.firstName : doctor.name.first;
-                doctor.name.last = (req.body.lastName) ? req.body.lastName : doctor.name.last;
-                doctor.name.patronymic = (req.body.patronymic) ? req.body.patronymic : doctor.name.patronymic;
-                doctor.dateOfBirth = (req.body.dateOfBirth) ? req.body.dateOfBirth : doctor.dateOfBirth;
-                doctor.photoUrl = (req.body.photoUrl) ? req.body.photoUrl : doctor.photoUrl;
-                doctor.doctorData.bio = (req.body.bio) ? req.body.bio : doctor.doctorData.bio;
-                doctor.doctorData.doctorType = (req.body.doctorType) ? req.body.doctorType : doctor.doctorData.doctorType;
-                doctor.doctorData.available = (req.body.available) ? req.body.available : doctor.doctorData.available;
-
-                User.update({
-                    _id: req.params.id
-                }, {
-                        $set: {
-                            "username": doctor.username,
-                            "password": doctor.password,
-                            "name.first": doctor.name.first,
-                            "name.last": doctor.name.last,
-                            "name.patronymic": doctor.name.patronymic,
-                            "dateOfBirth": doctor.dateOfBirth,
-                            "doctorData.bio": doctor.doctorData.bio,
-                            "doctorData.doctorType": doctor.doctorData.doctorType,
-                            "doctorData.available": doctor.doctorData.available,
-                            "photoUrl": doctor.photoUrl
-                        }
-                    }, function (err) {
-                        if (err) {
-                            res.send(err);
-                        }
-                        User.findById(req.params.id, function (err, doctor) {
-                            res.send(doctor);
-                        });
-                    });
+                
             });
         }
     })

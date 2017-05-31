@@ -5,6 +5,7 @@ import config from 'react-global-configuration';
 import AvatarImageCropper from 'react-avatar-image-cropper';
 import moment from "moment";
 import * as _ from 'lodash';
+import AddSpecialDayContainer from "../add-special-day/add-special-day-container";
 
 
 let renderSchedule = (days) => {
@@ -40,7 +41,6 @@ let getDay = (n) => {
 let getHours = (slots) => {
     let result = '';
     let slotsSorted = _.sortBy(slots);
-    console.log(slotsSorted);
     _.forEach(slotsSorted, (slot, index) => {
         if(index == 0){
             result += config.get("slotTimes")[slot].substr(0, 5) + " - ";
@@ -50,7 +50,7 @@ let getHours = (slots) => {
             result += config.get("slotTimes")[slots[index - 1]].substr(8, 13) + ', ';
             result += config.get("slotTimes")[slot].substr(0, 5) + " - ";
         } else if((index + 1) == slots.length){
-            result += config.get("slotTimes")[slots[index]].substr(8, 13) + ', ';
+            result += config.get("slotTimes")[slots[index]].substr(8, 13);
         }
     });
     return result;
@@ -66,7 +66,7 @@ class Cabinet extends React.Component {
                 <div className="row">
                     <div className="col-12 col-md-6">
                         {(this.props.user && (this.props.user.photoUrl === null || typeof this.props.user.photoUrl == 'undefined')) && 
-                            <div style={{position: "relative"}}>
+                            <div style={{position: "relative", marginBottom: "20px"}}>
                                 <img src={config.get('defaultAvatarUrl')} width="200"/>
                                 <div className="upload-photo">
                                     <AvatarImageCropper apply={this.props.apply} maxsize={5*1024*1024} />
@@ -74,7 +74,7 @@ class Cabinet extends React.Component {
                             </div>
                         }
                         {(this.props.user && (this.props.user.photoUrl !== null && typeof this.props.user.photoUrl != 'undefined')) && 
-                            <div style={{position: "relative"}}>
+                            <div style={{position: "relative", marginBottom: "20px"}}>
                                 <img src={config.get('api') + this.props.user.photoUrl} width="200"/>
                                 <div className="upload-photo">
                                     <AvatarImageCropper apply={this.props.apply} maxsize={5*1024*1024} />
@@ -97,12 +97,11 @@ class Cabinet extends React.Component {
                                         {renderSchedule(this.props.user.doctorData.available)}
                                     </tbody>
                                 </table>
+                                <AddSpecialDayContainer/>
                             </div> 
                         }
                     </div>
-                </div>
-                          
-                
+                </div>        
             </Container>
         );
     }
