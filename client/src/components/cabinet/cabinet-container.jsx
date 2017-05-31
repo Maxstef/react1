@@ -5,6 +5,7 @@ import {bindActionCreators} from "redux";
 import * as activeUserActions from '../../actions/active-user-action';
 import {browserHistory} from "react-router";
 import Cabinet from './cabinet';
+import ShowAppointmentsContainer from '../show-appointments/show-appointments-container';
 import AddScheduleContainer from '../add-schedule/add-schedule-container';
 import AuthoriationService from '../authorization';
 import axios from 'axios';
@@ -28,6 +29,7 @@ class CabinetContainer extends React.Component {
   }
   
   toggleAppointments() {
+    console.log("toggleAppointments");
     this.setState({
       appointments: !this.state.appointments
     });
@@ -85,10 +87,12 @@ class CabinetContainer extends React.Component {
               toggleUploader={this.toggleUploader}
               uploaderDispalay={this.state.uploaderDispalay}
               user={this.props.user}
-              savePhoto={this.savePhoto}/>}
-          { this.state.appointments && <ShowAppointmentsContainer
+              savePhoto={this.savePhoto}
               toggleAppointments={this.toggleAppointments}
               appointments={this.state.appointments}
+          />}
+          { this.state.appointments && <ShowAppointmentsContainer
+              
               // availableHours={this.state.availableHours}
               // currentInfo={this.state.currentInfo}
               // doctorsName={this.state.name}

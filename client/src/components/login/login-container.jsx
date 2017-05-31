@@ -65,6 +65,7 @@ class LoginContainer extends React.Component {
             this.props.setInfo(response.data);
           } else if (response.data.doctorData) {
             this.props.setRole('doctor');
+            this.props.setId(response.data._id);
             localStorage.setItem("role", 'doctor');
             this.props.setInfo(response.data);
           } else {
@@ -111,7 +112,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     setInfo: bindActionCreators(activeUserActions.setUserInfo, dispatch),
-    setRole: bindActionCreators(activeUserActions.setRole, dispatch)
+    setRole: bindActionCreators(activeUserActions.setRole, dispatch),
+    setId: bindActionCreators(activeUserActions.setId, dispatch)
   }
 }
 

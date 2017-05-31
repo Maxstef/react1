@@ -11,9 +11,9 @@ class ShowAppointments extends React.Component {
       return (
           <div>
             <button type="button"
-                    disabled={this.isDisabled(slot)}
                     onClick={() => {this.props.addMeeting(slot)}}
-                    className={"slots btn btn-sm " + (this.isDisabled(slot) ? 'btn-info' : 'btn-secondary')}>{this.props.slotTimes[slot]}
+                    className="slots btn btn-sm btn-secondary">
+              {this.props.slotTimes[slot]}
             </button>
           </div>
       );
@@ -28,7 +28,7 @@ class ShowAppointments extends React.Component {
         <Container>
           <Row>
             <Col className="mb-4 mt-2" md={{size: 10, offset: 1}} xs={{size: 10, offset: 1}}>
-              To make an appointment, please choose available date and time.
+              Choose day to view your appointments
             </Col>
           </Row>
           <Row>
@@ -36,10 +36,10 @@ class ShowAppointments extends React.Component {
               <DatePicker
                   inline
                   selected={this.props.startDate}
-                  minDate={moment().add(1, "days")}
-                  maxDate={moment().add(14, "days")}
+                  minDate={moment()}
+                  // maxDate={moment().add(14, "days")}
                   onChange={this.props.dpChange}
-                  locale="uk-en"
+                  // locale="uk-en"
                   includeDates={this.props.openDates}
                   highlightDates={[moment()]}
               />
@@ -53,35 +53,6 @@ class ShowAppointments extends React.Component {
               <button type="button" className="btn btn-secondary mr-1" onClick={this.props.toggleMeeting}>Cancel</button>
             </Col>
           </Row>
-          
-          { !this.props.isAlreadyAppointed &&
-          <Modal className="modal-lg"
-                 isOpen={this.props.modal}
-                 toggle={this.props.toggle}
-                 backdrop={this.props.backdrop}>
-            <ModalHeader toggle={this.props.toggle}>Appointment</ModalHeader>
-            <ModalBody>
-              Are you really want to make appointment to {this.props.doctorsName.first}{' '}{this.props.doctorsName.last}{' '}{this.props.day} at {this.props.slotTimes[this.props.meetingSlot]}
-            </ModalBody>
-            <ModalFooter>
-              <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
-              <Button color="warning" onClick={() => {this.props.postMeeting(); this.props.toggle()}}>Apply</Button>{' '}
-            </ModalFooter>
-          </Modal> }
-          
-          { this.props.isAlreadyAppointed && this.props.myCurrentMeeting &&
-          <Modal className="modal-lg"
-                 isOpen={this.props.modal}
-                 toggle={this.props.toggle}
-                 backdrop={this.props.backdrop}>
-            <ModalHeader toggle={this.props.toggle}>Appointment</ModalHeader>
-            { this.props.myCurrentMeeting && <ModalBody>
-              You already appointed to {this.props.doctorsName.first}{' '}{this.props.doctorsName.last} at {this.props.myCurrentMeeting}. If you want to cancel this appointment, please connect to our reception via telephone.
-            </ModalBody> }
-            <ModalFooter>
-              <Button color="secondary" onClick={this.props.toggle}>Understand</Button>
-            </ModalFooter>
-          </Modal> }
         
         </Container>
     )

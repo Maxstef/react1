@@ -16,166 +16,78 @@ class ShowAppointmentsContainer extends React.Component {
       backdrop: 'static',
       choosenDate: null,
       allMeetings: [],
-      availableHours: null,
-      specialDays: null,
       openDates: [],
-      daysShift: 29,
       currentSlots: [],
       busySlots: [],
       slotTimes: config.get('slotTimes'),
       date: null,
-      newMeeting: {},
-      newEvent: {},
-      doctorsName: this.props.doctorsName,
       meetingSlot: null,
       myCurrentMeeting: [],
-      isAlreadyAppointed: false
+      todayMeetings: []
     };
     this.dpChange = this.dpChange.bind(this);
-    this.addMeeting = this.addMeeting.bind(this);
-    this.postMeeting = this.postMeeting.bind(this);
     this.toggle = this.toggle.bind(this);
     this.getAllMeetings = this.getAllMeetings.bind(this);
-    this.appointedAlready = this.appointedAlready.bind(this);
   }
   
   componentWillMount() {
-    // this.getAllMeetings();
-    // moment.locale('uk');
-  }
-  
-  componentDidMount() {
-    // take doctor schedule list
-    // let schedule;
-    // if (this.props.currentInfo.doctorData.specialDays) {
-    //   schedule = _.concat(this.props.currentInfo.doctorData.available, this.props.currentInfo.doctorData.specialDays);
-    // } else if (this.props.currentInfo.doctorData.available) {
-    //   schedule = this.props.currentInfo.doctorData.available;
-    // } else {
-    //   schedule = [];
-    // }
-    // this.setState({
-    //   availableHours: schedule,
-    //   specialDays: this.props.currentInfo.doctorData.specialDays
-    // }, function () {
-    //   // check if exists schedule or spec days
-    //   if (schedule[0] || schedule[1]) {
-    //     this.findAvailableDates();
-    //   }
-    // });
+    this.getAllMeetings();
   }
   
   componentWillUnmount() {
     // this.props.setAllMeetingsStore([]);
-    // this.props.setCurrentDoctor(this.props.currentDoctor);
   }
   
   // if datapicker changed
   renderChoosenDay(day) {
+    let currentSlots = [];
+    let todayMeetings = [];
     this.setState({
       currentSlots: [],
-      busySlots: [],
+      todayMeetings: [],
       date: day
     }, () => {
-      _.filter(this.state.availableHours, (o) => {
-        if (!o) {
-          o = {};
+      _.filter(this.state.allMeetings, (meeting) => {
+        if (moment(meeting.date).format('DD-MM-YYYY') === moment(day).format('DD-MM-YYYY')) {
+          todayMeetings.push(meeting);
+          currentSlots.push(meeting.slot);
         }
-        if (o.day === day.weekday() || (moment(o.date).format('DD-MM-YYYY')) === (moment(day).format('DD-MM-YYYY'))) {
-          let newBusySlot = [];
-          _.filter(this.state.allMeetings, (meeting) => {
-            if ((moment(meeting.date).format('DD-MM-YYYY')) === (moment(day).format('DD-MM-YYYY'))) {
-              newBusySlot.push(meeting.slot);
-            }
-          });
-          this.setState({
-            currentSlots: o.slot,
-            busySlots: newBusySlot
-          });
-        }
+      });
+      this.setState({
+          currentSlots: currentSlots,
+          todayMeetings: todayMeetings
       });
     });
   }
   
   getAllMeetings() {
-    let myMeetings;
-    let userId = this.props.userId;
-    axios.get(config.get('api') + 'meetings' + '?doctorId=' + this.props.currentDoctor)
+    axios.get(config.get('api') + 'meetings' + '?doctorId=' + localStorage.getItem('id'))
          .then(res => {
-           if (userId !== null) {
-             myMeetings = _.filter(res.data, function (o) {
-               if (o.patientId === userId._id) {
-                 return o;
-               }
-             });
              this.setState({
-               myMeetings: myMeetings,
                allMeetings: res.data
+             }, () => {
+               console.log(res.data);
+               this.setState({
+                 openDates: []
+               }, () => {
+                 let openDates = [];
+                 this.state.allMeetings.map((meeting) => {
+                   openDates.push(meeting.date);
+                 });
+                 this.setState({
+                   openDates: openDates.map(function (date) {
+                     return moment(date)
+                   })
+                 })
+               });
              });
-           } else {
-             this.setState({
-               myMeetings: [],
-               allMeetings: res.data
-             });
-           }
-         });
-  }
-  
-  // get meetings that user already appointed to this doctor
-  appointedAlready() {
-    let myCurrentMeeting = [];
-    let flag = false;
-    let myCurrentMeetingDate = null;
-    _.filter(this.state.myMeetings, (o) => {
-      if (moment().diff(o.date) < 0) {
-        myCurrentMeeting.push(o);
-        flag = true;
-        return flag;
-      }
-    });
-    if (myCurrentMeeting.length) {
-      myCurrentMeetingDate = moment(myCurrentMeeting[0].date).format('DD MMM YYYY, dddd');
-    }
-    this.setState({
-      isAlreadyAppointed: flag,
-      myCurrentMeeting: myCurrentMeetingDate
-    });
-  }
-  
-  // find available dates and slots
-  findAvailableDates() {
-    this.setState({
-      openDates: []
-    }, () => {
-      let openDates = [];
-      this.state.availableHours.map((day) => {
-        if (day.day) {
-          let week = 0;
-          while (week < this.state.daysShift) {
-            let diff = (day.day - moment().weekday()) + week;
-            let date = moment().add((diff), 'days');
-            week += 7;
-            date = moment(date._d).format();
-            openDates.push(date);
-          }
-        }
-        else if (day.date) {
-          openDates.push(day.date);
-        }
-      });
-      this.setState({
-        openDates: openDates.map(function (date) {
-          return moment(date)
-        })
-      });
-    });
+           });
   }
   
   dpChange(date) {
     this.setState({
       choosenDate: date
     }, () => {
-      this.appointedAlready();
       this.renderChoosenDay(date);
     });
   }
@@ -202,13 +114,8 @@ class ShowAppointmentsContainer extends React.Component {
                       toggle={this.toggle}
                       modal={this.state.modal}
                       backdrop={this.state.backdrop}
-                      postMeeting={this.postMeeting}
                       doctorsName={this.props.doctorsName}
                       day={moment(this.state.date).format('DD MMM YYYY, dddd')}
-                      meetingSlot={this.state.newMeeting.slot}
-                      appointedAlready={this.state.appointedAlready}
-                      isAlreadyAppointed={this.state.isAlreadyAppointed}
-                      myCurrentMeeting={this.state.myCurrentMeeting}
           />
         </div>
     );
@@ -221,7 +128,8 @@ class ShowAppointmentsContainer extends React.Component {
     listEmpty: state.doctors.listEmpty,
     allMeetingsStore: state.doctors.allMeetings,
     role: state.activeUser.role,
-    userId: state.activeUser.info
+    userId: state.activeUser.info,
+    id: state.activeUser.id
   }
 }
   

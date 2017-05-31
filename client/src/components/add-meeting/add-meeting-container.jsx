@@ -199,6 +199,8 @@ class AddMeetingContainer extends React.Component {
       this.setState({
         openDates: openDates.map(function (date) {
           return moment(date)
+        }, () => {
+          console.log(this.state.openDates);
         })
       });
     });

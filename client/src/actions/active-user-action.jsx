@@ -11,3 +11,10 @@ export function setRole(role) {
     payload: role
   }
 }
+
+export function setId(id) {
+  return {
+    type: 'SET_INFO',
+    payload: id
+  }
+}

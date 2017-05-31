@@ -27,7 +27,7 @@ class Cabinet extends React.Component {
                         </div>
                     </div>
                 }
-              { !this.props.appointments && <Button className="mt-4" color="warning" onClick={this.props.toggleAppointments}>Show appointments</Button>}
+              <Button className="mt-4" color="warning" onClick={this.props.toggleAppointments}>Your calendar</Button>
             </Container>
         );
     }
