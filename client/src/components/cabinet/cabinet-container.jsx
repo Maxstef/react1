@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container} from 'reactstrap';
+import {Container, Alert} from 'reactstrap';
 import {connect} from 'react-redux';
 import {bindActionCreators} from "redux";
 import * as activeUserActions from '../../actions/active-user-action';
@@ -22,10 +22,6 @@ class CabinetContainer extends React.Component {
     this.apply = this.apply.bind(this);
     this.uploadRequest=this.uploadRequest.bind(this);
     this.toggleAppointments = this.toggleAppointments.bind(this);
-  }
-  
-  toggleUploader() {
-    this.setState({uploaderDispalay: !this.state.uploaderDispalay});
   }
   
   toggleAppointments() {
@@ -69,51 +65,55 @@ class CabinetContainer extends React.Component {
         xhr.send(formData);
         return xhr;
     }
-  
-  render() {
-    return (
-        <Container>
-          <AuthoriationService/>
-          {(this.props.user && (typeof this.props.user.doctorData.available == 'undefined' || this.props.user.doctorData.available === null)) &&
-          <div>
-            <h5>You didn't specify your schedule. Do it for patients can make meeting with you.</h5>
-            <AddScheduleContainer />
-          </div>
-          }
-          {(this.props.role === 'guest' || this.props.role === 'patient' || this.props.role === 'admin') && this.redirect()}
-          {(this.props.role === 'doctor') &&
-          <Cabinet
-              apply={this.apply}
-              toggleUploader={this.toggleUploader}
-              uploaderDispalay={this.state.uploaderDispalay}
-              user={this.props.user}
-              savePhoto={this.savePhoto}
-              toggleAppointments={this.toggleAppointments}
-              appointments={this.state.appointments}
-          />}
-          { this.state.appointments && <ShowAppointmentsContainer
+
+    render() {
+        return (
+            <Container>
+                <AuthoriationService />
+                {(this.props.user && this.props.user.doctorData.isDeleted) && 
+                    <Alert color="danger">
+                        <strong>That's too bad!</strong> Your account had been deleted
+                    </Alert>
+                }
+                {(this.props.user && !this.props.user.doctorData.isDeleted && (typeof this.props.user.doctorData.available == 'undefined' || this.props.user.doctorData.available === null)) &&
+                    <div>
+                        <h5>You didn't specify your schedule. Do it for patients can make meeting with you.</h5>
+                        <AddScheduleContainer />
+                    </div>
+                }
+                {(this.props.role === 'guest' || this.props.role === 'patient' || this.props.role === 'admin') && this.redirect()}
+                {(this.props.role === 'doctor' && (this.props.user && !this.props.user.doctorData.isDeleted && 
+                    (!(typeof this.props.user.doctorData.available == 'undefined' || this.props.user.doctorData.available === null)))) &&
+                    <Cabinet
+                        apply={this.apply}
+                        toggleUploader={this.toggleUploader}
+                        uploaderDispalay={this.state.uploaderDispalay}
+                        user={this.props.user}
+                        toggleAppointments={this.toggleAppointments}
+                        savePhoto={this.savePhoto} />}
+               { this.state.appointments && <ShowAppointmentsContainer
               
               // availableHours={this.state.availableHours}
               // currentInfo={this.state.currentInfo}
               // doctorsName={this.state.name}
           />}
-        </Container>
-    );
-  }
+            </Container>
+        );
+    }
 }
 
 function mapStateToProps(state) {
-  return {
-    role: state.activeUser.role,
-    user: state.activeUser.info
-  }
+    return {
+        role: state.activeUser.role,
+        user: state.activeUser.info
+    }
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    setInfo: bindActionCreators(activeUserActions.setUserInfo, dispatch),
-    setRole: bindActionCreators(activeUserActions.setRole, dispatch)
-  }
+    return {
+        setInfo: bindActionCreators(activeUserActions.setUserInfo, dispatch),
+        setRole: bindActionCreators(activeUserActions.setRole, dispatch)
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CabinetContainer);
