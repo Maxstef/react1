@@ -16,7 +16,7 @@ class StartPage extends React.Component {
           </div>}
           {this.props.role !== 'guest' && this.props.role !== null &&
           <div className="login-links d-flex justify-content-center">
-            Welcome,{' '}{this.props.info && <span>{this.props.info.name.first}</span>}
+            {this.props.info && <span>{'Welcome, ' + this.props.info.name.first}</span>}
           </div>}
           <div className="image-container">
             <h2 className="title">the CLINIC</h2>

@@ -15,15 +15,22 @@ class CabinetContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-            
+      appointments: false
     };
     this.savePhoto = this.savePhoto.bind(this);
     this.apply = this.apply.bind(this);
     this.uploadRequest=this.uploadRequest.bind(this);
+    this.toggleAppointments = this.toggleAppointments.bind(this);
   }
   
   toggleUploader() {
     this.setState({uploaderDispalay: !this.state.uploaderDispalay});
+  }
+  
+  toggleAppointments() {
+    this.setState({
+      appointments: !this.state.appointments
+    });
   }
   
   redirect() {
@@ -36,7 +43,7 @@ class CabinetContainer extends React.Component {
                 let user = this.props.user;
                 user.photoUrl = res.data.photoUrl;
                 this.props.setInfo(user);
-                this.forceUpdate()
+                this.forceUpdate();
             });
     }
 
@@ -44,7 +51,7 @@ class CabinetContainer extends React.Component {
         let formData = new FormData();
         formData.append('file', file, "imageCropped.jpg");
         let xhr = this.uploadRequest(formData);
-        axios.post("http://localhost:3000/upload-photo", formData)
+        axios.post(config.get('api') + "upload-photo", formData)
             .then(res => {
                 this.savePhoto(res.data.fileName);
             });
@@ -52,7 +59,7 @@ class CabinetContainer extends React.Component {
 
     uploadRequest(formData) {
         let xhr = new XMLHttpRequest();
-        xhr.open('POST', "http://localhost:3000/upload-photo", true);
+        xhr.open('POST', config.get('api') + "upload-photo", true);
         xhr.setRequestHeader("enctype", "multipart/form-data");
         xhr.setRequestHeader("Cache-Control", "no-cache");
         xhr.setRequestHeader("Cache-Control", "no-store");
@@ -74,10 +81,18 @@ class CabinetContainer extends React.Component {
           {(this.props.role === 'guest' || this.props.role === 'patient' || this.props.role === 'admin') && this.redirect()}
           {(this.props.role === 'doctor') &&
           <Cabinet
+              apply={this.apply}
               toggleUploader={this.toggleUploader}
               uploaderDispalay={this.state.uploaderDispalay}
               user={this.props.user}
               savePhoto={this.savePhoto}/>}
+          { this.state.appointments && <ShowAppointmentsContainer
+              toggleAppointments={this.toggleAppointments}
+              appointments={this.state.appointments}
+              // availableHours={this.state.availableHours}
+              // currentInfo={this.state.currentInfo}
+              // doctorsName={this.state.name}
+          />}
         </Container>
     );
   }

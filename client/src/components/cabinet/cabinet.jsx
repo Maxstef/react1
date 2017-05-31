@@ -1,7 +1,6 @@
 import React from 'react';
-import { Container } from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col} from 'reactstrap';
 import { Link } from "react-router";
-import ImagesUploader from 'react-images-uploader';
 import config from 'react-global-configuration';
 import AvatarImageCropper from 'react-avatar-image-cropper';
 
@@ -10,7 +9,7 @@ class Cabinet extends React.Component {
         return (
             <Container>
                 <div className="cabinet">
-                    <h3>This is a cabinet</h3>
+                    <h3>Personal cabinet</h3>
                 </div>
                 {(this.props.user && (this.props.user.photoUrl === null || typeof this.props.user.photoUrl == 'undefined')) && 
                     <div style={{position: "relative"}}>
@@ -27,8 +26,8 @@ class Cabinet extends React.Component {
                             <AvatarImageCropper apply={this.props.apply} maxsize={5*1024*1024} />
                         </div>
                     </div>
-                }          
-                
+                }
+              { !this.props.appointments && <Button className="mt-4" color="warning" onClick={this.props.toggleAppointments}>Show appointments</Button>}
             </Container>
         );
     }

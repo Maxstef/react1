@@ -89,7 +89,8 @@ button:disabled {
 ***********************************************/
 
 .login-form {
-  margin-bottom: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #eee;
 }
 
 .login {
@@ -121,7 +122,7 @@ input:focus ~ .input-icon {
 
 .registration {
   max-width: 700px;
-  margin: 100px auto;
+  margin: 50px auto;
 }
 
 .col-form-legend {
@@ -139,6 +140,18 @@ input.form-control {
 input.is-invalid-input, textarea.is-invalid-input {
   border-color: #d9534f;
   background-color: #fff3ff;
+}
+
+.registration form fieldset {
+  padding: 5px;
+  border: 1px solid #3dc6c0;
+  border-radius: 5px;
+}
+
+.registration form legend { 
+  background-color: #3dc6c0;
+  border-radius: 5px;
+  padding: 5px 25px;
 }
 
 /***********************************************
@@ -473,6 +486,16 @@ ul.doctor-types {
     width: 45%;
     height: 42%;
   }
+}
+
+.reset-pass-form {
+    margin-bottom: 15px;
+}
+
+.forgot-pass-title {
+    margin: 50px 0 40px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
 }
 
 @media only screen and (max-width: 577px) {
