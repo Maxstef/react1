@@ -1,9 +1,9 @@
 import React from 'react';
-import {Container} from 'reactstrap';
-import {connect} from 'react-redux';
-import {bindActionCreators} from "redux";
+import { Container, Alert } from 'reactstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
 import * as activeUserActions from '../../actions/active-user-action';
-import {browserHistory} from "react-router";
+import { browserHistory } from "react-router";
 import Cabinet from './cabinet';
 import AddScheduleContainer from '../add-schedule/add-schedule-container';
 import AuthoriationService from '../authorization';
@@ -11,26 +11,22 @@ import axios from 'axios';
 import config from 'react-global-configuration';
 
 class CabinetContainer extends React.Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-            
-    };
-    this.savePhoto = this.savePhoto.bind(this);
-    this.apply = this.apply.bind(this);
-    this.uploadRequest=this.uploadRequest.bind(this);
-  }
-  
-  toggleUploader() {
-    this.setState({uploaderDispalay: !this.state.uploaderDispalay});
-  }
-  
-  redirect() {
-    browserHistory.replace('/');
-  }
-  
-  savePhoto(photoUrl){
+
+    constructor(props) {
+        super(props);
+        this.state = {
+
+        };
+        this.savePhoto = this.savePhoto.bind(this);
+        this.apply = this.apply.bind(this);
+        this.uploadRequest = this.uploadRequest.bind(this);
+    }
+
+    redirect() {
+        browserHistory.replace('/');
+    }
+
+    savePhoto(photoUrl) {
         axios.put(config.get('api') + 'doctors/' + this.props.user._id, { photoUrl: photoUrl })
             .then(res => {
                 let user = this.props.user;
@@ -60,43 +56,49 @@ class CabinetContainer extends React.Component {
         xhr.send(formData);
         return xhr;
     }
-  
-  render() {
-    return (
-        <Container>
-          <AuthoriationService/>
-          {(this.props.user && (typeof this.props.user.doctorData.available == 'undefined' || this.props.user.doctorData.available === null)) &&
-          <div>
-            <h5>You didn't specify your schedule. Do it for patients can make meeting with you.</h5>
-            <AddScheduleContainer />
-          </div>
-          }
-          {(this.props.role === 'guest' || this.props.role === 'patient' || this.props.role === 'admin') && this.redirect()}
-          {(this.props.role === 'doctor' && (this.props.user && (!(typeof this.props.user.doctorData.available == 'undefined' || this.props.user.doctorData.available === null)))) &&
-          <Cabinet
-              apply={this.apply}
-              toggleUploader={this.toggleUploader}
-              uploaderDispalay={this.state.uploaderDispalay}
-              user={this.props.user}
-              savePhoto={this.savePhoto}/>
-          }
-        </Container>
-    );
-  }
+
+    render() {
+        return (
+            <Container>
+                <AuthoriationService />
+                {(this.props.user && this.props.user.doctorData.isDeleted) && 
+                    <Alert color="danger">
+                        <strong>That's too bad!</strong> Your account had been deleted
+                    </Alert>
+                }
+                {(this.props.user && !this.props.user.doctorData.isDeleted && (typeof this.props.user.doctorData.available == 'undefined' || this.props.user.doctorData.available === null)) &&
+                    <div>
+                        <h5>You didn't specify your schedule. Do it for patients can make meeting with you.</h5>
+                        <AddScheduleContainer />
+                    </div>
+                }
+                {(this.props.role === 'guest' || this.props.role === 'patient' || this.props.role === 'admin') && this.redirect()}
+                {(this.props.role === 'doctor' && (this.props.user && !this.props.user.doctorData.isDeleted && 
+                    (!(typeof this.props.user.doctorData.available == 'undefined' || this.props.user.doctorData.available === null)))) &&
+                    <Cabinet
+                        apply={this.apply}
+                        toggleUploader={this.toggleUploader}
+                        uploaderDispalay={this.state.uploaderDispalay}
+                        user={this.props.user}
+                        savePhoto={this.savePhoto} />
+                }
+            </Container>
+        );
+    }
 }
 
 function mapStateToProps(state) {
-  return {
-    role: state.activeUser.role,
-    user: state.activeUser.info
-  }
+    return {
+        role: state.activeUser.role,
+        user: state.activeUser.info
+    }
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    setInfo: bindActionCreators(activeUserActions.setUserInfo, dispatch),
-    setRole: bindActionCreators(activeUserActions.setRole, dispatch)
-  }
+    return {
+        setInfo: bindActionCreators(activeUserActions.setUserInfo, dispatch),
+        setRole: bindActionCreators(activeUserActions.setRole, dispatch)
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CabinetContainer);
