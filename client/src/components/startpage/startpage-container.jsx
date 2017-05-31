@@ -23,6 +23,13 @@ class StartPageContainer extends React.Component {
   }
   
   componentWillMount() {
+    localStorage.getItem('role');
+    if (!localStorage.getItem('role')) {
+      localStorage.setItem("role", 'guest');
+    }
+    if (localStorage.getItem('role') === 'admin') {
+      this.redirectToDoctorsList();
+    }
   }
   
   redirectToLogin() {
@@ -61,6 +68,7 @@ class StartPageContainer extends React.Component {
     return (
         <div>
           <AuthoriationService/>
+          {(this.props.role === 'guest' || this.props.role === 'patient') &&
           <StartPage
               redirectToLogin={this.redirectToLogin}
               redirectToRegistration={this.redirectToRegistration}
@@ -73,7 +81,7 @@ class StartPageContainer extends React.Component {
               modal={this.state.modal}
               toggle2={this.toggle2}
               modal2={this.state.modal2}
-          />
+          />}
         </div>
     );
   }

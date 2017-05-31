@@ -5,28 +5,37 @@ import {bindActionCreators} from "redux";
 import * as activeUserActions from '../../actions/active-user-action';
 import {browserHistory} from "react-router";
 import Cabinet from './cabinet';
+import ShowAppointmentsContainer from '../show-appointments/show-appointments-container';
 import AddScheduleContainer from '../add-schedule/add-schedule-container';
 import AuthoriationService from '../authorization';
 import axios from 'axios';
 import config from 'react-global-configuration';
 
 class CabinetContainer extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-
-        };
-        this.savePhoto = this.savePhoto.bind(this);
-        this.apply = this.apply.bind(this);
-        this.uploadRequest = this.uploadRequest.bind(this);
-    }
-
-    redirect() {
-        browserHistory.replace('/');
-    }
-
-    savePhoto(photoUrl) {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      appointments: false
+    };
+    this.savePhoto = this.savePhoto.bind(this);
+    this.apply = this.apply.bind(this);
+    this.uploadRequest=this.uploadRequest.bind(this);
+    this.toggleAppointments = this.toggleAppointments.bind(this);
+  }
+  
+  toggleAppointments() {
+    console.log("toggleAppointments");
+    this.setState({
+      appointments: !this.state.appointments
+    });
+  }
+  
+  redirect() {
+    browserHistory.replace('/');
+  }
+  
+  savePhoto(photoUrl){
         axios.put(config.get('api') + 'doctors/' + this.props.user._id, { photoUrl: photoUrl })
             .then(res => {
                 let user = this.props.user;
@@ -80,8 +89,14 @@ class CabinetContainer extends React.Component {
                         toggleUploader={this.toggleUploader}
                         uploaderDispalay={this.state.uploaderDispalay}
                         user={this.props.user}
-                        savePhoto={this.savePhoto} />
-                }
+                        toggleAppointments={this.toggleAppointments}
+                        savePhoto={this.savePhoto} />}
+               { this.state.appointments && <ShowAppointmentsContainer
+              
+              // availableHours={this.state.availableHours}
+              // currentInfo={this.state.currentInfo}
+              // doctorsName={this.state.name}
+          />}
             </Container>
         );
     }

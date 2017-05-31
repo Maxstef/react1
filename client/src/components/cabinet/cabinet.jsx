@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col} from 'reactstrap';
 import { Link } from "react-router";
 import config from 'react-global-configuration';
 import AvatarImageCropper from 'react-avatar-image-cropper';
@@ -61,7 +61,7 @@ class Cabinet extends React.Component {
         return (
             <Container>
                 <div className="cabinet">
-                    <h3>Doctor's cabinet</h3>
+                    <h3>Personal cabinet</h3>
                 </div>
                 <div className="row">
                     <div className="col-12 col-md-6">
@@ -102,6 +102,7 @@ class Cabinet extends React.Component {
                         }
                     </div>
                 </div>        
+              <Button className="mt-4" color="warning" onClick={this.props.toggleAppointments}>Your calendar</Button>
             </Container>
         );
     }

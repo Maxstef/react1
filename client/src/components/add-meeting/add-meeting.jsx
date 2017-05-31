@@ -24,7 +24,7 @@ class AddMeeting extends React.Component {
             <button type="button"
                     disabled={this.isDisabled(slot)}
                     onClick={() => {this.props.addMeeting(slot)}}
-                    className={"slots btn btn-sm " + (this.isDisabled(slot) ? 'btn-success' : 'btn-secondary')}>{this.props.slotTimes[slot]}
+                    className={"slots btn btn-sm " + (this.isDisabled(slot) ? 'btn-info' : 'btn-secondary')}>{this.props.slotTimes[slot]}
             </button>
           </div>
       );

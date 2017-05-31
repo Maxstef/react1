@@ -9,8 +9,9 @@ class Logout extends React.Component {
     logout(){
         localStorage.removeItem('username');
         localStorage.removeItem('id');
+        localStorage.setItem('role', 'guest');
         browserHistory.push('/');
-        this.props.setRole(null);
+        this.props.setRole('guest');
         this.props.setInfo(null);
     }
 
