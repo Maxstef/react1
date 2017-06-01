@@ -84,6 +84,14 @@ button:disabled {
 .back-link:hover {
   text-decoration: underline;
 }
+
+.toastr {
+  position: fixed;
+  top: 70px;
+  right: 30px;
+  width: 300px;
+  cursor: pointer;
+}
 /***********************************************
 *****************   LOGIN   ********************
 ***********************************************/
@@ -163,6 +171,13 @@ input.is-invalid-input, textarea.is-invalid-input {
   margin: 0em 1.2em 1em 0;
   padding: 0.5em 1.2em;
   width: 40%;
+}
+
+.slots-small {
+  float: left;
+  margin: 0em 1.2em 1em 0;
+  padding: 0.5em 1.2em;
+  width: 100%;
 }
 
 .slot {

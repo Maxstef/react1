@@ -13,20 +13,29 @@ class AddSpecialDayContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            message: '',
+            error: null,
             tooltipAddSpecialOpen: false,
-            modalOpen: false,
+            tooltipSpecialDaysInfo: false,
+            addModalOpen: false,
+            infoModalOpen: false,
             selectedDate: null,
             availableSlots: [],
             slotTimes: config.get('slotTimes'),
             selectedSlots: []
         };
         this.toggleAddSpecialTooltip = this.toggleAddSpecialTooltip.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
+        this.toggleAddModal = this.toggleAddModal.bind(this);
+        this.toggleInfoModal = this.toggleInfoModal.bind(this);
         this.addSpecialDays = this.addSpecialDays.bind(this);
         this.changeDate = this.changeDate.bind(this);
         this.setSlots = this.setSlots.bind(this);
         this.selectSlot = this.selectSlot.bind(this);
         this.isSelected = this.isSelected.bind(this);
+        this.toggleSpecialDaysInfoTooltip = this.toggleSpecialDaysInfoTooltip.bind(this);
+        this.clearSpecial = this.clearSpecial.bind(this);
+        this.hideMessage = this.hideMessage.bind(this);
+        this.deleteSpecialDay = this.deleteSpecialDay.bind(this);
     }
 
     isSelected(slot){
@@ -53,12 +62,10 @@ class AddSpecialDayContainer extends React.Component {
         this.setState({availableSlots: available});
         _.forEach(this.props.user.doctorData.available, (day) => {
             if(day.day == dayOfWeek){
-                console.log(day.slot);
                 _.remove(available, (slot) => {
                     return _.includes(day.slot, slot);
                 });
                 this.setState({availableSlots: available});
-                console.log(this.state.availableSlots);
             }
         })
     }
@@ -69,26 +76,44 @@ class AddSpecialDayContainer extends React.Component {
             selectedSlots: []
         });
         this.setSlots(moment(date).weekday());
-        console.log("cange date");
-        console.log(this.state.selectedDate);
+    }
+
+    clearSpecial(){
+        this.setState({
+            selectedDate: null,
+            selectedSlots: []
+        });
     }
 
     addSpecialDays() {
-        console.log(this.state.selectedSlots);
         axios.put(config.get('api') + 'doctors/' + this.props.user._id, {specialDays: [{date: this.state.selectedDate, slot: this.state.selectedSlots}]})
             .then(res => {
                 if(res.data.error){
+                    this.setState({error: true, message: res.data.message});
                     console.log(res.data.message);
                 } else {
+                    this.setState({error: false, message: 'Success! Overtime hours have been saved'})
                     let user = res.data;
                     this.props.setInfo(user); 
                 }
             });
     }
 
-    toggleModal() {
+    toggleAddModal() {
         this.setState({
-            modalOpen: !this.state.modalOpen
+            addModalOpen: !this.state.addModalOpen
+        });
+    }
+
+    toggleInfoModal() {
+        this.setState({
+            infoModalOpen: !this.state.infoModalOpen
+        });
+    }
+
+    toggleSpecialDaysInfoTooltip() {
+        this.setState({
+            tooltipSpecialDaysInfo: !this.state.tooltipSpecialDaysInfo
         });
     }
 
@@ -98,13 +123,32 @@ class AddSpecialDayContainer extends React.Component {
         });
     }
 
+    hideMessage(){
+        this.setState({error: null});
+        this.setState({message: ''});
+    }
+
+    deleteSpecialDay(day){
+        console.log(day);
+        axios.put(config.get('api') + 'doctors/' + this.props.user._id + '?removeSpecial=true', {specialDays: [day]})
+            .then(res => {
+                if(res.data.error){
+                    this.setState({error: true, message: res.data.message});
+                } else {
+                    this.setState({error: false, message: 'Success! Overtime hours have been removed. Check your calendar! If someone already appoint meeting on this date you should contact to prevent them'});
+                    let user = res.data;
+                    this.props.setInfo(user);
+                }
+            });
+    }
+
     render() {
         return (
             <AddSpecialDay 
                 tooltipAddSpecialOpen={this.state.tooltipAddSpecialOpen}
                 toggleAddSpecialTooltip={this.toggleAddSpecialTooltip}
-                toggleModal={this.toggleModal}
-                modalOpen={this.state.modalOpen}
+                toggleAddModal={this.toggleAddModal}
+                toggleInfoModal={this.toggleInfoModal}
                 addSpecialDays={this.addSpecialDays}
                 changeDate={this.changeDate}
                 selectedDate={this.state.selectedDate}
@@ -112,7 +156,16 @@ class AddSpecialDayContainer extends React.Component {
                 slotTimes={this.state.slotTimes}
                 availableSlots={this.state.availableSlots}
                 selectSlot={this.selectSlot}
-                isSelected={this.isSelected}/>
+                isSelected={this.isSelected}
+                toggleSpecialDaysInfoTooltip={this.toggleSpecialDaysInfoTooltip}
+                tooltipSpecialDaysInfo={this.state.tooltipSpecialDaysInfo}
+                infoModalOpen={this.state.infoModalOpen}
+                addModalOpen={this.state.addModalOpen}
+                error={this.state.error}
+                message={this.state.message}
+                clearSpecial={this.clearSpecial}
+                hideMessage={this.hideMessage}
+                deleteSpecialDay={this.deleteSpecialDay}/>
         );
     }
 }

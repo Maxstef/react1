@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col} from 'reactstrap';
+import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col, Alert} from 'reactstrap';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import * as _ from 'lodash';
@@ -93,6 +93,12 @@ class AddMeeting extends React.Component {
               <Button color="secondary" onClick={this.props.toggle}>Understand</Button>
             </ModalFooter>
           </Modal> }
+
+          {this.props.error !== null && 
+                    <Alert onClick={this.props.hideMessage} className="toastr" color={(this.props.error)?"danger":"success"}>
+                        {this.props.message}
+                    </Alert>
+                }
           
         </Container>
     )

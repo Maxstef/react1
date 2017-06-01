@@ -31,7 +31,9 @@ class AddMeetingContainer extends React.Component {
       doctorsName: this.props.doctorsName,
       meetingSlot: null,
       myCurrentMeeting: [],
-      isAlreadyAppointed: false
+      isAlreadyAppointed: false,
+      message: '',
+      error: null
     };
     this.dpChange = this.dpChange.bind(this);
     this.addMeeting = this.addMeeting.bind(this);
@@ -39,6 +41,7 @@ class AddMeetingContainer extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.getAllMeetings = this.getAllMeetings.bind(this);
     this.appointedAlready = this.appointedAlready.bind(this);
+    this.hideMessage = this.hideMessage.bind(this);
   }
   
   componentWillMount() {
@@ -120,6 +123,11 @@ class AddMeetingContainer extends React.Component {
     let newBusySlot = this.state.busySlots;
     let allMeetings = this.state.allMeetings;
     axios.post(config.get('api') + 'meetings/', this.state.newMeeting).then(res => {
+      if(res.data.error){
+          this.setState({error: true, message: res.data.message});
+      } else {
+          this.setState({error: false, message: 'Success! Meeting has been saved. Administrator will contact you for further instructions'})
+      }
       newBusySlot.push(this.state.newMeeting.slot);
       allMeetings.push(this.state.newMeeting);
       this.setState({
@@ -220,6 +228,11 @@ class AddMeetingContainer extends React.Component {
       modal: !this.state.modal
     });
   }
+
+  hideMessage(){
+        this.setState({error: null});
+        this.setState({message: ''});
+    }
   
   render() {
     return (
@@ -244,6 +257,9 @@ class AddMeetingContainer extends React.Component {
                       appointedAlready={this.state.appointedAlready}
                       isAlreadyAppointed={this.state.isAlreadyAppointed}
                       myCurrentMeeting={this.state.myCurrentMeeting}
+                      hideMessage={this.hideMessage}
+                      error={this.state.error}
+                      message={this.state.message}
           />
         </div>
     );
