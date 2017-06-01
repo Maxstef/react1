@@ -35,6 +35,7 @@ class AddSpecialDayContainer extends React.Component {
         this.toggleSpecialDaysInfoTooltip = this.toggleSpecialDaysInfoTooltip.bind(this);
         this.clearSpecial = this.clearSpecial.bind(this);
         this.hideMessage = this.hideMessage.bind(this);
+        this.deleteSpecialDay = this.deleteSpecialDay.bind(this);
     }
 
     isSelected(slot){
@@ -127,6 +128,20 @@ class AddSpecialDayContainer extends React.Component {
         this.setState({message: ''});
     }
 
+    deleteSpecialDay(day){
+        console.log(day);
+        axios.put(config.get('api') + 'doctors/' + this.props.user._id + '?removeSpecial=true', {specialDays: [day]})
+            .then(res => {
+                if(res.data.error){
+                    this.setState({error: true, message: res.data.message});
+                } else {
+                    this.setState({error: false, message: 'Success! Overtime hours have been removed. Check your calendar! If someone already appoint meeting on this date you should contact to prevent them'});
+                    let user = res.data;
+                    this.props.setInfo(user);
+                }
+            });
+    }
+
     render() {
         return (
             <AddSpecialDay 
@@ -149,7 +164,8 @@ class AddSpecialDayContainer extends React.Component {
                 error={this.state.error}
                 message={this.state.message}
                 clearSpecial={this.clearSpecial}
-                hideMessage={this.hideMessage}/>
+                hideMessage={this.hideMessage}
+                deleteSpecialDay={this.deleteSpecialDay}/>
         );
     }
 }

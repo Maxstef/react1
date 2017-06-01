@@ -57,7 +57,25 @@ module.exports = function (router) {
                     doctor.doctorData.bio = (req.body.bio) ? req.body.bio : doctor.doctorData.bio;
                     doctor.doctorData.doctorType = (req.body.doctorType) ? req.body.doctorType : doctor.doctorData.doctorType;
                     doctor.doctorData.available = (req.body.available) ? req.body.available : doctor.doctorData.available;
-                    if(req.body.specialDays && typeof doctor.doctorData.specialDays != 'undefined'){
+                    if(req.body.specialDays && typeof doctor.doctorData.specialDays != 'undefined' && req.query.removeSpecial == 'true'){
+                        let i, remove;
+                        _.forEach(doctor.doctorData.specialDays, (day, index) => {
+                            if(day.date == req.body.specialDays[0].date){
+                                _.forEach(req.body.specialDays[0].slot, (s, inde) => {
+                                    remove = true;
+                                    if(day.slot[inde] != s){
+                                        remove = false;
+                                    }
+                                });
+                                if(remove){
+                                    i = index;
+                                }
+                            }
+                        });
+                        if(typeof i != 'undefined'){
+                            doctor.doctorData.specialDays.splice(i, 1);
+                        }
+                    } else if(req.body.specialDays && typeof doctor.doctorData.specialDays != 'undefined'){
                         if(req.body.specialDays.length == 0 || req.body.specialDays[0].slot.length == 0 || req.body.specialDays[0].date === null){
                             done = true;
                             res.send({error: true, message: 'Error! Please choose the date and timeslots'});
@@ -76,7 +94,9 @@ module.exports = function (router) {
                     if(typeof doctor.doctorData.specialDays == 'undefined'){
                         doctor.doctorData.specialDays = [];
                     }
-                    doctor.doctorData.specialDays = (req.body.specialDays) ? doctor.doctorData.specialDays.concat(req.body.specialDays) : doctor.doctorData.specialDays;
+                    if(req.query.removeSpecial != 'true'){
+                        doctor.doctorData.specialDays = (req.body.specialDays) ? doctor.doctorData.specialDays.concat(req.body.specialDays) : doctor.doctorData.specialDays;
+                    }
                     if(!done){
                         User.update({
                                 _id: req.params.id

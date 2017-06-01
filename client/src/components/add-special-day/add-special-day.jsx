@@ -43,6 +43,11 @@ class AddSpecialDay extends React.Component {
                 <tr>
                     <td>{moment(day.date).format("DD MMMM YYYY")}</td>
                     <td>{renderHours(day.slot)}</td>
+                    <td>
+                        <button className="btn btn-danger" onClick={()=>{this.props.deleteSpecialDay(day); this.props.toggleInfoModal()}}>
+                            <i className="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </td>
                 </tr>
             );
         };
