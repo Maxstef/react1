@@ -31,8 +31,7 @@ class RestorePassword extends React.Component {
                             type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Confirm password"
                             errorClassName='is-invalid-input' validations={['required', 'password', 'minThree']} />
                     </div>
-                    <Validation.components.Button className="submit-btn btn btn-primary"
-                        disabled={this.props.response !== null && !this.props.response.error}>
+                    <Validation.components.Button className="submit-btn btn btn-primary">
                         Update Password
                     </Validation.components.Button>
                 </Validation.components.Form>
