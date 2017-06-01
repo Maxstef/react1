@@ -19,7 +19,7 @@ class HttpService extends React.Component {
   }
 
   componentWillMount() {
-    if (this.props.listEmpty) {
+    if (this.props.listEmpty || typeof this.props.info !== "object") {
       this.getAllDoctors();
     }
   }

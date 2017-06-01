@@ -14,8 +14,8 @@ class DoctorsListContainer extends React.Component {
       <div>
         <HttpService />
         <AuthoriationService />
-        {(this.props.role === 'admin') && <AdminDoctorsList info={this.props.info} />}
-        {(this.props.role === 'patient' || this.props.role === 'guest') && <DoctorsList info={this.props.info} />}
+        {(this.props.role === 'admin' && typeof this.props.info == "object") && <AdminDoctorsList info={this.props.info} />}
+        {((this.props.role === 'patient' || this.props.role === 'guest') && typeof this.props.info == "object") && <DoctorsList info={this.props.info} />}
       </div>
     );
   }
