@@ -1,1 +1,1 @@
-web: node сlient.js
+web: NODE_ENV=production node client.js -p $PORT

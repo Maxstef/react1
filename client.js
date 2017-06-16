@@ -10,7 +10,6 @@ app.get('*', function (req, res) {
   res.sendFile(path.join(projectRoot + '/index.html'));
 });
 
-var port = 3009;
-
-console.log('Server up and running on http://localhost:/' + port);
-app.listen(port);
+app.listen((process.env.PORT || 5000), function () {
+    console.log('Server listening on port 3000!');
+});
