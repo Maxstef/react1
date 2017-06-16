@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Vitalii Yaremchuk",
+  "author": "Vitalii Yaremchuk, Maksym Stefanko",
   "license": "ISC",
   "dependencies": {
     "axios": "0.16.1",
