@@ -2,6 +2,7 @@ import React from 'react';
 import {Container} from 'reactstrap';
 import {Link} from "react-router";
 import moment from "moment";
+import config from 'react-global-configuration';
 
 function renderMeetings(currentMeetings) {
   return currentMeetings.map((meeting, index) => (
@@ -13,7 +14,7 @@ const Meetings = ({meeting}) => {
   return (
       <tr>
         <td>
-          {moment(meeting.date).format('DD MMM YYYY, dddd, hh:mm')}
+          {moment(meeting.date).format('DD MMM YYYY, dddd') + ", " + config.get('slotTimes')[meeting.slot]}
         </td>
         <td>
           {meeting.doctor.name.first}{' '}

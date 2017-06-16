@@ -23,11 +23,13 @@ class ShowAppointmentsContainer extends React.Component {
       date: null,
       meetingSlot: null,
       myCurrentMeeting: [],
-      todayMeetings: []
+      todayMeetings: [],
+      meetingDetails: null
     };
     this.dpChange = this.dpChange.bind(this);
     this.toggle = this.toggle.bind(this);
     this.getAllMeetings = this.getAllMeetings.bind(this);
+    this.showPatientData = this.showPatientData.bind(this);
   }
   
   componentWillMount() {
@@ -97,6 +99,12 @@ class ShowAppointmentsContainer extends React.Component {
       modal: !this.state.modal
     });
   }
+
+  showPatientData(meeting){
+    this.setState({meetingDetails: meeting});
+    this.toggle();
+    console.log(meeting);
+  }
   
   render() {
     return (
@@ -116,6 +124,9 @@ class ShowAppointmentsContainer extends React.Component {
                       backdrop={this.state.backdrop}
                       doctorsName={this.props.doctorsName}
                       day={moment(this.state.date).format('DD MMM YYYY, dddd')}
+                      showPatientData={this.showPatientData}
+                      todayMeetings={this.state.todayMeetings}
+                      meetingDetails={this.state.meetingDetails}
           />
         </div>
     );

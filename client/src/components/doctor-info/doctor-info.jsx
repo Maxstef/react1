@@ -32,7 +32,7 @@ class DoctorInfo extends React.Component {
               <img src={'../' + config.get('defaultAvatarUrl')} className="avatar-photo-info" />
               }
               {(this.props.info.photoUrl !== null && typeof this.props.info.photoUrl != 'undefined') &&
-              <img src={'../' + config.get('api') + this.props.info.photoUrl} className="avatar-photo-info" />
+              <img src={config.get('api') + this.props.info.photoUrl} className="avatar-photo-info" />
               }
               <h4 className="doctor-inf-header">doctor{' '}
                 {this.props.name.first}{' '}{this.props.name.last}
