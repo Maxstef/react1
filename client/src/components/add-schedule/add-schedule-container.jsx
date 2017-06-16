@@ -16,49 +16,49 @@ class AddScheduleContainer extends React.Component {
             slotTimes: config.get('slotTimes'),
             days: [
                 {
-                    day: 'mo',
+                    day: 'su',
                     dayNumber: 0,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
                 },
                 {
-                    day: 'tu',
+                    day: 'mo',
                     dayNumber: 1,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
                 },
                 {
-                    day: 'we',
+                    day: 'tu',
                     dayNumber: 2,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
                 },
                 {
-                    day: 'th',
+                    day: 'we',
                     dayNumber: 3,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
                 },
                 {
-                    day: 'fr',
+                    day: 'th',
                     dayNumber: 4,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
                 },
                 {
-                    day: 'sa',
+                    day: 'fr',
                     dayNumber: 5,
                     available: false,
                     slots: [],
                     slotValue: [{from: -1, to: -1}]
                 },
                 {
-                    day: 'su',
+                    day: 'sa',
                     dayNumber: 6,
                     available: false,
                     slots: [],

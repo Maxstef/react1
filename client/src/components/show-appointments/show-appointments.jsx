@@ -3,23 +3,24 @@ import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col}
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import * as _ from 'lodash';
+import config from 'react-global-configuration';
 
 class ShowAppointments extends React.Component {
   
   renderSlots(array) {
-    const Slot = ({slot}) => {
+    const Slot = ({meeting}) => {
       return (
           <div>
             <button type="button"
-                    onClick={() => {this.props.addMeeting(slot)}}
+                    onClick={() => {this.props.showPatientData(meeting)}}
                     className="slots btn btn-sm btn-secondary">
-              {this.props.slotTimes[slot]}
+              {this.props.slotTimes[meeting.slot]}
             </button>
           </div>
       );
     };
-    return array.map((slot, index) => (
-        <Slot key={index} slot={slot}/>
+    return array.map((meeting, index) => (
+        <Slot key={index} meeting={meeting}/>
     ));
   };
   
@@ -45,7 +46,7 @@ class ShowAppointments extends React.Component {
               />
             </Col>
             <Col className="mb-1" xs={{size: 8, offset: 1}} md={{size: 6, offset: 0}} lg={{size: 5, offset: 0}}>
-              {this.props.currentSlots && this.renderSlots(this.props.currentSlots)}
+              {this.props.currentSlots && this.renderSlots(this.props.todayMeetings)}
             </Col>
           </Row>
           <Row>
@@ -53,6 +54,30 @@ class ShowAppointments extends React.Component {
               <button type="button" className="btn btn-secondary mr-1" onClick={this.props.toggleMeeting}>Cancel</button>
             </Col>
           </Row>
+          <Modal className="modal-lg"
+                 isOpen={this.props.modal}
+                 toggle={this.props.toggle}>
+            <ModalHeader toggle={this.props.toggle}>Appointment</ModalHeader>
+            <ModalBody>
+              {(this.props.meetingDetails && this.props.meetingDetails.patientNotRegister) && 
+                <div>
+                  <p>Date - {moment(this.props.meetingDetails.date).format('DD MMM YYYY, dddd') + ", " + config.get('slotTimes')[this.props.meetingDetails.slot]}</p>
+                  <p>Patient - {this.props.meetingDetails.patientNotRegister.name.first + " " + this.props.meetingDetails.patientNotRegister.name.last}</p>
+                  <p>Phone - {this.props.meetingDetails.patientNotRegister.phone}</p>
+                </div>
+            }
+              {(this.props.meetingDetails && !this.props.meetingDetails.patientNotRegister) && 
+                <div>
+                  <p>Date - {moment(this.props.meetingDetails.date).format('DD MMM YYYY, dddd') + ", " + config.get('slotTimes')[this.props.meetingDetails.slot]}</p>
+                  <p>Patient - {this.props.meetingDetails.patient.name.first + " " + this.props.meetingDetails.patient.name.last}</p>
+                  <p>Phone - {this.props.meetingDetails.patient.patientData.contacts.phoneNumber}</p>
+                </div>
+            }
+            </ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={this.props.toggle}>Ok</Button>
+            </ModalFooter>
+          </Modal>
         
         </Container>
     )

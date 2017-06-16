@@ -7,8 +7,8 @@ import moment from "moment";
 import config from "react-global-configuration";
 import axios from "axios";
 import * as _ from "lodash";
-import "../../../node_modules/moment/locale/ru.js";
-import "../../../node_modules/moment/locale/uk.js";
+//import "../../../node_modules/moment/locale/ru.js";
+//import "../../../node_modules/moment/locale/uk.js";
 
 class AddMeetingContainer extends React.Component {
   constructor(props) {
@@ -33,7 +33,9 @@ class AddMeetingContainer extends React.Component {
       myCurrentMeeting: [],
       isAlreadyAppointed: false,
       message: '',
-      error: null
+      error: null,
+      logedIn: false,
+      unlogedUserData: {phone: '', firstName: '', lastName: '', valid: false}
     };
     this.dpChange = this.dpChange.bind(this);
     this.addMeeting = this.addMeeting.bind(this);
@@ -42,6 +44,7 @@ class AddMeetingContainer extends React.Component {
     this.getAllMeetings = this.getAllMeetings.bind(this);
     this.appointedAlready = this.appointedAlready.bind(this);
     this.hideMessage = this.hideMessage.bind(this);
+    this.setUnlogedUserData = this.setUnlogedUserData.bind(this);
   }
   
   componentWillMount() {
@@ -58,6 +61,11 @@ class AddMeetingContainer extends React.Component {
       schedule = this.props.currentInfo.doctorData.available;
     } else {
       schedule = [];
+    }
+    if(this.props.role === 'guest'){
+      this.setState({logedIn: false});
+    } else {
+      this.setState({logedIn: true});
     }
     this.setState({
       availableHours: schedule,
@@ -122,19 +130,31 @@ class AddMeetingContainer extends React.Component {
   postMeeting() {
     let newBusySlot = this.state.busySlots;
     let allMeetings = this.state.allMeetings;
-    axios.post(config.get('api') + 'meetings/', this.state.newMeeting).then(res => {
-      if(res.data.error){
-          this.setState({error: true, message: res.data.message});
-      } else {
-          this.setState({error: false, message: 'Success! Meeting has been saved. Administrator will contact you for further instructions'})
-      }
-      newBusySlot.push(this.state.newMeeting.slot);
-      allMeetings.push(this.state.newMeeting);
-      this.setState({
-            allMeetings: allMeetings,
-            busySlots: newBusySlot
-          });
-    })
+    let meeting, route;
+    if(this.state.logedIn){
+      meeting = this.state.newMeeting;
+      route = 'meetings';
+    } else {
+      meeting = this.state.newMeeting;
+      meeting.patientNotRegister = this.state.unlogedUserData;
+      route = 'meetings?notRegister=true'
+    }
+    axios.post(config.get('api') + route, meeting).then(res => {
+        if(res.data.error){
+            this.setState({error: true, message: res.data.message});
+        } else {
+            this.setState({error: false, message: 'Success! Meeting has been saved. Administrator will contact you for further instructions'})
+        }
+        newBusySlot.push(this.state.newMeeting.slot);
+        allMeetings.push(this.state.newMeeting);
+        this.setState({
+              allMeetings: allMeetings,
+              busySlots: newBusySlot,
+              isAlreadyAppointed: true,
+              myCurrentMeeting: moment(res.data.date).format('DD MMM YYYY, dddd')
+            });
+      })
+    
   }
   
   // get all meetings of current doctor and all meetings with current doctor and current user
@@ -234,6 +254,17 @@ class AddMeetingContainer extends React.Component {
         this.setState({message: ''});
     }
   
+  setUnlogedUserData(key, value){
+    let data = this.state.unlogedUserData;
+    data[key] = value;
+    if(data.firstName.length < 2 || data.lastName.length < 2 || data.phone.replace("_", '').length < 18){
+      data.valid = false;
+    } else {
+      data.valid = true;
+    }
+    this.setState({unlogedUserData: data});
+  }
+  
   render() {
     return (
         <div>
@@ -260,6 +291,9 @@ class AddMeetingContainer extends React.Component {
                       hideMessage={this.hideMessage}
                       error={this.state.error}
                       message={this.state.message}
+                      logedIn={this.state.logedIn}
+                      unlogedUserData={this.state.unlogedUserData}
+                      setUnlogedUserData={this.setUnlogedUserData}
           />
         </div>
     );

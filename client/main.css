@@ -399,8 +399,8 @@ ul.doctor-types {
 ***********************************************/
 
 .avatar-photo-info {
-  width: 5rem;
-  heigth: 5rem;
+  width: 150px;
+  height: 150px;
   float: left;
   margin: 0 2rem 0 0;
 }

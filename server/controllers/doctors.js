@@ -91,10 +91,10 @@ module.exports = function (router) {
                             }
                         })
                     }
-                    if(typeof doctor.doctorData.specialDays == 'undefined'){
+                    if(typeof doctor.doctorData.specialDays == 'undefined' || doctor.doctorData.specialDays === null){
                         doctor.doctorData.specialDays = [];
                     }
-                    if(req.query.removeSpecial != 'true'){
+                    if(req.query.removeSpecial != 'true' && !done){
                         doctor.doctorData.specialDays = (req.body.specialDays) ? doctor.doctorData.specialDays.concat(req.body.specialDays) : doctor.doctorData.specialDays;
                     }
                     if(!done){

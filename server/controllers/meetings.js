@@ -35,15 +35,37 @@ module.exports = function (router) {
   });
   
   router.post('/', function (req, res) {
-    var newMeeting;
-      newMeeting = new Meeting({
+    var meeting;
+    if(typeof req.query.notRegister == 'undefined'){
+      meeting = {
         patient: req.body.patient,
         doctor: req.body.doctor,
         date: req.body.date,
         slot: req.body.slot,
         patientId: req.body.patientId,
-        doctorId: req.body.doctorId
-      });
+        doctorId: req.body.doctorId,
+        approved: false
+      };
+    } else {
+      meeting = {
+        patient: req.body.patient,
+        doctor: req.body.doctor,
+        date: req.body.date,
+        slot: req.body.slot,
+        patientId: req.body.patientId,
+        doctorId: req.body.doctorId,
+        patientNotRegister: {
+          phone: req.body.patientNotRegister.phone,
+          name: {
+              first: req.body.patientNotRegister.firstName,
+              last: req.body.patientNotRegister.lastName
+          }
+        },
+        approved: false
+      }
+    }
+    var newMeeting;
+      newMeeting = new Meeting(meeting);
       newMeeting.save(function (err, meeting) {
         if (err) {
           res.send(err);

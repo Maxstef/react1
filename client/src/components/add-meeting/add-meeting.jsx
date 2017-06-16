@@ -1,8 +1,9 @@
 import React from 'react';
-import {Button, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col, Alert} from 'reactstrap';
+import {Button, Input, Label, Modal, ModalHeader, ModalBody, ModalFooter, Container, Row, Col, Alert} from 'reactstrap';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import * as _ from 'lodash';
+import InputMask from 'react-input-mask';
 
 class AddMeeting extends React.Component {
   
@@ -65,7 +66,7 @@ class AddMeeting extends React.Component {
             </Col>
           </Row>
           
-          { !this.props.isAlreadyAppointed &&
+          { (!this.props.isAlreadyAppointed && this.props.logedIn) &&
           <Modal className="modal-lg"
                  isOpen={this.props.modal}
                  toggle={this.props.toggle}
@@ -77,6 +78,29 @@ class AddMeeting extends React.Component {
             <ModalFooter>
               <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
               <Button color="warning" onClick={() => {this.props.postMeeting(); this.props.toggle()}}>Apply</Button>{' '}
+            </ModalFooter>
+          </Modal> }
+
+          { (!this.props.isAlreadyAppointed && !this.props.logedIn) &&
+          <Modal className="modal-lg"
+                 isOpen={this.props.modal}
+                 toggle={this.props.toggle}
+                 backdrop={this.props.backdrop}>
+            <ModalHeader toggle={this.props.toggle}>Appointment</ModalHeader>
+            <ModalBody>
+              <h4>Enter your name and phone for administration can contact you</h4>
+              <Label for='phone'>Phone:</Label>
+              <InputMask mask="+8 (999) 999-99-99" id='phone' className='form-control' onChange={(e) => {this.props.setUnlogedUserData('phone', e.target.value)}} />        
+              <Label for='fname'>First name:</Label>
+              <Input id='fname' onChange={(e) => {this.props.setUnlogedUserData('firstName', e.target.value)}} />
+              <Label for='lname'>Last name:</Label>
+              <Input id='lname' onChange={(e) => {this.props.setUnlogedUserData('lastName', e.target.value)}} />
+              <br/>
+              Are you really want to make appointment to {this.props.doctorsName.first}{' '}{this.props.doctorsName.last}{' '}{this.props.day} at {this.props.slotTimes[this.props.meetingSlot]}
+            </ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={this.props.toggle}>Cancel</Button>
+              <Button color="warning" disabled={!this.props.unlogedUserData.valid} onClick={() => {this.props.postMeeting(); this.props.toggle()}}>Apply</Button>{' '}
             </ModalFooter>
           </Modal> }
   
