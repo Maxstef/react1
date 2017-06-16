@@ -22,12 +22,12 @@ app.use(bodyParser.json());
 });*/
 
 app.use(cors({
-    origin: 'http://localhost:3009',
+    origin: 'https://clinic-client-app.herokuapp.com/',
     credentials: true
 }));
 
 app.use("/upload-photo", function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://localhost:3009");
+  res.header("Access-Control-Allow-Origin", "https://clinic-client-app.herokuapp.com/");
   res.header("Access-Control-Allow-Credentials", true);
   next();
 });

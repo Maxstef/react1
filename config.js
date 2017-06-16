@@ -1,7 +1,7 @@
 var config = {};
 
-config.db = "mongodb://localhost/clinic";
+config.db = "mongodb://max:ch047@ds143030.mlab.com:43030/clinic_ch047";
 config.hashAlgorithm = "sha256";
-config.client = "http://localhost:3009";
+config.client = "https://clinic-client-app.herokuapp.com/";
 
 module.exports = config;
